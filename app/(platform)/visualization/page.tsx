@@ -122,11 +122,11 @@ export default function Page() {
         <div className="text-4xl font-semibold py-2">
           Loess Regression Example
         </div>
-        <div className="flex flex-col sm:flex-row gap-x-4 pt-2">
+        <div className="flex flex-col sm:flex-row gap-x-4 gap-y-2 pt-2">
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Library</p>
-            <div>
-              <DisplayTag label="vega" />
+            <div className="flex flex-row gap-x-1">
+              <DisplayTag label="d3.js" />
             </div>
           </div>
           <div className="flex flex-row gap-x-2">

@@ -12,15 +12,15 @@ import {
   Button,
   Input,
 } from "@nextui-org/react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaHome } from "react-icons/fa";
 
 export default function VisNavbar() {
 
   return (
     <Navbar position="sticky" className="border-b">
         <NavbarBrand as={Link} href="/search">
-          <p className="hidden sm:block font-bold text-inherit text-xl text-teal-800">Share Your Visualization</p>
-          <p className="sm:hidden font-bold text-inherit text-xl text-teal-800">V</p>
+          <p className="hidden sm:block font-bold text-inherit text-xl text-slate-900">Share Your Visualization</p>
+          <p className="sm:hidden font-bold text-inherit text-3xl text-teal-700"><FaHome/></p>
         </NavbarBrand>
 
       <NavbarContent className="flex gap-4 w-4/5 sm:w-2/5" justify="center">

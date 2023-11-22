@@ -8,15 +8,15 @@ export default function DisplayTag({ label }: { label: string }) {
       .toLowerCase()
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join("_");
+      .join(" ");
   };
 
   const CapitalizedLabel = CapitalizeWords(label);
 
   const KnownLibraries: Record<string, string[]> = {
-    vega: ["bg-blue-400", "/library-icons/vega_logo.png"],
-    altair: ["bg-blue-400", "/library-icons/altair.png"],
-    d3: ["bg-orange-500", "/library-icons/d3.png"],
+    "vega": ["bg-blue-400", "/library-icons/vega_logo.png"],
+    "altair": ["bg-blue-400", "/library-icons/altair_logo.png"],
+    "d3.js": ["bg-orange-300", "/library-icons/d3js_logo.png"],
   };
 
   const libraryInfo = KnownLibraries[label];
@@ -24,7 +24,7 @@ export default function DisplayTag({ label }: { label: string }) {
   const libraryImageSrc = libraryInfo ? libraryInfo[1] : "";
 
   return (
-    <div>
+    <div className="flex">
       <div
         className={`inline-flex items-center rounded-full border px-2.5 
       py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 
