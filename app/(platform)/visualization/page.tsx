@@ -11,6 +11,11 @@ import {
   FaRegCopy,
 } from "react-icons/fa";
 import ClipboardJS from "clipboard";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import {
+  arduinoLight,
+} from "react-syntax-highlighter/dist/cjs/styles/hljs";
+
 
 const SourceCode = `{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
@@ -113,10 +118,11 @@ const SourceCode = `{
 }`;
 
 export default function Page() {
+
   return (
-    <div className="container py-6 px-8 sm:px-48">
+    <div className="container py-6 px-8 md:px-24 lg:px-48 pb-12">
       <div className="flex flex-col">
-        <div className="text-4xl font-semibold">Loess Regression Example</div>
+        <div className="text-4xl font-semibold py-2">Loess Regression Example</div>
         <div className="flex flex-col sm:flex-row gap-x-4 pt-2">
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Library</p>
@@ -127,18 +133,20 @@ export default function Page() {
             <div>Graph Bar</div>
           </div>
         </div>
-        <div className="flex flex-row justify-between border-b py-2">
-          <div>
-            <span className="flex flex-row items-center gap-x-2">
+        <div className="flex flex-col md:flex-row justify-between border-b py-2">
+          <div className="flex flex-col md:flex-row justify-start gap-x-2 gap-y-2 py-2">
+            <div className="flex flex-row items-center gap-x-2">
               <Avatar
                 showFallback
                 size={"sm"}
                 src="https://images.unsplash.com/broken"
               />
               <p className="text-slate-600">@Username</p>
+            </div>
+            <div className="flex flex-row items-center gap-x-2">
               <FaRegCalendarAlt className="text-slate-600 text-xl" />
-              <p className="text-slate-600">Posted 21 December 2022</p>
-            </span>
+              <p className="text-slate-600 ">Posted 21 December 2022</p>
+            </div>
           </div>
           <div className="flex flex-row gap-x-2">
             <div className="flex flex-row items-center gap-x-2 cursor-pointer">
@@ -192,7 +200,14 @@ export default function Page() {
             </div>
           </div>
           <div className="px-4 py-4 bg-gray-200 rounded-lg overflow-y-auto">
-            <pre className="text-sm">{SourceCode}</pre>
+            <SyntaxHighlighter
+              className="text-sm"
+              style={arduinoLight}
+              customStyle={{ backgroundColor: "inherit" }}
+              wrapLongLines={true}
+            >
+              {SourceCode}
+            </SyntaxHighlighter>
           </div>
         </div>
       </div>

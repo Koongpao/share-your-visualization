@@ -12,47 +12,46 @@ import {
   Button,
   Input,
 } from "@nextui-org/react";
+import { FaSearch } from "react-icons/fa";
 
 export default function VisNavbar() {
 
   return (
     <Navbar position="sticky" className="border-b">
-      <NavbarContent className="flex-1">
         <NavbarBrand as={Link} href="/search">
-          <p className="font-bold text-inherit text-xl text-teal-800">Visualization</p>
+          <p className="hidden sm:block font-bold text-inherit text-xl text-teal-800">Share Your Visualization</p>
+          <p className="sm:hidden font-bold text-inherit text-xl text-teal-800">V</p>
         </NavbarBrand>
-      </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4 flex-2 w-3/4" justify="center">
-        <NavbarItem className="w-3/4">
+      <NavbarContent className="flex gap-4 w-4/5 sm:w-2/5" justify="center">
+        <NavbarItem className="w-full">
           <Input
             size={"sm"}
             placeholder="Search Visualization..."
             endContent={
-              <div
-                className="cursor-pointer"
+              <Button
+                className="cursor-pointer h-full min-w-4 flex items-center bg-color-none"
                 onClick={() => console.log("Test")}
               >
-                Search Icon
-              </div>
+                <FaSearch className="text-slate-400 text-lg"/>
+              </Button>
             }
           />
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end" className="flex-1">
+      <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex font-semibold">
           <Link className="text-teal-700" href="/login">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} href="/sign-up" variant="flat" className="bg-teal-700 text-white font-semibold shadow-xl">
+          <Button as={Link} href="/sign-up" variant="flat" className="bg-teal-700 text-white font-semibold shadow-lg">
             Sign Up
           </Button>
         </NavbarItem>
       </NavbarContent>
     </Navbar>
 
-    
   );
 }
 

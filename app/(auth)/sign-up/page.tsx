@@ -5,8 +5,8 @@ import { Button, Input } from "@nextui-org/react";
 
 export default function Page() {
   return (
-    <div className="container w-screen h-screen">
-      <div className="w-full sm:w-1/2 mx-auto flex flex-col justify-center items-center h-screen gap-y-6">
+    <div className="container w-screen h-screen px-12">
+      <div className="w-full sm:w-3/4 lg:w-3/5 xl:w-1/2 mx-auto flex flex-col justify-center items-center h-screen gap-y-6">
         <div className="font-bold text-4xl text-teal-700">Sign up</div>
         <div className="w-full sm:w-1/2 my-6 flex gap-y-2 flex-col text-slate-500">
           <Input size={"sm"} className="" placeholder="Username" type="text" />

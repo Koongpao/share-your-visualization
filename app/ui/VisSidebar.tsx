@@ -16,7 +16,7 @@ export default function VisSidebar() {
   return (
         <aside className="border-r p-6 h-screen bg-white z-20 fixed -left-96 lg:left-0 lg:w-60  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
           <div className="flex flex-col justify-start item-center">
-            <h1 className="text-base text-center font-bold text-blue-900 border-b border-gray-100 pb-4 w-full">
+            <h1 className="text-base text-center font-bold text-teal-800 border-b border-gray-100 pb-4 w-full">
               Applied Tags
             </h1>
             <div className=" my-4 border-b border-gray-100 pb-4">
