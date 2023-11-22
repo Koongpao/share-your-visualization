@@ -1,32 +1,157 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@nextui-org/react";
+import { Button, Avatar, Snippet } from "@nextui-org/react";
+import {
+  FaRegCalendarAlt,
+  FaRegBookmark,
+  FaBookmark,
+  FaRegHeart,
+  FaHeart,
+  FaRegCopy,
+} from "react-icons/fa";
+import ClipboardJS from "clipboard";
+
+const SourceCode = `{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A scatter plot with trend line calculated via locally-weighted (loess) regression.",
+  "padding": 5,
+  "width": 500,
+  "height": 500,
+  "autosize": "pad",
+
+  "signals": [
+    {
+      "name": "loessBandwidth", "value": 0.3,
+      "bind": {"input": "range", "min": 0.05, "max": 1}
+    },
+    {
+      "name": "groupby", "value": "none",
+      "bind": {"input": "select", "options": ["none", "genre"]}
+    }
+  ],
+
+  "data": [
+    {
+      "name": "movies",
+      "url": "data/movies.json",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum['Rotten Tomatoes Rating'] != null && datum['IMDB Rating'] != null"
+        }
+      ]
+    },
+    {
+      "name": "trend",
+      "source": "movies",
+      "transform": [
+        {
+          "type": "loess",
+          "groupby": [{"signal": "groupby === 'genre' ? 'Major Genre' : 'foo'"}],
+          "bandwidth": {"signal": "loessBandwidth"},
+          "x": "Rotten Tomatoes Rating",
+          "y": "IMDB Rating",
+          "as": ["u", "v"]
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "movies", "field": "Rotten Tomatoes Rating"},
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "movies", "field": "IMDB Rating"},
+      "range": "height"
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "symbol",
+      "from": {"data": "movies"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "x", "field": "Rotten Tomatoes Rating"},
+          "y": {"scale": "y", "field": "IMDB Rating"},
+          "fillOpacity": {"value": 0.5},
+          "size": {"value": 16}
+        }
+      }
+    },
+    {
+      "type": "group",
+      "from": {
+        "facet": {
+          "data": "trend",
+          "name": "curve",
+          "groupby": "Major Genre"
+        }
+      },
+      "marks": [
+        {
+          "type": "line",
+          "from": {"data": "curve"},
+          "encode": {
+            "enter": {
+              "x": {"scale": "x", "field": "u"},
+              "y": {"scale": "y", "field": "v"},
+              "stroke": {"value": "firebrick"}
+            }
+          }
+        }
+      ]
+    }
+  ]
+}`;
 
 export default function Page() {
   return (
     <div className="container py-6 px-8 sm:px-48">
       <div className="flex flex-col">
-        <div className="text-4xl">Loess Regression Example</div>
-        <div className="flex flex-col sm:flex-row gap-x-4">
-          <div>
-            Library <span> Vega</span>
+        <div className="text-4xl font-semibold">Loess Regression Example</div>
+        <div className="flex flex-col sm:flex-row gap-x-4 pt-2">
+          <div className="flex flex-row gap-x-2">
+            <p className="font-bold">Library</p>
+            <div>Vega</div>
           </div>
-          <div>
-            Tags<span> Graph Bar</span>
+          <div className="flex flex-row gap-x-2">
+            <p className="font-bold">Tags</p>
+            <div>Graph Bar</div>
           </div>
         </div>
         <div className="flex flex-row justify-between border-b py-2">
           <div>
-            <span>img username</span>
-            <span>posted december 2021</span>
+            <span className="flex flex-row items-center gap-x-2">
+              <Avatar
+                showFallback
+                size={"sm"}
+                src="https://images.unsplash.com/broken"
+              />
+              <p className="text-slate-600">@Username</p>
+              <FaRegCalendarAlt className="text-slate-600 text-xl" />
+              <p className="text-slate-600">Posted 21 December 2022</p>
+            </span>
           </div>
-          <div>
-            <span>bookmark</span>
-            <span>Like</span>
+          <div className="flex flex-row gap-x-2">
+            <div className="flex flex-row items-center gap-x-2 cursor-pointer">
+              <FaRegBookmark className="text-slate-600 text-xl" />
+              <p>Bookmark</p>
+            </div>
+            <div className="flex flex-row items-center gap-x-2 cursor-pointer">
+              <FaRegHeart className="text-slate-600 text-xl" />
+              <p>Likes</p>
+            </div>
           </div>
         </div>
-        <div>
+        <div className="py-4">
           Locally-estimated regression produces a trend line by performing
           weighted regressions over a sliding window of points. The loess method
           (for locally-estimated scatterplot smoothing) computes a sequence of
@@ -46,15 +171,29 @@ export default function Page() {
             />
           </div>
           <div className="flex justify-center">
-            <Button className="bg-teal-600 text-white font-semibold shadow-xl">Preview</Button>
+            <Button className="bg-teal-600 text-white font-semibold shadow-xl">
+              Preview
+            </Button>
           </div>
         </div>
         <div>
-          <div>
+          <div className="flex flex-row justify-between py-2">
             <div className="text-2xl font-semibold">Source Code</div>
-            <div className="text-lg">Copy</div>
+            <div
+              id="#copy-code"
+              className="text-lg text-slate-500 cursor-pointer flex flex-row items-center gap-x-1"
+              onClick={() => {
+                ClipboardJS.copy(SourceCode);
+                alert("Text copied to clipboard!");
+              }}
+            >
+              <FaRegCopy />
+              Copy
+            </div>
           </div>
-          <div>code x=1</div>
+          <div className="px-4 py-4 bg-gray-200 rounded-lg overflow-y-auto">
+            <pre className="text-sm">{SourceCode}</pre>
+          </div>
         </div>
       </div>
     </div>
