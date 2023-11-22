@@ -12,10 +12,8 @@ import {
 } from "react-icons/fa";
 import ClipboardJS from "clipboard";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import {
-  arduinoLight,
-} from "react-syntax-highlighter/dist/cjs/styles/hljs";
-
+import { arduinoLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import DisplayTag from "@/app/ui/DisplayTag";
 
 const SourceCode = `{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
@@ -118,19 +116,25 @@ const SourceCode = `{
 }`;
 
 export default function Page() {
-
   return (
     <div className="container py-6 px-8 md:px-24 lg:px-48 pb-12">
       <div className="flex flex-col">
-        <div className="text-4xl font-semibold py-2">Loess Regression Example</div>
+        <div className="text-4xl font-semibold py-2">
+          Loess Regression Example
+        </div>
         <div className="flex flex-col sm:flex-row gap-x-4 pt-2">
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Library</p>
-            <div>Vega</div>
+            <div>
+              <DisplayTag label="vega" />
+            </div>
           </div>
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Tags</p>
-            <div>Graph Bar</div>
+            <div className="flex flex-row gap-x-1">
+              <DisplayTag label="graph_bar" />
+              <DisplayTag label="regression" />
+            </div>
           </div>
         </div>
         <div className="flex flex-col md:flex-row justify-between border-b py-2">
