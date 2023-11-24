@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import ClipboardJS from "clipboard";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { arduinoLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { arduinoLight, atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import DisplayTag from "@/app/ui/DisplayTag";
 
 const SourceCode = `{
@@ -206,7 +206,7 @@ export default function Page() {
           <div className="px-4 py-4 bg-gray-200 rounded-lg overflow-y-auto">
             <SyntaxHighlighter
               className="text-sm"
-              style={arduinoLight}
+              style={atelierCaveLight}
               customStyle={{ backgroundColor: "inherit" }}
               wrapLongLines={true}
             >

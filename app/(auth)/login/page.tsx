@@ -9,8 +9,8 @@ export default function Page() {
       <div className="w-full sm:w-3/4 lg:w-3/5 xl:w-1/2 mx-auto flex flex-col justify-center items-center h-screen gap-y-6">
         <div className="font-bold text-4xl text-teal-700">Log in</div>
         <div className="w-full lg:w-1/2 my-6 flex gap-y-2 flex-col text-slate-500">
-          <Input size={"sm"} className="" placeholder="Username" type="text" />
-          <Input size={"sm"} className="" placeholder="Password" type="password" />
+          <Input size={"sm"} className="" label="Username" type="text" />
+          <Input size={"sm"} className="" label="Password" type="password" />
         </div>
         <div className="w-full lg:w-1/2">
           <Button className="bg-teal-600 w-full text-white font-semibold">
