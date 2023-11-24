@@ -1,31 +1,37 @@
 "use client";
-import {useState} from "react"
+import { useState } from "react";
 import { MdCategory, MdMiscellaneousServices } from "react-icons/md";
 import { FaChartPie } from "react-icons/fa";
 import { Accordion, AccordionItem, Input } from "@nextui-org/react";
 import { Inter } from "next/font/google";
 import { IoLibrary } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
-import SidebarTag from "./SidebarTag";
+import { SidebarTag, SidebarTagRm } from "./SidebarTag";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function VisSidebar() {
-
-  const [activeTagList, setActiveTagList] = useState<string[]>([])
+  const [activeTagList, setActiveTagList] = useState<string[]>([]);
 
   return (
     <aside className="border-r p-6 h-screen bg-white z-20 fixed -left-96 lg:left-0 lg:w-80  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
       <div className="flex flex-col justify-start item-center">
-        <div className="pb-4 border-b w-full">
+        <div className="pb-4 border-b w-full transition-all duration-300">
           <div className="flex flex-row items-center justify-start gap-x-2">
-            <VscSettings className="text-3xl"/>
-            <p className="text-base font-semibold">
-              Applied Filters
-            </p>
-            <p>
-              {activeTagList}
-            </p>
+            <VscSettings className="text-3xl" />
+            <p className="text-base font-semibold">Applied Filters</p>
+          </div>
+          <div className="pt-2">
+            <div>
+              {activeTagList.map((eachTag, i) => (
+                <SidebarTagRm
+                  label={eachTag}
+                  key={i}
+                  activeTagList={activeTagList}
+                  setActiveTagList={setActiveTagList}
+                />
+              ))}
+            </div>
           </div>
         </div>
         <div className="my-4 border-b pb-4">
@@ -44,7 +50,11 @@ export default function VisSidebar() {
               startContent={<IoLibrary className="text-xl" />}
             >
               <div className="flex flex-row flex-wrap gap-2">
-              <SidebarTag label="vega" activeTagList={activeTagList} setActiveTagList={setActiveTagList}/>
+                <SidebarTag
+                  label="vega"
+                  activeTagList={activeTagList}
+                  setActiveTagList={setActiveTagList}
+                />
               </div>
             </AccordionItem>
             <AccordionItem
