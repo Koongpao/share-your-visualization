@@ -6,26 +6,34 @@ import { Accordion, AccordionItem, Input } from "@nextui-org/react";
 import { Inter } from "next/font/google";
 import { IoLibrary } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
-import { SidebarTag, SidebarTagRm } from "./SidebarTag";
+import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
 import { RiProhibitedLine } from "react-icons/ri";
+import { useAtom } from 'jotai'
+import { sidebarActive } from "../atoms";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
+
 export default function VisSidebar() {
   const [activeTagList, setActiveTagList] = useState<string[]>([]);
-  //Show applied Tags
-  // const [showSidebar, setShowSidebar] = useState<Boolean>(true)
+  const [showSidebar, setShowSidebar] = useAtom(sidebarActive)
 
-  // const showSidebarClass = showSidebar? "left-0 w-80" : "-left-96"
+  const showSidebarClass = showSidebar? "left-0" : "-left-96"
 
   const libraryList = ["d3.js", "altair", "vega"];
+  const chartTypeList = ["bar", "line", "pie", "scatter","map","candlestick","boxplot","heatmap","tree"]
+  const categoryList = ["static", "interactive"]
 
+  //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
-    <aside className="border-r p-6 h-screen bg-white z-20 -left-96 lg:left-0 lg:w-80 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+    <aside className={`p-6 h-[calc(100vh_-_4rem)] ${showSidebarClass} w-80 lg:left-0 border-r overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}>
+      {/* Ensure lg:w-80 lg:left-0 by placing them after showSidebarClass variable*/}
       <div className="flex flex-col justify-start item-center">
         <div className="pb-4 border-b w-full transition-all duration-300">
           <div className="flex flex-row items-center justify-start gap-x-2">
             <VscSettings className="text-3xl" />
+            {showSidebar}
             <p className="text-base font-semibold">Applied Filters</p>
           </div>
           <div className="pt-2">
@@ -87,15 +95,33 @@ export default function VisSidebar() {
               title="Chart Type"
               startContent={<FaChartPie className="text-xl" />}
             >
-              Test
+              <div className="flex flex-row flex-wrap gap-2">
+                {chartTypeList.map((eachTag, i) => (
+                  <SidebarTag
+                    key={i}
+                    label={eachTag}
+                    activeTagList={activeTagList}
+                    setActiveTagList={setActiveTagList}
+                  />
+                ))}
+              </div>
             </AccordionItem>
             <AccordionItem
               key="3"
               aria-label="Accordion 3"
-              title="Data Category"
+              title="Category"
               startContent={<MdCategory className="text-2xl" />}
             >
-              Test
+              <div className="flex flex-row flex-wrap gap-2">
+                {categoryList.map((eachTag, i) => (
+                  <SidebarTag
+                    key={i}
+                    label={eachTag}
+                    activeTagList={activeTagList}
+                    setActiveTagList={setActiveTagList}
+                  />
+                ))}
+              </div>
             </AccordionItem>
             <AccordionItem
               key="4"
@@ -103,7 +129,6 @@ export default function VisSidebar() {
               title="Miscellaneous"
               startContent={<MdMiscellaneousServices className="text-2xl" />}
             >
-              Test
             </AccordionItem>
           </Accordion>
         </div>

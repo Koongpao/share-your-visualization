@@ -12,6 +12,7 @@
     "@nextui-org/react": "^2.2.9",
     "clipboard": "^2.0.11",
     "framer-motion": "^10.16.5",
+    "jotai": "^2.5.1",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",

@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 10px; /* You can adjust the width as needed */
+  height: 6px
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d8d4d4; /* Set the color of the thumb */
+  border-radius: 4px; /* Optional: Add rounded corners to the thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ffffff; /* Set the color of the track */
+}
+
+.text-2xs {
+  font-size: 0.625rem;
+}
+
+.text-3xs {
+  font-size: 0.5rem;
+}

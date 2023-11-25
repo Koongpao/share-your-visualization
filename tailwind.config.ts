@@ -24,12 +24,6 @@ const config: Config = {
         lg: '2rem'
       }
     },
-    // colors: {
-    //   'teal-font': '#0F7676',
-    //   'teal-button' : '#115E59',
-    //   'grey-font': '#64748b',
-    // },
-
   },
   darkMode: "class",
   plugins: [nextui()],

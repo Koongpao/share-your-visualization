@@ -9,11 +9,12 @@ import {
   FaRegHeart,
   FaHeart,
   FaRegCopy,
+  FaCalendarAlt,
 } from "react-icons/fa";
 import ClipboardJS from "clipboard";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { arduinoLight, atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import DisplayTag from "@/app/ui/DisplayTag";
+import { DisplayTag, MiniDisplayTag } from "@/app/ui/small-components/DisplayTag";
 
 const SourceCode = `{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
@@ -148,8 +149,8 @@ export default function Page() {
               <p className="text-slate-600">@Username</p>
             </div>
             <div className="flex flex-row items-center gap-x-2">
-              <FaRegCalendarAlt className="text-slate-600 text-xl" />
-              <p className="text-slate-600 ">Posted 21 December 2022</p>
+            <FaRegCalendarAlt className="text-xl text-slate-600"/>
+              <p className="text-slate-600 "> Posted 21 December 2022</p>
             </div>
           </div>
           <div className="flex flex-row gap-x-2">
