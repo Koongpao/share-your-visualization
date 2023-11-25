@@ -1,7 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { Button, Avatar, Snippet } from "@nextui-org/react";
+import { Button, Avatar } from "@nextui-org/react";
+import { DisplayTag} from "@/app/ui/small-components/DisplayTag";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   FaRegCalendarAlt,
   FaRegBookmark,
@@ -11,10 +17,9 @@ import {
   FaRegCopy,
   FaCalendarAlt,
 } from "react-icons/fa";
+
 import ClipboardJS from "clipboard";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { arduinoLight, atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import { DisplayTag, MiniDisplayTag } from "@/app/ui/small-components/DisplayTag";
+
 
 const SourceCode = `{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
@@ -197,7 +202,16 @@ export default function Page() {
               className="text-lg text-slate-500 cursor-pointer flex flex-row items-center gap-x-1"
               onClick={() => {
                 ClipboardJS.copy(SourceCode);
-                alert("Text copied to clipboard!");
+                toast.info('Text copied to clipboard', {
+                  position: "bottom-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                  });;
               }}
             >
               <FaRegCopy />
@@ -216,6 +230,7 @@ export default function Page() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

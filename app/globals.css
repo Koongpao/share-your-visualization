@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --toastify-color-progress-info: rgb(20 184 166) !important;
+  --toastify-icon-color-info: rgb(20 184 166) !important;
+}
+
 ::-webkit-scrollbar {
   width: 10px; /* You can adjust the width as needed */
   height: 6px
@@ -23,3 +28,4 @@
 .text-3xs {
   font-size: 0.5rem;
 }
+
