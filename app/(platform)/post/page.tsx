@@ -4,14 +4,26 @@ import React, { ChangeEvent, useState } from "react";
 import { Roboto } from "next/font/google";
 import { IoMdInformationCircle } from "react-icons/io";
 
+import { FilePond, registerPlugin } from "react-filepond";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+
+registerPlugin(
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateSize,
+  FilePondPluginFileValidateType
+);
+
 const roboto = Roboto({ subsets: ["latin"], weight: ["400"] });
 
 export default function Page() {
   const [titleValue, setTitleValue] = useState<string>("");
   const [descriptionValue, setDescriptionValue] = useState<string>("");
   const [sourceCodeValue, setSourceCodeValue] = useState<string>("");
+  const [sourceImage, setSourceImage] = useState<File[]>([]);
 
-  const titleMaxChar = 80;
+  const titleMaxChar = 50;
   const descriptionMaxChar = 1000;
   const sourceCodeMaxChar = 5000;
 
@@ -49,7 +61,7 @@ export default function Page() {
 
         <div className="pt-4 pb-2 lg:pt-8">
           <input
-            className="py-4 text-xl font-regular flex h-10 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="py-7 text-2xl font-medium flex h-10 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             placeholder="Title"
             onChange={(e) => handleOnChange(e, setTitleValue, titleMaxChar)}
             onKeyDown={(e) => handleTab(e, setTitleValue)}
@@ -111,7 +123,34 @@ export default function Page() {
             <label>{sourceCodeValue.length}</label>
           </div>
         </div>
-        
+
+        <div className="pb-4">
+          <div>
+            <FilePond
+              files={sourceImage}
+              onupdatefiles={(fileItems) => {
+                setSourceImage(
+                  fileItems.map((fileItem) => fileItem.file as File)
+                );
+              }}
+              allowMultiple={false}
+              allowImagePreview={true}
+              name="visualization-image"
+              labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+              acceptedFileTypes={["image/png", "image/jpeg"]}
+              maxFileSize="5MB"
+            />
+          </div>
+          <div className="text-gray-300 font-regular text-sm flex justify-between">
+            <div className="flex flex-row gap-1 items-center">
+              <IoMdInformationCircle />
+              <label>
+                Image preview of visualization. (Max 5 MB.)
+              </label>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );

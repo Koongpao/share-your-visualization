@@ -6,6 +6,7 @@ const page = () => {
       {
         source_code: "test",
         title: "Loess Regression",
+        image: "/loess_regression.png",
         user: "@Username",
         date: "12 December 2023",
         library: "d3.js",
@@ -14,6 +15,16 @@ const page = () => {
       {
         source_code: "test2",
         title: "test",
+        image: "/country.png",
+        user: "@Admin",
+        date: "15 December 2023",
+        library: "vega",
+        tags: ["graph"],
+      },
+      {
+        source_code: "test2",
+        title: "test",
+        image: "/high.png",
         user: "@Admin",
         date: "15 December 2023",
         library: "vega",

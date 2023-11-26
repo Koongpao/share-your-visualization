@@ -1,12 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import Image from "next/image";
+import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { DisplayTag, MiniDisplayTag } from "./DisplayTag";
 
 interface VisMinicardProps {
   cardInfo: {
     title: string;
+    image: string;
     user: string;
     date: string;
     library: string;
@@ -16,15 +18,14 @@ interface VisMinicardProps {
 
 export default function VisMinicard({ cardInfo }: VisMinicardProps) {
   return (
-    <Card className="py-4 w-80">
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+    <Card className="py-4 w-80 h-[20rem] max-h-[20rem]">
+      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start h-[10rem] max-h-[10rem] relative">
         <Link href="/visualization">
           <Image
             alt="Card background"
-            className="object-cover rounded-xl"
-            src="/loess_regression.png"
-            width={270}
-            height={400}
+            className="object-cover w-full h-full rounded-xl"
+            src={cardInfo.image}
+            fill
           />
         </Link>
       </CardHeader>
