@@ -40,7 +40,7 @@ export function SidebarTag({
     ? "text-white"
     : "text-black";
 
-  const handleTagClick = (event: MouseEvent<HTMLDivElement>) => {
+  const handleTagClick = async (event: MouseEvent<HTMLDivElement>) => {
     // Check if the tag is already in the list
     if (!activeTagList?.includes(label)) {
       // If not, add the label to the list

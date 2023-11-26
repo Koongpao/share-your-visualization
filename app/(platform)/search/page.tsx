@@ -1,6 +1,10 @@
-import VisMinicard from "@/app/ui/small-components/VisMinicard";
+import { fetchData } from "@/app/lib/data";
+import {
+  VisMinicard,
+  VisMinicardSkeleton,
+} from "@/app/ui/small-components/VisMinicard";
 
-const page = () => {
+const page = async () => {
   var cardData =
     [
       {
@@ -34,12 +38,15 @@ const page = () => {
 
   cardData = Array.from({ length: 6 }, () => [...cardData]).flat();
 
+  const dataTest = await fetchData();
+
   return (
     <div className="px-6">
       <div className="bg-white w-100 h-auto min-h-screen px-6 py-6">
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-6"> */}
         <div className="w-full border-b py-2">
-          <div className="text-lg font-medium text-slate-600">Showing Results for </div>
+          <div className="text-lg font-medium text-slate-600">
+            Showing Results for{" "}
+          </div>
         </div>
         <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-evenly">
           {cardData?.map((cardInfo, i) => (
