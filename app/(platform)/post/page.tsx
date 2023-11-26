@@ -1,13 +1,19 @@
 "use client";
-import { BsPencilSquare } from "react-icons/bs";
+import { SidebarTag } from "@/app/ui/small-components/SidebarTag";
+import Link from "next/link";
+import { Button } from "@nextui-org/react";
+
 import React, { ChangeEvent, useState } from "react";
 import { Roboto } from "next/font/google";
+
+import { BsPencilSquare } from "react-icons/bs";
 import { IoMdInformationCircle } from "react-icons/io";
+import { FaCirclePlus } from "react-icons/fa6";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -22,10 +28,13 @@ export default function Page() {
   const [descriptionValue, setDescriptionValue] = useState<string>("");
   const [sourceCodeValue, setSourceCodeValue] = useState<string>("");
   const [sourceImage, setSourceImage] = useState<File[]>([]);
+  const [externalLinkValue, setExternalLinkValue] = useState<string>("");
+  const [tagList, setTagList] = useState<string[]>([]);
 
   const titleMaxChar = 50;
   const descriptionMaxChar = 1000;
   const sourceCodeMaxChar = 5000;
+  const externalLinkMaxChar = 100;
 
   const handleTab = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -66,7 +75,7 @@ export default function Page() {
             onChange={(e) => handleOnChange(e, setTitleValue, titleMaxChar)}
             onKeyDown={(e) => handleTab(e, setTitleValue)}
             value={titleValue}
-          ></input>
+          />
           <div className="text-gray-300 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
@@ -88,7 +97,7 @@ export default function Page() {
             }
             onKeyDown={(e) => handleTab(e, setDescriptionValue)}
             value={descriptionValue}
-          ></textarea>
+          />
           <div className="text-gray-300 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
@@ -98,29 +107,6 @@ export default function Page() {
               </label>
             </div>
             <label>{descriptionValue.length}</label>
-          </div>
-        </div>
-
-        <div className="pb-4">
-          <textarea
-            className={`${roboto.className} tracking-wide py-2 text-sm placeholder:text-lg flex h-100 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
-            placeholder="Source Code"
-            rows={20}
-            onChange={(e) =>
-              handleOnChange(e, setSourceCodeValue, sourceCodeMaxChar)
-            }
-            onKeyDown={(e) => handleTab(e, setSourceCodeValue)}
-            value={sourceCodeValue}
-          ></textarea>
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
-            <div className="flex flex-row gap-1 items-center">
-              <IoMdInformationCircle />
-              <label>
-                Source Code of the Visualization. (Max {sourceCodeMaxChar}{" "}
-                characters.)
-              </label>
-            </div>
-            <label>{sourceCodeValue.length}</label>
           </div>
         </div>
 
@@ -144,15 +130,112 @@ export default function Page() {
           <div className="text-gray-300 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
+              <label>Image preview of visualization. (Max 5 MB.)</label>
+            </div>
+          </div>
+        </div>
+
+        <div className="pb-4">
+          <input
+            className="py-2 text-lg font-regular flex h-10 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            placeholder="Link to Preview"
+            onChange={(e) => handleOnChange(e, setExternalLinkValue, externalLinkMaxChar)}
+            onKeyDown={(e) => handleTab(e, setExternalLinkValue)}
+            value={externalLinkValue}
+          />
+          <div className="text-gray-300 font-regular text-sm flex justify-between">
+            <div className="flex flex-row gap-1 items-center">
+              <IoMdInformationCircle />
               <label>
-                Image preview of visualization. (Max 5 MB.)
+                URL Link to Visualization Demo. (Max {externalLinkMaxChar} characters.) (Optional)
+              </label>
+            </div>
+            <label>{titleValue.length}</label>
+          </div>
+        </div>
+
+        <div className="pb-4">
+          <textarea
+            className={`${roboto.className} tracking-wide py-2 text-sm placeholder:text-lg flex h-100 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+            placeholder="Source Code"
+            rows={20}
+            onChange={(e) =>
+              handleOnChange(e, setSourceCodeValue, sourceCodeMaxChar)
+            }
+            onKeyDown={(e) => handleTab(e, setSourceCodeValue)}
+            value={sourceCodeValue}
+          />
+          <div className="text-gray-300 font-regular text-sm flex justify-between">
+            <div className="flex flex-row gap-1 items-center">
+              <IoMdInformationCircle />
+              <label>
+                Source Code of the Visualization. (Max {sourceCodeMaxChar}{" "}
+                characters.)
+              </label>
+            </div>
+            <label>{sourceCodeValue.length}</label>
+          </div>
+        </div>
+        
+
+        <div className="pb-4">
+          <div className="py-2 text-lg font-regular flex h-15 items-center w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            <div className="flex flex-row gap-2 items-center cursor-pointer">
+              <p className="text-gray-400 text-md">Library (Click to add)</p>
+              {/* <SidebarTag label="graph_bar"/> */}
+              <FaCirclePlus className="text-gray-400" />
+            </div>
+          </div>
+          <div className="text-gray-300 font-regular text-sm flex justify-between">
+            <div className="flex flex-row gap-1 items-center">
+              <IoMdInformationCircle />
+              <label>Visualization Library. (Max 1 Tag)</label>
+            </div>
+          </div>
+        </div>
+
+        <div className="pb-4">
+          <div className="py-2 text-lg font-regular flex h-15 items-center w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            <div className="flex flex-row gap-2 items-center cursor-pointer">
+              <p className="text-gray-400 text-md">Tags (Click to add)</p>
+              {/* <SidebarTag label="graph_bar"/> */}
+              <FaCirclePlus className="text-gray-400" />
+            </div>
+          </div>
+          <div className="text-gray-300 font-regular text-sm flex justify-between">
+            <div className="flex flex-row gap-1 items-center">
+              <IoMdInformationCircle />
+              <label>
+                Visualization Tags. For more accessibility. (No Limit.)
               </label>
             </div>
           </div>
+        </div>
+
+        <div className="pb-4 pt-2">
+          <div className="text-gray-600 font-medium">
+            Can&apos;t find tag you&apos;re searching for?
+            <Link
+              href="/contribute"
+              target="_blank"
+              className="text-gray-900 font-bold underline"
+            >
+              {" "}
+              Help by creating one!
+            </Link>
+          </div>
+        </div>
+
+        <div className="py-4 flex flex-row gap-4 items-center">
+          <Button className="font-semibold text-md text-white bg-teal-600">
+            Preview
+          </Button>
+          <Button className="font-semibold text-md text-gray-500 bg-transparent">
+            Cancel
+          </Button>
         </div>
 
       </div>
     </div>
   );
 }
-

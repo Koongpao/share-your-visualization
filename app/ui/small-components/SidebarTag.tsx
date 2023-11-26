@@ -56,7 +56,7 @@ export function SidebarTag({
   return (
     <div className="flex">
       <div
-        className={`inline-flex items-center rounded-full border px-2.5 
+        className={`inline-flex items-center rounded-full border px-2.5 h-[2rem]
       py-1 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 
       focus:ring-ring focus:ring-offset-2 border-transparent ${currentColor}  
       ${currentText} hover:${currentColor}/80 flex-row gap-x-1 cursor-pointer`}
@@ -91,7 +91,7 @@ export function SidebarTagRm({
   return (
     <div className="flex">
       <div
-        className={`inline-flex items-center rounded-full border px-2.5 
+        className={`inline-flex items-center rounded-full border px-2.5 h-[2rem]
         py-1 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 
         focus:ring-ring focus:ring-offset-2 border-transparent ${libraryColor}  
         text-white hover:${libraryColor}/80 flex-row gap-x-1 cursor-pointer`}
