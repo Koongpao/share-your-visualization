@@ -3,9 +3,6 @@ import React from "react";
 import {
   Navbar,
   NavbarBrand,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
   NavbarContent,
   NavbarItem,
   Link,
@@ -14,11 +11,11 @@ import {
 } from "@nextui-org/react";
 import { FaSearch, FaHome } from "react-icons/fa";
 import { VscSettings } from "react-icons/vsc";
-import { sidebarActive } from "../atoms";
+import { atomSidebarActive } from "../atoms";
 import { useAtom } from "jotai";
 
 export default function VisNavbar() {
-  const [showSidebar, setShowSidebar] = useAtom(sidebarActive);
+  const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
 
   return (
     <Navbar position="sticky" className="border-b">

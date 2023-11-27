@@ -1,10 +1,18 @@
+"use client";
 import { fetchData } from "@/app/lib/data";
 import {
   VisMinicard,
   VisMinicardSkeleton,
 } from "@/app/ui/small-components/VisMinicard";
+import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { atomTagList } from "@/app/atoms";
+import Loading from "./loading";
 
-const page = async () => {
+const Page = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [tagList, setTagList] = useAtom(atomTagList);
+
   var cardData =
     [
       {
@@ -38,7 +46,24 @@ const page = async () => {
 
   cardData = Array.from({ length: 6 }, () => [...cardData]).flat();
 
-  const dataTest = await fetchData();
+  useEffect(() => {
+    const fetchDataAndSetState = async () => {
+      setIsLoading(true);
+
+      try {
+        const data = await fetchData();
+        console.log("test", data);
+      } catch (error) {
+        // Handle error, if needed
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchDataAndSetState();
+  }, [tagList]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="px-6">
@@ -58,4 +83,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Page;

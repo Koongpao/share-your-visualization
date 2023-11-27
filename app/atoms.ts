@@ -1,4 +1,5 @@
 'use client'
 import { atom } from 'jotai';
 
-export const sidebarActive = atom(false);
+export const atomSidebarActive = atom(false);
+export const atomTagList = atom<string[]>([]);

@@ -9,13 +9,14 @@ import { VscSettings } from "react-icons/vsc";
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
 import { RiProhibitedLine } from "react-icons/ri";
 import { useAtom } from "jotai";
-import { sidebarActive } from "../atoms";
+import { atomSidebarActive, atomTagList } from "../atoms";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function VisSidebar() {
-  const [activeTagList, setActiveTagList] = useState<string[]>([]);
-  const [showSidebar, setShowSidebar] = useAtom(sidebarActive);
+  // const [activeTagList, setActiveTagList] = useState<string[]>([]);
+  const [activeTagList, setActiveTagList] = useAtom(atomTagList);
+  const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
 
   const showSidebarClass = showSidebar ? "left-0" : "-left-96";
 
@@ -52,8 +53,8 @@ export default function VisSidebar() {
                 <SidebarTagRm
                   label={eachTag}
                   key={i}
-                  activeTagList={activeTagList}
-                  setActiveTagList={setActiveTagList}
+                  // activeTagList={activeTagList}
+                  // setActiveTagList={setActiveTagList}
                 />
               ))}
             </div>
@@ -93,8 +94,8 @@ export default function VisSidebar() {
                   <SidebarTag
                     key={i}
                     label={eachTag}
-                    activeTagList={activeTagList}
-                    setActiveTagList={setActiveTagList}
+                    // activeTagList={activeTagList}
+                    // setActiveTagList={setActiveTagList}
                   />
                 ))}
               </div>
@@ -110,8 +111,8 @@ export default function VisSidebar() {
                   <SidebarTag
                     key={i}
                     label={eachTag}
-                    activeTagList={activeTagList}
-                    setActiveTagList={setActiveTagList}
+                    // activeTagList={activeTagList}
+                    // setActiveTagList={setActiveTagList}
                   />
                 ))}
               </div>
@@ -127,8 +128,8 @@ export default function VisSidebar() {
                   <SidebarTag
                     key={i}
                     label={eachTag}
-                    activeTagList={activeTagList}
-                    setActiveTagList={setActiveTagList}
+                    // activeTagList={activeTagList}
+                    // setActiveTagList={setActiveTagList}
                   />
                 ))}
               </div>

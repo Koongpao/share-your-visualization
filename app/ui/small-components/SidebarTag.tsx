@@ -1,11 +1,13 @@
+import { atomTagList } from "@/app/atoms";
+import { useAtom } from "jotai";
 import Image from "next/image";
 import { MouseEvent } from "react";
 import { RxCross2 } from "react-icons/rx";
 
 interface SidebarTagProps {
   label: string;
-  activeTagList?: string[];
-  setActiveTagList?: React.Dispatch<React.SetStateAction<string[]>>;
+  // activeTagList?: string[];
+  // setActiveTagList?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const CapitalizeWords = (str: string) => {
@@ -24,9 +26,12 @@ const KnownLibraries: Record<string, string[]> = {
 
 export function SidebarTag({
   label,
-  activeTagList,
-  setActiveTagList,
+  // activeTagList,
+  // setActiveTagList,
 }: SidebarTagProps) {
+
+  const [activeTagList,setActiveTagList] = useAtom(atomTagList)
+
   const CapitalizedLabel = CapitalizeWords(label);
 
   const libraryInfo = KnownLibraries[label];
@@ -73,10 +78,12 @@ export function SidebarTag({
 
 export function SidebarTagRm({
   label,
-  activeTagList,
-  setActiveTagList,
+  // activeTagList,
+  // setActiveTagList,
 }: SidebarTagProps) {
   const CapitalizedLabel = CapitalizeWords(label);
+
+  const [activeTagList,setActiveTagList] = useAtom(atomTagList)
 
   const libraryInfo = KnownLibraries[label];
   const libraryColor = libraryInfo ? libraryInfo[0] : "bg-teal-500";
