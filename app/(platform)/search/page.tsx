@@ -1,15 +1,12 @@
 "use client";
 import { fetchData } from "@/app/lib/data";
-import {
-  VisMinicard,
-  VisMinicardSkeleton,
-} from "@/app/ui/small-components/VisMinicard";
+import { VisMinicard } from "@/app/ui/small-components/VisMinicard";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { atomTagList } from "@/app/atoms";
 import Loading from "./loading";
 
-const Page = () => {
+export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tagList, setTagList] = useAtom(atomTagList);
 
@@ -81,6 +78,4 @@ const Page = () => {
       </div>
     </div>
   );
-};
-
-export default Page;
+}

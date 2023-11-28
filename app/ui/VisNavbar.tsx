@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React from 'react';
+import { usePathname } from "next/navigation";
 import {
   Navbar,
   NavbarBrand,
@@ -45,14 +46,16 @@ export default function VisNavbar() {
                 </div>
               }
             />
-            <Button
-              className="flex lg:hidden cursor-pointer min-w-3 max-w-[5rem] p-1.5 items-center bg-white border-solid border-2 rounded-none"
-              onClick={() => {
-                setShowSidebar((prev) => !prev);
-              }}
-            >
-              <VscSettings className="text-slate-400 text-4xl" />
-            </Button>
+            {usePathname() === "/search" && (
+              <Button
+                className="flex lg:hidden cursor-pointer min-w-3 max-w-[5rem] p-1.5 items-center bg-white border-solid border-2 rounded-none"
+                onClick={() => {
+                  setShowSidebar((prev) => !prev);
+                }}
+              >
+                <VscSettings className="text-slate-400 text-4xl" />
+              </Button>
+            )}
           </div>
         </NavbarItem>
       </NavbarContent>

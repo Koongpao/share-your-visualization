@@ -1,5 +1,4 @@
 "use client";
-import { SidebarTag } from "@/app/ui/small-components/SidebarTag";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
 
@@ -181,7 +180,7 @@ export default function Page() {
         <div className="pb-4">
           <div className="py-2 text-lg font-regular flex h-15 items-center w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             <div className="flex flex-row gap-2 items-center cursor-pointer">
-              <p className="text-gray-400 text-md">Library (Click to add)</p>
+              <p className="text-gray-400 text-md">Library Tag (Click to select)</p>
               {/* <SidebarTag label="graph_bar"/> */}
               <FaCirclePlus className="text-gray-400" />
             </div>
@@ -214,7 +213,7 @@ export default function Page() {
 
         <div className="pb-4 pt-2">
           <div className="text-gray-600 font-medium">
-            Can&apos;t find tag you&apos;re searching for?
+            Can&apos;t find tag or library you&apos;re searching for?
             <Link
               href="/contribute"
               target="_blank"
