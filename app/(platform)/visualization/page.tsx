@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import { Button, Avatar } from "@nextui-org/react";
-import { DisplayTag} from "@/app/ui/small-components/DisplayTag";
+import { DisplayTag } from "@/app/ui/small-components/DisplayTag";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { fetchData } from "@/app/lib/data";
+import { useEffect, useState } from "react";
+import Loading from "./loading";
 
 import {
   FaRegCalendarAlt,
@@ -19,7 +22,6 @@ import {
 } from "react-icons/fa";
 
 import ClipboardJS from "clipboard";
-
 
 const SourceCode = `{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
@@ -122,6 +124,26 @@ const SourceCode = `{
 }`;
 
 export default function Page() {
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    const fetchDataAndSetState = async () => {
+      try {
+        setIsLoading(true)
+        const data = await fetchData();
+        console.log("test", data);
+      } catch (error) {
+        // Handle error, if needed
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false)
+      }
+    };
+    fetchDataAndSetState();
+  },[]);
+
+  if (isLoading) return <Loading/>
+
   return (
     <div className="container py-6 px-8 md:px-24 lg:px-48 pb-12">
       <div className="flex flex-col">
@@ -154,7 +176,7 @@ export default function Page() {
               <p className="text-slate-600">@Username</p>
             </div>
             <div className="flex flex-row items-center gap-x-2">
-            <FaRegCalendarAlt className="text-xl text-slate-600"/>
+              <FaRegCalendarAlt className="text-xl text-slate-600" />
               <p className="text-slate-600 "> Posted 21 December 2022</p>
             </div>
           </div>
@@ -202,7 +224,7 @@ export default function Page() {
               className="text-lg text-slate-500 cursor-pointer flex flex-row items-center gap-x-1"
               onClick={() => {
                 ClipboardJS.copy(SourceCode);
-                toast.info('Text copied to clipboard', {
+                toast.info("Text copied to clipboard", {
                   position: "bottom-center",
                   autoClose: 5000,
                   hideProgressBar: false,
@@ -211,7 +233,7 @@ export default function Page() {
                   draggable: true,
                   progress: undefined,
                   theme: "light",
-                  });;
+                });
               }}
             >
               <FaRegCopy />

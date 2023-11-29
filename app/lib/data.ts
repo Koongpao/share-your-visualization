@@ -10,7 +10,7 @@ export async function fetchData() {
       // Don't do this in real life :)
   
       console.log('Fetching revenue data...');
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
   
       const data = "test"
   
