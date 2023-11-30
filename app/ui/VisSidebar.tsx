@@ -18,7 +18,7 @@ export default function VisSidebar() {
   const [activeTagList, setActiveTagList] = useAtom(atomTagList);
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
 
-  const showSidebarClass = showSidebar ? "left-0" : "-left-96";
+  const showSidebarClass = showSidebar ? "right-0" : "-right-96";
 
   const libraryList = ["d3.js", "altair", "vega"];
   const chartTypeList = [
@@ -37,7 +37,7 @@ export default function VisSidebar() {
   //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
     <aside
-      className={`p-6 h-[calc(100vh_-_4rem)] ${showSidebarClass} w-80 lg:left-0 border-r overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}
+      className={`p-6 h-[calc(100vh_-_4rem)] ${showSidebarClass} w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}
     >
       {/* Ensure lg:w-80 lg:left-0 by placing them after showSidebarClass variable*/}
       <div className="flex flex-col justify-start item-center">

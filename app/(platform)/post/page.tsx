@@ -69,7 +69,7 @@ export default function Page() {
 
         <div className="pt-4 pb-2 lg:pt-8">
           <input
-            className="py-7 text-2xl font-medium flex h-10 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="py-7 text-2xl border-gray-300 font-medium flex h-10 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             placeholder="Title"
             onChange={(e) => handleOnChange(e, setTitleValue, titleMaxChar)}
             onKeyDown={(e) => handleTab(e, setTitleValue)}
@@ -88,7 +88,7 @@ export default function Page() {
 
         <div className="pb-4">
           <textarea
-            className="py-2 text-lg font-regular flex h-40 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="py-2 text-lg font-regular flex h-40 w-full border-gray-300 rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             placeholder="Description"
             rows={4}
             onChange={(e) =>
@@ -136,7 +136,7 @@ export default function Page() {
 
         <div className="pb-4">
           <input
-            className="py-2 text-lg font-regular flex h-10 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="py-2 text-lg font-regular flex h-10 w-full border-gray-300 rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             placeholder="Link to Preview"
             onChange={(e) => handleOnChange(e, setExternalLinkValue, externalLinkMaxChar)}
             onKeyDown={(e) => handleTab(e, setExternalLinkValue)}
@@ -155,7 +155,7 @@ export default function Page() {
 
         <div className="pb-4">
           <textarea
-            className={`${roboto.className} tracking-wide py-2 text-sm placeholder:text-lg flex h-50 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+            className={`${roboto.className} tracking-wide py-2 text-sm placeholder:text-lg flex h-50 w-full border-gray-300 rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
             placeholder="Source Code"
             rows={10}
             onChange={(e) =>
@@ -178,7 +178,7 @@ export default function Page() {
         
 
         <div className="pb-4">
-          <div className="py-2 text-lg font-regular flex h-15 items-center w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+          <div className="py-2 text-lg font-regular flex h-15 border-gray-300 items-center w-full rounded-md border border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             <div className="flex flex-row gap-2 items-center cursor-pointer">
               <p className="text-gray-400 text-md">Library Tag (Click to select)</p>
               {/* <SidebarTag label="graph_bar"/> */}
@@ -194,7 +194,7 @@ export default function Page() {
         </div>
 
         <div className="pb-4">
-          <div className="py-2 text-lg font-regular flex h-15 items-center w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+          <div className="py-2 text-lg font-regular flex h-15 border-gray-300 items-center w-full rounded-md border border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             <div className="flex flex-row gap-2 items-center cursor-pointer">
               <p className="text-gray-400 text-md">Tags (Click to add)</p>
               {/* <SidebarTag label="graph_bar"/> */}

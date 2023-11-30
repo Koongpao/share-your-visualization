@@ -19,7 +19,10 @@ import {
   FaHeart,
   FaRegCopy,
   FaCalendarAlt,
+  FaRegStar,
 } from "react-icons/fa";
+
+import { MdFavoriteBorder } from "react-icons/md";
 
 import ClipboardJS from "clipboard";
 
@@ -182,8 +185,8 @@ export default function Page() {
           </div>
           <div className="flex flex-row gap-x-2">
             <div className="flex flex-row items-center gap-x-2 cursor-pointer">
-              <FaRegBookmark className="text-slate-600 text-xl" />
-              <p>Bookmark</p>
+              <FaRegStar className="text-slate-600 text-xl" />
+              <p>Favorite</p>
             </div>
             <div className="flex flex-row items-center gap-x-2 cursor-pointer">
               <FaRegHeart className="text-slate-600 text-xl" />
