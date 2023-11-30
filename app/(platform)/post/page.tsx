@@ -155,9 +155,9 @@ export default function Page() {
 
         <div className="pb-4">
           <textarea
-            className={`${roboto.className} tracking-wide py-2 text-sm placeholder:text-lg flex h-100 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+            className={`${roboto.className} tracking-wide py-2 text-sm placeholder:text-lg flex h-50 w-full rounded-sm border border-dashed border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
             placeholder="Source Code"
-            rows={20}
+            rows={10}
             onChange={(e) =>
               handleOnChange(e, setSourceCodeValue, sourceCodeMaxChar)
             }

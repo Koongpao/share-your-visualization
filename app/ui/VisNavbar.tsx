@@ -19,7 +19,7 @@ export default function VisNavbar() {
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
 
   return (
-    <Navbar position="sticky" className="border-b">
+    <Navbar position="sticky" className="border-b" maxWidth="xl">
       <NavbarBrand as={Link} href="/search">
         <p className="hidden sm:block font-bold text-inherit text-xl text-slate-900">
           Share Your Visualization

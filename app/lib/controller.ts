@@ -1,5 +1,17 @@
 import { unstable_noStore } from "next/cache";
 
+const baseURL = "https://localhost:3001"
+
+export async function testFetch(){
+  try{
+    const response = await fetch(baseURL + "/")
+    return response
+  }
+  catch (err){
+    console.error("error")
+  }
+}
+
 export async function fetchData() {
     // Add noStore() here prevent the response from being cached.
     // This is equivalent to in fetch(..., {cache: 'no-store'}).

@@ -7,7 +7,7 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchData } from "@/app/lib/data";
+import { fetchData } from "@/app/lib/controller";
 import { useEffect, useState } from "react";
 import Loading from "./loading";
 

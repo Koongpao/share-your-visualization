@@ -1,5 +1,5 @@
 "use client";
-import { fetchData } from "@/app/lib/data";
+import { fetchData } from "@/app/lib/controller";
 import { VisMinicard } from "@/app/ui/small-components/VisMinicard";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
