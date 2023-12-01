@@ -103,7 +103,7 @@ export default function VisNavbar() {
             </Button>
           </NavbarItem>
         </NavbarContent>
-        <NavbarMenu>
+        <NavbarMenu className="overflow-hidden">
           <NavbarMenuItem>
             <div className="flex flex-col gap-y-1 text-xl">
               <NavbarMenuLink
