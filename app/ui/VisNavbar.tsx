@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import {
@@ -7,27 +7,37 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  NavbarMenuToggle,
   Button,
   Input,
+  NavbarMenu,
+  NavbarMenuItem,
 } from "@nextui-org/react";
 import Link from "next/link";
 
-import { FaSearch, FaHome, FaRegStar, FaStar } from "react-icons/fa";
-import { IoIosPricetag, IoIosPricetags } from "react-icons/io";
-import { BsPencilSquare } from "react-icons/bs";
+import { FaSearch, FaHome, FaRegStar, FaStar, FaBars } from "react-icons/fa";
+import { IoIosPricetag, IoIosPricetags, IoIosSearch } from "react-icons/io";
+import { BsPen, BsPencilSquare } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
-import { MdFavorite } from "react-icons/md";
-import { FaRegFolderOpen } from "react-icons/fa6";
+import { MdFavorite, MdLogin } from "react-icons/md";
+import { FaPowerOff, FaRegFolderOpen, FaUserPlus } from "react-icons/fa6";
+import { HiBars3 } from "react-icons/hi2";
 
 import { atomSidebarActive } from "../atoms";
 import { useAtom } from "jotai";
 
 export default function VisNavbar() {
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   return (
     <div className="sticky top-0 z-40">
-      <Navbar className="border-b" maxWidth="xl">
+      <Navbar
+        className="border-b"
+        maxWidth="xl"
+        isMenuOpen={menuOpen}
+        onMenuOpenChange={setMenuOpen}
+      >
         <NavbarBrand as={Link} href="/search">
           <p className="hidden sm:block font-bold text-inherit text-xl text-slate-900">
             Share Your Visualization
@@ -74,7 +84,7 @@ export default function VisNavbar() {
               Login
             </Link>
           </NavbarItem>
-          <NavbarItem>
+          <NavbarItem className="hidden lg:flex">
             <Button
               as={Link}
               href="/sign-up"
@@ -84,27 +94,90 @@ export default function VisNavbar() {
               Sign Up
             </Button>
           </NavbarItem>
+          <NavbarItem className="flex lg:hidden">
+            <Button
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="min-w-3 max-w-[5rem] p-1.5 items-center bg-white border-solid border-2 rounded-none"
+            >
+              <HiBars3 className="text-4xl text-slate-500" />
+            </Button>
+          </NavbarItem>
         </NavbarContent>
+        <NavbarMenu>
+          <NavbarMenuItem>
+            <div className="flex flex-col gap-y-1 text-xl">
+              <NavbarMenuLink
+                hrefValue="/search"
+                labelValue="Search"
+                icon={<IoIosSearch />}
+              />
+              <NavbarMenuLink
+                hrefValue="/post"
+                labelValue="Post Visualization"
+                icon={<BsPencilSquare />}
+              />
+              <NavbarMenuLink
+                hrefValue="/contribute"
+                labelValue="Create New Tag"
+                icon={<IoIosPricetag />}
+              />
+              <NavbarMenuLink
+                hrefValue="/user/favorites"
+                labelValue="Favorites"
+                icon={<FaStar />}
+              />
+              <NavbarMenuLink
+                hrefValue="/user/my-visualizations"
+                labelValue="My Visualizations"
+                icon={<FaRegFolderOpen />}
+              />
+              <NavbarMenuLink
+                hrefValue="/sign-up"
+                labelValue="Sign Up"
+                icon={<FaUserPlus />}
+              />
+              <NavbarMenuLink
+                hrefValue="/login"
+                labelValue="Log In"
+                icon={<MdLogin />}
+              />
+              <NavbarMenuLink
+                hrefValue="/logout"
+                labelValue="Log Out"
+                icon={<FaPowerOff />}
+                classNames={"text-red-500"}
+              />
+            </div>
+          </NavbarMenuItem>
+        </NavbarMenu>
       </Navbar>
 
-      <Navbar height="1.5rem" className="border-b hidden lg:flex" maxWidth="2xl">
+      <Navbar
+        height="1.8rem"
+        className="border-b hidden lg:flex"
+        maxWidth="2xl"
+      >
         <div className="flex flex-row gap-x-2 h-full">
           <NavbarSecondaryLink
             hrefValue="/search"
             labelValue="Search Visualization"
-            icon={<FaSearch/>}
+            icon={<FaSearch />}
           />
           <NavbarSecondaryLink
             hrefValue="/post"
             labelValue="Post Visualization"
-            icon={<BsPencilSquare/>}
+            icon={<BsPencilSquare />}
           />
           <NavbarSecondaryLink
             hrefValue="/contribute"
             labelValue="Create New Tag"
-            icon={<IoIosPricetag/>}
+            icon={<IoIosPricetag />}
           />
-          <NavbarSecondaryLink hrefValue="/tag-list" labelValue="Tag List" icon={<IoIosPricetags/>}/>
+          <NavbarSecondaryLink
+            hrefValue="/tag-list"
+            labelValue="Tag List"
+            icon={<IoIosPricetags />}
+          />
           <NavbarSecondaryLink
             hrefValue="/user/favorites"
             labelValue="Favorites"
@@ -124,7 +197,7 @@ export default function VisNavbar() {
 function NavbarSecondaryLink({
   hrefValue,
   labelValue,
-  icon
+  icon,
 }: {
   hrefValue?: string;
   labelValue?: string;
@@ -142,6 +215,32 @@ function NavbarSecondaryLink({
           {labelValue}
         </Link>
       </Button>
+    </div>
+  );
+}
+
+function NavbarMenuLink({
+  hrefValue,
+  labelValue,
+  icon,
+  classNames
+}: {
+  hrefValue?: string;
+  labelValue?: string;
+  icon?: React.ReactNode;
+  classNames?: string;
+}) {
+  return (
+    <div>
+      <Link
+        href={hrefValue || "/"}
+        className={clsx(`flex flex-row items-center gap-x-2 py-2 px-6 ${classNames}`, {
+          "bg-teal-600 text-white": usePathname() === hrefValue,
+        })}
+      >
+        {icon}
+        {labelValue}
+      </Link>
     </div>
   );
 }
