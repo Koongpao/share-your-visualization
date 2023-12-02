@@ -1,9 +1,5 @@
-import Image from 'next/image'
 
 export default function Home() {
-  return (
-    <div className="container">
-      Page
-    </div>
-  )
+
+  return <p>This is a place holder for main page</p>;
 }
