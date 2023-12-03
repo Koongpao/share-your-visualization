@@ -30,6 +30,8 @@ export default function VisNavbar() {
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
+  const currentPath = usePathname();
+
   const NavbarMenuLinkList = [
     { hrefValue: "/search", labelValue: "search", icon: <IoIosSearch /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
@@ -50,6 +52,8 @@ export default function VisNavbar() {
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
   ];
+  
+  if (currentPath === "/login" || currentPath === "/sign-up") return <></>
 
   return (
     <div className="sticky top-0 z-40">
@@ -78,7 +82,7 @@ export default function VisNavbar() {
                   </div>
                 }
               />
-              {usePathname() === "/search" && (
+              {currentPath === "/search" && (
                 <Button
                   className="flex lg:hidden cursor-pointer min-w-3 max-w-[5rem] p-1.5 items-center bg-white border-solid border-2 rounded-none"
                   onClick={() => {

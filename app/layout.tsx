@@ -5,7 +5,6 @@ import "./globals.css";
 import Providers from "./providers";
 import VisNavbar from "./ui/VisNavbar";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-        <VisNavbar/>
+        {<VisNavbar/>}
           {children}
         </Providers>
       </body>
