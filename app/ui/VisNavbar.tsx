@@ -35,8 +35,9 @@ export default function VisNavbar() {
   const NavbarMenuLinkList = [
     { hrefValue: "/search", labelValue: "search", icon: <IoIosSearch /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
-    { hrefValue: "/contribute", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
+    { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
+    
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
     { hrefValue: "/sign-up", labelValue: "Sign Up", icon: <FaUserPlus /> },
@@ -47,8 +48,9 @@ export default function VisNavbar() {
   const NavbarSecondaryLinkList = [
     { hrefValue: "/search", labelValue: "Search", icon: <IoIosSearch /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
-    { hrefValue: "/contribute", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
+    { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
+    
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
   ];
