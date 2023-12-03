@@ -29,3 +29,6 @@
   font-size: 0.5rem;
 }
 
+nav.header-justify-center > header{
+  justify-content: center;
+}

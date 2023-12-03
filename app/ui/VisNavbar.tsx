@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 
-import { FaSearch, FaHome, FaRegStar, FaStar, FaBars } from "react-icons/fa";
+import { FaSearch, FaHome, FaRegStar, FaStar, FaBars, FaUser } from "react-icons/fa";
 import { IoIosPricetag, IoIosPricetags, IoIosSearch } from "react-icons/io";
 import { BsPen, BsPencilSquare } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
@@ -30,18 +30,32 @@ export default function VisNavbar() {
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
+  const NavbarMenuLinkList = [
+    { hrefValue: "/search", labelValue: "search", icon: <IoIosSearch /> },
+    { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
+    { hrefValue: "/contribute", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
+    { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
+    { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
+    { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
+    { hrefValue: "/sign-up", labelValue: "Sign Up", icon: <FaUserPlus /> },
+    { hrefValue: "/login", labelValue: "Log In", icon: <MdLogin /> },
+  ];
+  //Does not include /logout because it needs special classname
+
+  const NavbarSecondaryLinkList = [
+    { hrefValue: "/search", labelValue: "Search", icon: <IoIosSearch /> },
+    { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
+    { hrefValue: "/contribute", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
+    { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
+    { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
+    { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
+  ];
+
   return (
     <div className="sticky top-0 z-40">
-      <Navbar
-        className="border-b"
-        maxWidth="xl"
-        isMenuOpen={menuOpen}
-        onMenuOpenChange={setMenuOpen}
-      >
+      <Navbar className="border-b" maxWidth="xl" isMenuOpen={menuOpen} onMenuOpenChange={setMenuOpen}>
         <NavbarBrand as={Link} href="/search">
-          <p className="hidden sm:block font-bold text-inherit text-xl text-slate-900">
-            Share Your Visualization
-          </p>
+          <p className="hidden sm:block font-bold text-inherit text-xl text-slate-900">Share Your Visualization</p>
           <p className="sm:hidden font-bold text-inherit text-3xl text-teal-700">
             <FaHome />
           </p>
@@ -85,12 +99,7 @@ export default function VisNavbar() {
             </Link>
           </NavbarItem>
           <NavbarItem className="hidden lg:flex">
-            <Button
-              as={Link}
-              href="/sign-up"
-              variant="flat"
-              className="bg-teal-600 text-white font-semibold shadow-lg"
-            >
+            <Button as={Link} href="/sign-up" variant="flat" className="bg-teal-600 text-white font-semibold shadow-lg">
               Sign Up
             </Button>
           </NavbarItem>
@@ -106,90 +115,42 @@ export default function VisNavbar() {
         <NavbarMenu className="overflow-hidden">
           <NavbarMenuItem>
             <div className="flex flex-col gap-y-1 text-xl">
-              <NavbarMenuLink
-                hrefValue="/search"
-                labelValue="Search"
-                icon={<IoIosSearch />}
-              />
-              <NavbarMenuLink
-                hrefValue="/post"
-                labelValue="Post Visualization"
-                icon={<BsPencilSquare />}
-              />
-              <NavbarMenuLink
-                hrefValue="/contribute"
-                labelValue="Create New Tag"
-                icon={<IoIosPricetag />}
-              />
-              <NavbarMenuLink
-                hrefValue="/user/favorites"
-                labelValue="Favorites"
-                icon={<FaStar />}
-              />
-              <NavbarMenuLink
-                hrefValue="/user/my-visualizations"
-                labelValue="My Visualizations"
-                icon={<FaRegFolderOpen />}
-              />
-              <NavbarMenuLink
-                hrefValue="/sign-up"
-                labelValue="Sign Up"
-                icon={<FaUserPlus />}
-              />
-              <NavbarMenuLink
-                hrefValue="/login"
-                labelValue="Log In"
-                icon={<MdLogin />}
-              />
+              {NavbarMenuLinkList.map((links, i) => (
+                <NavbarMenuLink
+                  key={i}
+                  hrefValue={links.hrefValue}
+                  labelValue={links.labelValue}
+                  icon={links.icon}
+                  setMenuOpen={setMenuOpen}
+                />
+              ))}
               <NavbarMenuLink
                 hrefValue="/logout"
                 labelValue="Log Out"
                 icon={<FaPowerOff />}
                 classNames={"text-red-500"}
+                setMenuOpen={setMenuOpen}
               />
             </div>
           </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>
 
-      <Navbar
-        height="1.8rem"
-        className="border-b hidden lg:flex"
-        maxWidth="2xl"
-      >
-        <div className="flex flex-row gap-x-2 h-full">
-          <NavbarSecondaryLink
-            hrefValue="/search"
-            labelValue="Search Visualization"
-            icon={<FaSearch />}
-          />
-          <NavbarSecondaryLink
-            hrefValue="/post"
-            labelValue="Post Visualization"
-            icon={<BsPencilSquare />}
-          />
-          <NavbarSecondaryLink
-            hrefValue="/contribute"
-            labelValue="Create New Tag"
-            icon={<IoIosPricetag />}
-          />
-          <NavbarSecondaryLink
-            hrefValue="/tag-list"
-            labelValue="Tag List"
-            icon={<IoIosPricetags />}
-          />
-          <NavbarSecondaryLink
-            hrefValue="/user/favorites"
-            labelValue="Favorites"
-            icon={<FaStar />}
-          />
-          <NavbarSecondaryLink
-            hrefValue="/user/my-visualizations"
-            labelValue="My Visualization"
-            icon={<FaRegFolderOpen />}
-          />
-        </div>
+      <Navbar height="1.8rem" className="border-b hidden lg:flex header-justify-center" maxWidth="2xl">
+        <NavbarContent justify="center">
+          <div className="flex flex-row gap-x-2 h-full">
+            {NavbarSecondaryLinkList.map((links, i) => (
+              <NavbarSecondaryLink
+                key={i}
+                hrefValue={links.hrefValue}
+                labelValue={links.labelValue}
+                icon={links.icon}
+              />
+            ))}
+          </div>
+        </NavbarContent>
       </Navbar>
+
     </div>
   );
 }
@@ -208,6 +169,7 @@ function NavbarSecondaryLink({
       <Button
         className={clsx("h-full bg-transparent rounded-none", {
           "bg-teal-600 text-white": usePathname() === hrefValue,
+          "relative after:block after:top-0 after:content-[''] after:absolute after:h-[3px] after:bg-teal-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center" : usePathname() !== hrefValue,
         })}
       >
         {icon}
@@ -223,12 +185,14 @@ function NavbarMenuLink({
   hrefValue,
   labelValue,
   icon,
-  classNames
+  classNames,
+  setMenuOpen,
 }: {
   hrefValue?: string;
   labelValue?: string;
   icon?: React.ReactNode;
   classNames?: string;
+  setMenuOpen: React.Dispatch<boolean>;
 }) {
   return (
     <div>
@@ -237,6 +201,9 @@ function NavbarMenuLink({
         className={clsx(`flex flex-row items-center gap-x-2 py-2 px-6 ${classNames}`, {
           "bg-teal-600 text-white": usePathname() === hrefValue,
         })}
+        onClick={() => {
+          setMenuOpen(false);
+        }}
       >
         {icon}
         {labelValue}
