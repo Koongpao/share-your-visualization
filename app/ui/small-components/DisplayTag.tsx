@@ -24,7 +24,7 @@ export function DisplayTag({ label }: { label: string }) {
   return (
     <div className="flex min-w-fit">
       <div
-        className={`inline-flex items-center rounded-full border px-2.5 
+        className={`inline-flex items-center rounded-full border px-2.5
       py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 
       focus:ring-ring focus:ring-offset-2 border-transparent ${libraryColor}  
       text-white hover:${libraryColor}/80 flex-row gap-x-1`}
@@ -62,3 +62,25 @@ export function MiniDisplayTag({ label }: { label: string }) {
   );
 }
 
+export function TagListDisplayTag({ label }: { label: string }) {
+  const CapitalizedLabel = CapitalizeWords(label);
+
+  const libraryInfo = KnownLibraries[label];
+  const libraryColor = libraryInfo ? libraryInfo[0] : "bg-teal-500";
+  const libraryImageSrc = libraryInfo ? libraryInfo[1] : "";
+
+  return (
+    <div className="flex min-w-fit">
+      <div
+        className={`inline-flex items-center rounded-full border px-3 py-1 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 
+      focus:ring-ring focus:ring-offset-2 border-transparent ${libraryColor}  
+      text-white hover:${libraryColor}/80 flex-row gap-x-1`}
+      >
+        {libraryImageSrc ? (
+          <Image src={libraryImageSrc} alt="" width={16} height={16} />
+        ) : null}
+        {CapitalizedLabel}
+      </div>
+    </div>
+  );
+}

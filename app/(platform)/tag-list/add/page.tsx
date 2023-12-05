@@ -8,7 +8,7 @@ export default function Page() {
   const [tagName, setTagName] = useState<string>("");
   const [isLibrary, setIsLibrary] = useState<string>("yes");
 
-  const tagNameMaxChar = 15;
+  const tagNameMaxChar = 20;
 
   const handleTab = (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,

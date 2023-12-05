@@ -14,11 +14,12 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 
-import { FaSearch, FaHome, FaRegStar, FaStar, FaBars, FaUser } from "react-icons/fa";
-import { IoIosPricetag, IoIosPricetags, IoIosSearch } from "react-icons/io";
-import { BsPen, BsPencilSquare } from "react-icons/bs";
+import { FaSearch, FaHome, FaStar } from "react-icons/fa";
+import { IoIosPricetag, IoIosPricetags } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
+import { BsPencilSquare } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
-import { MdFavorite, MdLogin } from "react-icons/md";
+import { MdLogin } from "react-icons/md";
 import { FaPowerOff, FaRegFolderOpen, FaUserPlus } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 
@@ -32,7 +33,7 @@ export default function VisNavbar() {
   const currentPath = usePathname();
 
   const NavbarMenuLinkList = [
-    { hrefValue: "/search", labelValue: "search", icon: <IoIosSearch /> },
+    { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
     { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
@@ -45,7 +46,7 @@ export default function VisNavbar() {
   //Does not include /logout because it needs special classname
 
   const NavbarSecondaryLinkList = [
-    { hrefValue: "/search", labelValue: "Search", icon: <IoIosSearch /> },
+    { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
     { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
@@ -117,7 +118,7 @@ export default function VisNavbar() {
             </Button>
           </NavbarItem>
         </NavbarContent>
-        
+
         <NavbarMenu className="overflow-hidden">
           <NavbarMenuItem>
             <div className="flex flex-col gap-y-1 text-xl">
