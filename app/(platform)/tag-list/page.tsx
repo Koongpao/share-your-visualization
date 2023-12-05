@@ -2,7 +2,6 @@ import React from "react";
 import { TagListDisplayTag } from "@/app/ui/small-components/DisplayTag";
 import { IoLibrary } from "react-icons/io5";
 
-
 export default function Page() {
   const libraryList = ["d3.js", "altair", "vega"];
   const tagList = [
@@ -21,7 +20,7 @@ export default function Page() {
     "geography",
     "business",
     "themed",
-    "machine_learning"
+    "machine_learning",
   ];
 
   return (
@@ -35,7 +34,7 @@ export default function Page() {
           <div className="flex flex-row flex-wrap items-center gap-2">
             <TagListDisplayTag key={i} label={tag} />
             <div className="text-white font-semibold bg-emerald-500 py-0.5 px-2.5 shadow-sm border-b-1 border-r-1 border-emerald-600 flex flex-row items-center gap-1">
-            <IoLibrary className="text-xl" />Library
+              Library
             </div>
             <div className="text-slate-500 font-semibold lowercase bg-slate-200 py-0.5 px-2.5 shadow-sm border-b-1 border-r-1 border-slate-300">
               {tag}
