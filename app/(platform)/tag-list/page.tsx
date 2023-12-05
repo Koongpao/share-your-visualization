@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <div className="py-6 px-8 md:px-24 lg:px-36 lg:container xl:px-80 pb-12 flex flex-col gap-2">
-      <div className="flex flex-row gap-2 items-center text-lg font-bold mb-6 border-b">
+      <div className="flex flex-row gap-2 items-center text-2xl font-bold mb-6 border-b">
         <div className="text-gray-400">{libraryList.length + tagList.length}</div>
         <div>Tags</div>
       </div>
