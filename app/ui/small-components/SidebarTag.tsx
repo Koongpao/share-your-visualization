@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import Image from "next/image";
 import { MouseEvent } from "react";
 import { RxCross2 } from "react-icons/rx";
+import { KnownLibraries } from "@/app/lib/knownLibraries";
 
 interface SidebarTagProps {
   label: string;
@@ -18,25 +19,20 @@ const CapitalizeWords = (str: string) => {
     .join(" ");
 };
 
-const KnownLibraries: Record<string, string[]> = {
-  vega: ["bg-blue-400", "/library-icons/vega_logo.png"],
-  altair: ["bg-blue-400", "/library-icons/altair_logo.png"],
-  "d3.js": ["bg-orange-300", "/library-icons/d3js_logo.png"],
-};
-
 export function SidebarTag({
   label,
   // activeTagList,
   // setActiveTagList,
 }: SidebarTagProps) {
+  //used in VisSidebar component
 
   const [activeTagList,setActiveTagList] = useAtom(atomTagList)
 
   const CapitalizedLabel = CapitalizeWords(label);
 
   const libraryInfo = KnownLibraries[label];
-  const libraryColor = libraryInfo ? libraryInfo[0] : "bg-teal-500";
-  const libraryImageSrc = libraryInfo ? libraryInfo[1] : "";
+  const libraryColor = libraryInfo ? libraryInfo.bgColor : "bg-teal-500";
+  const libraryImageSrc = libraryInfo ? libraryInfo.logo : "";
 
   const currentColor = activeTagList?.includes(label)
     ? libraryColor
@@ -81,13 +77,14 @@ export function SidebarTagRm({
   // activeTagList,
   // setActiveTagList,
 }: SidebarTagProps) {
+  //used in VisSidebar component
   const CapitalizedLabel = CapitalizeWords(label);
 
   const [activeTagList,setActiveTagList] = useAtom(atomTagList)
 
   const libraryInfo = KnownLibraries[label];
-  const libraryColor = libraryInfo ? libraryInfo[0] : "bg-teal-500";
-  const libraryImageSrc = libraryInfo ? libraryInfo[1] : "";
+  const libraryColor = libraryInfo ? libraryInfo.bgColor : "bg-teal-500";
+  const libraryImageSrc = libraryInfo ? libraryInfo.logo : "";
 
   const handleRemoveClick = (event: MouseEvent<HTMLDivElement>) => {
     setActiveTagList?.((prevTagList) =>
