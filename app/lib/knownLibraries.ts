@@ -1,10 +1,3 @@
-// export const KnownLibraries: Record<string, [string, string]> = {
-//   "vega": ["bg-blue-400", "/library-icons/vega_logo.png"],
-//   "altair": ["bg-blue-400", "/library-icons/altair_logo.png"],
-//   "d3.js": ["bg-orange-300", "/library-icons/d3js_logo.png"],
-//   "apache_echarts": ["bg-red-400", "/library-icons/echarts_logo.png"]
-// };
-
 export const KnownLibraries: {
   [key: string]: {
     bgColor: string;

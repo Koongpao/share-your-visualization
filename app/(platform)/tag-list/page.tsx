@@ -1,6 +1,5 @@
 import React from "react";
 import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-components/DisplayTag";
-import { IoLibrary } from "react-icons/io5";
 
 export default function Page() {
   const libraryList = [
@@ -8,15 +7,15 @@ export default function Page() {
     "altair",
     "vega",
     "apache_echarts",
-    "plotly",
     "chart.js",
-    "highcharts",
-    "bokeh",
-    "matplotlib",
     "seaborn",
     "recharts",
     "victory",
     "c3.js",
+    "matplotlib",
+    "bokeh",
+    "highcharts",
+    "plotly",
   ];
   const tagList = [
     "bar",

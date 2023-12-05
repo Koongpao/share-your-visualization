@@ -11,6 +11,7 @@ import {
   Input,
   NavbarMenu,
   NavbarMenuItem,
+  Avatar,
 } from "@nextui-org/react";
 import Link from "next/link";
 
@@ -109,6 +110,20 @@ export default function VisNavbar() {
               Sign Up
             </Button>
           </NavbarItem>
+
+          {/* <NavbarItem>
+            <Avatar showFallback size={"md"} src="https://images.unsplash.com/broken" />
+          </NavbarItem>
+          <NavbarItem>
+            <div className="font-semibold">@Username</div>
+          </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} href="/logout" className="bg-white text-red-500 font-semibold text-base hidden lg:flex">
+              <FaPowerOff />
+              <div>Log Out</div>
+            </Button>
+          </NavbarItem> */}
+
           <NavbarItem className="flex lg:hidden">
             <Button
               onClick={() => setMenuOpen((prev) => !prev)}
