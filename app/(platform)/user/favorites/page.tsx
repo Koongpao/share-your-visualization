@@ -1,5 +1,6 @@
 import React from 'react'
 import Empty from '../empty'
+import Error from '@/app/error'
 
 export default function Page() {
 

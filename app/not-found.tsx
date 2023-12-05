@@ -8,10 +8,10 @@ export default function Error() {
   return (
     <div className="flex flex-col justify-center items-center gap-y-4 h-[80vh]">
       <div className="mt-4">
-        <Image src="/page-pics/error-occured.svg" alt="Empty" height={700} width={700} />
+        <Image src="/page-pics/404-not-found.svg" alt="Empty" height={500} width={500} />
       </div>
       <div className="text-xl sm:text-3xl font-bold uppercase tracking-wider text-slate-700 text-center">
-        <p>An Error has Occured.</p>
+        <p>404 - Page Not Found</p>
       </div>
 
       <Link href="/">

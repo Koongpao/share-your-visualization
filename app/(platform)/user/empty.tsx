@@ -11,11 +11,13 @@ export default function Empty() {
     <div className="flex flex-col justify-center items-center gap-y-4 h-[80vh]">
       <div className="mt-4">
         {currentPath === "/user/my-visualizations" && (
-          <Image src="/empty-my-visualizations.svg" alt="Empty" height={700} width={700} />
+          <Image src="/page-pics/empty-my-visualizations.svg" alt="Empty" height={700} width={700} />
         )}
-        {currentPath === "/user/favorites" && <Image src="/empty-favorites.svg" alt="Empty" height={500} width={500} />}
+        {currentPath === "/user/favorites" && (
+          <Image src="/page-pics/empty-favorites.svg" alt="Empty" height={500} width={500} />
+        )}
       </div>
-      <div className="text-3xl font-bold uppercase tracking-wider text-slate-700">
+      <div className="text-xl sm:text-3xl font-bold uppercase tracking-wider text-slate-700 text-center">
         {currentPath === "/user/my-visualizations" && <p>You have not posted any Visualization yet.</p>}
         {currentPath === "/user/favorites" && <p>You don't have any favorite Visualization yet.</p>}
       </div>
