@@ -218,7 +218,7 @@ export default function Page() {
           <div className="text-gray-600 font-medium">
             Can&apos;t find tag or library you&apos;re searching for?
             <Link
-              href="/contribute"
+              href="/tag-list/add"
               target="_blank"
               className="text-gray-900 font-bold underline"
             >

@@ -7,7 +7,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
   Button,
   Input,
   NavbarMenu,
@@ -37,7 +36,7 @@ export default function VisNavbar() {
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
     { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
-    
+
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
     { hrefValue: "/sign-up", labelValue: "Sign Up", icon: <FaUserPlus /> },
@@ -50,21 +49,21 @@ export default function VisNavbar() {
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
     { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
-    
+
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
   ];
-  
-  if (currentPath === "/login" || currentPath === "/sign-up") return <></>
+
+  if (currentPath === "/login" || currentPath === "/sign-up") return <></>;
 
   return (
     <div className="sticky top-0 z-40">
       <Navbar className="border-b" maxWidth="xl" isMenuOpen={menuOpen} onMenuOpenChange={setMenuOpen}>
-        <NavbarBrand as={Link} href="/search">
-          <p className="hidden sm:block font-bold text-inherit text-xl text-slate-900">Share Your Visualization</p>
-          <p className="sm:hidden font-bold text-inherit text-3xl text-teal-700">
+        <NavbarBrand as={Link} href="/">
+          <div className="hidden sm:block font-bold text-inherit text-xl text-slate-900">Share Your Visualization</div>
+          <div className="sm:hidden font-bold text-3xl text-slate-600">
             <FaHome />
-          </p>
+          </div>
         </NavbarBrand>
 
         <NavbarContent className="flex gap-4 w-4/5 sm:w-2/5" justify="center">
@@ -118,6 +117,7 @@ export default function VisNavbar() {
             </Button>
           </NavbarItem>
         </NavbarContent>
+        
         <NavbarMenu className="overflow-hidden">
           <NavbarMenuItem>
             <div className="flex flex-col gap-y-1 text-xl">
@@ -156,7 +156,6 @@ export default function VisNavbar() {
           </div>
         </NavbarContent>
       </Navbar>
-
     </div>
   );
 }
@@ -175,7 +174,8 @@ function NavbarSecondaryLink({
       <Button
         className={clsx("h-full bg-transparent rounded-none", {
           "bg-teal-600 text-white": usePathname() === hrefValue,
-          "relative after:block after:top-0 after:content-[''] after:absolute after:h-[3px] after:bg-teal-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center" : usePathname() !== hrefValue,
+          "relative after:block after:top-0 after:content-[''] after:absolute after:h-[3px] after:bg-teal-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center":
+            usePathname() !== hrefValue,
         })}
       >
         {icon}

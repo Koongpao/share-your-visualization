@@ -37,7 +37,7 @@ export default function VisSidebar() {
   //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
     <aside
-      className={`p-6 h-[calc(100vh_-_4rem)] ${showSidebarClass} w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}
+      className={`p-6 h-[calc(100vh_-_5.5rem)] ${showSidebarClass} w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}
     >
       {/* Ensure lg:w-80 lg:left-0 by placing them after showSidebarClass variable*/}
       <div className="flex flex-col justify-start item-center">
