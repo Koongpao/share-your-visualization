@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Accordion, AccordionItem, Input } from "@nextui-org/react";
+import { Accordion, AccordionItem, Input, Button } from "@nextui-org/react";
 
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
 
@@ -13,6 +13,7 @@ import { MdCategory, MdMiscellaneousServices } from "react-icons/md";
 import { FaChartPie } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
+import { RxCross1 } from "react-icons/rx";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,21 +42,33 @@ export default function VisSidebar() {
   const [activeTagList, setActiveTagList] = useAtom(atomTagList);
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
 
-  const showSidebarClass = showSidebar ? "right-0" : "-right-96";
+  const showSidebarClass = showSidebar ? "right-0" : "-right-[100vw]";
+  // const showSidebarClass = showSidebar ? "right-0" : "-right-screen";
 
   //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
     <aside
-      className={`p-6 h-[calc(100vh_-_5.5rem)] ${showSidebarClass} w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}
+      className={`p-6 h-[calc(100vh_-_4rem)] lg:h-[calc(100vh_-_5.5rem)] ${showSidebarClass} w-screen lg:w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}
     >
+      {/* height for primary navbar = 4 rem
+      height for secondary navbar = 1.5 rem */}
       {/* Ensure lg:w-80 lg:left-0 by placing them after showSidebarClass variable*/}
       <div className="flex flex-col justify-start item-center">
-
         <div className="pb-4 border-b w-full transition-all duration-300">
-          <div className="flex flex-row items-center justify-start gap-x-2">
-            <VscSettings className="text-3xl" />
-            {showSidebar}
-            <p className="text-base font-semibold">Applied Filters</p>
+          <div className="flex flex-row items-center justify-between">
+            
+            <div className="flex flex-row items-center gap-x-2">
+              <VscSettings className="text-3xl" />
+              {showSidebar}
+              <p className="text-base font-semibold">Applied Filters</p>
+            </div>
+
+            <div className="lg:hidden flex">
+              <div className="bg-transparent p-0 w-fit cursor-pointer" onClick={() => setShowSidebar(false)}>
+                <RxCross1 className="text-2xl text-slate-500" />
+              </div>
+            </div>
+
           </div>
           <div className="pt-2">
             <div className="flex flex-row flex-wrap gap-2">
@@ -88,7 +101,7 @@ export default function VisSidebar() {
         <div className="mt-4">
           <Input label="Search For Tag..." />
         </div>
-        
+
         <div className="my-4 border-b pb-4">
           <Accordion
             selectionMode="multiple"
@@ -157,7 +170,6 @@ export default function VisSidebar() {
             ></AccordionItem>
           </Accordion>
         </div>
-
       </div>
     </aside>
   );

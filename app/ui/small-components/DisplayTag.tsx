@@ -23,12 +23,12 @@ export function DisplayTag({ label }: { label: string }) {
     <Link href={`/search?tags=${label}`} prefetch={false} target="_blank">
       <div className="flex min-w-fit">
         <div
-          className={`inline-flex items-center rounded-full border px-2.5
+          className={`min-w-fit inline-flex flex-row gap-x-1 items-center rounded-full border px-2.5
       py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 
       focus:ring-ring focus:ring-offset-2 border-transparent text-white ${libraryColor}  
-       hover:${libraryColor}/80 flex-row gap-x-1 `}
+       hover:${libraryColor}/80`}
         >
-          {libraryImageSrc ? <Image src={libraryImageSrc} alt="" width={16} height={16} /> : null}
+          {libraryImageSrc ? <Image className="min-w-[16px]" src={libraryImageSrc} alt="" width={16} height={16} /> : null}
           {CapitalizedLabel}
         </div>
       </div>

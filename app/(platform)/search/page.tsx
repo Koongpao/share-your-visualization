@@ -54,7 +54,11 @@ export default function Page({
 
   cardData = Array.from({ length: 6 }, () => [...cardData]).flat();
 
-  const searchParamTags = searchParams?.tags ? searchParams.tags.split(" ") : [];
+  var searchParamTags = searchParams?.tags ? searchParams.tags.split(" ") : [];
+  searchParamTags = searchParamTags.filter((item, pos) => {
+    return searchParamTags.indexOf(item) === pos;
+  });
+  //extract searchParams by 1. select the tags value, 2. split the tags value by " ", 3.remove duplicates by filter
 
   const fetchDataAndSetState = async () => {
     setIsLoading(true);
@@ -74,11 +78,13 @@ export default function Page({
     if (tagList.length > 0) {
       router.push(`/search?tags=${tagList.join("+")}`);
     } else {
-      router.push(`/search`)
+      router.push(`/search`);
     }
-  }
+  };
 
   const extractSearchParams = () => {
+    // searchParamTags.filter((tags, index) => {searchParamTags.indexOf(tags) === index})
+
     console.log(searchParamTags);
 
     searchParamTags.forEach((eachTag) => {
@@ -93,17 +99,17 @@ export default function Page({
         setTagList((prevTagList) => [...prevTagList, eachTag]);
       }
     });
-  }
+  };
 
   useEffect(() => {
     //initialize searchParams
-    extractSearchParams()
+    extractSearchParams();
   }, []);
 
   useEffect(() => {
     //called everytime tagList is changed
     fetchDataAndSetState();
-    updateURL()
+    updateURL();
   }, [tagList]);
 
   if (isLoading) return <Loading />;

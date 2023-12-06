@@ -18,7 +18,7 @@ interface VisMinicardProps {
 
 export function VisMinicard({ cardInfo }: VisMinicardProps) {
   return (
-    <Card className="py-4 w-80 h-[18rem] max-h-[20rem]">
+    <Card className="pt-4 pb-2 w-80 h-[auto]">
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start h-[10rem] max-h-[10rem] relative">
         <Link href="/visualization">
           <Image
@@ -40,8 +40,8 @@ export function VisMinicard({ cardInfo }: VisMinicardProps) {
           <FaRegCalendarAlt className="text-slate-600 text-md" />
           {cardInfo.date}
         </div>
-        <div className="overflow-x-auto inline-block items-center py-1">
-          <div className="flex flex-row gap-x-1  whitespace-nowrap">
+        <div className="inline-block items-center py-1">
+          <div className="flex flex-row gap-1 whitespace-nowrap flex-wrap lg:flex-nowrap lg:overflow-scroll">
             <DisplayTag label={cardInfo.library} />
             {cardInfo.tags.map((tagsInfo, i) => (
               <MiniDisplayTag label={tagsInfo} key={i} />
