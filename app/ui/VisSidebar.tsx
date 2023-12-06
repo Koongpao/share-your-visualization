@@ -1,17 +1,40 @@
 "use client";
-import { useState } from "react";
-import { MdCategory, MdMiscellaneousServices } from "react-icons/md";
-import { FaChartPie } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { Accordion, AccordionItem, Input } from "@nextui-org/react";
-import { Inter } from "next/font/google";
-import { IoLibrary } from "react-icons/io5";
-import { VscSettings } from "react-icons/vsc";
+
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
-import { RiProhibitedLine } from "react-icons/ri";
+
 import { useAtom } from "jotai";
 import { atomSidebarActive, atomTagList } from "../atoms";
 
+import { Inter } from "next/font/google";
+import { RiProhibitedLine } from "react-icons/ri";
+import { MdCategory, MdMiscellaneousServices } from "react-icons/md";
+import { FaChartPie } from "react-icons/fa";
+import { IoLibrary } from "react-icons/io5";
+import { VscSettings } from "react-icons/vsc";
+
 const inter = Inter({ subsets: ["latin"] });
+
+const libraryList = [
+  "d3.js",
+  "altair",
+  "vega",
+  "apache_echarts",
+  "chart.js",
+  "seaborn",
+  "recharts",
+  "victory",
+  "c3.js",
+  "matplotlib",
+  "bokeh",
+  "highcharts",
+  "plotly",
+];
+const chartTypeList = ["bar", "line", "pie", "scatter", "map", "candlestick", "boxplot", "heatmap", "tree"];
+const categoryList = ["static", "interactive"];
+
+export const availableTagList = [...libraryList, ...chartTypeList, ...categoryList];
 
 export default function VisSidebar() {
   // const [activeTagList, setActiveTagList] = useState<string[]>([]);
@@ -20,20 +43,6 @@ export default function VisSidebar() {
 
   const showSidebarClass = showSidebar ? "right-0" : "-right-96";
 
-  const libraryList = ["d3.js", "altair", "vega"];
-  const chartTypeList = [
-    "bar",
-    "line",
-    "pie",
-    "scatter",
-    "map",
-    "candlestick",
-    "boxplot",
-    "heatmap",
-    "tree",
-  ];
-  const categoryList = ["static", "interactive"];
-
   //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
     <aside
@@ -41,6 +50,7 @@ export default function VisSidebar() {
     >
       {/* Ensure lg:w-80 lg:left-0 by placing them after showSidebarClass variable*/}
       <div className="flex flex-col justify-start item-center">
+
         <div className="pb-4 border-b w-full transition-all duration-300">
           <div className="flex flex-row items-center justify-start gap-x-2">
             <VscSettings className="text-3xl" />
@@ -74,6 +84,11 @@ export default function VisSidebar() {
             )}
           </div>
         </div>
+
+        <div className="mt-4">
+          <Input label="Search For Tag..." />
+        </div>
+        
         <div className="my-4 border-b pb-4">
           <Accordion
             selectionMode="multiple"
@@ -142,9 +157,7 @@ export default function VisSidebar() {
             ></AccordionItem>
           </Accordion>
         </div>
-        <div>
-          <Input label="Search For Tag..." />
-        </div>
+
       </div>
     </aside>
   );

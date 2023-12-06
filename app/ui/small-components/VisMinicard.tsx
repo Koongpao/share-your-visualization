@@ -18,7 +18,7 @@ interface VisMinicardProps {
 
 export function VisMinicard({ cardInfo }: VisMinicardProps) {
   return (
-    <Card className="py-4 w-80 h-[20rem] max-h-[20rem]">
+    <Card className="py-4 w-80 h-[18rem] max-h-[20rem]">
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start h-[10rem] max-h-[10rem] relative">
         <Link href="/visualization">
           <Image

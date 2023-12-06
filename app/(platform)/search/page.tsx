@@ -5,8 +5,19 @@ import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { atomTagList } from "@/app/atoms";
 import Loading from "./loading";
+import { useRouter } from "next/navigation";
+import { availableTagList } from "@/app/ui/VisSidebar";
 
-export default function Page() {
+export default function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    tags?: string;
+  };
+}) {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tagList, setTagList] = useAtom(atomTagList);
 
@@ -43,21 +54,56 @@ export default function Page() {
 
   cardData = Array.from({ length: 6 }, () => [...cardData]).flat();
 
-  useEffect(() => {
-    const fetchDataAndSetState = async () => {
-      setIsLoading(true);
+  const searchParamTags = searchParams?.tags ? searchParams.tags.split(" ") : [];
 
-      try {
-        const data = await fetchData();
-        console.log("test", data);
-      } catch (error) {
-        // Handle error, if needed
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
+  const fetchDataAndSetState = async () => {
+    setIsLoading(true);
+
+    try {
+      const data = await fetchData();
+      console.log("test", data);
+    } catch (error) {
+      // Handle error, if needed
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateURL = () => {
+    if (tagList.length > 0) {
+      router.push(`/search?tags=${tagList.join("+")}`);
+    } else {
+      router.push(`/search`)
+    }
+  }
+
+  const extractSearchParams = () => {
+    console.log(searchParamTags);
+
+    searchParamTags.forEach((eachTag) => {
+      if (!availableTagList.includes(eachTag)) {
+        // If tag is not available, terminate the function
+        console.log("Tag not found:", eachTag);
+        return;
       }
-    };
+      if (!tagList?.includes(eachTag)) {
+        // Check if the tag is already in the list
+        console.log("Valid tag:", eachTag);
+        setTagList((prevTagList) => [...prevTagList, eachTag]);
+      }
+    });
+  }
+
+  useEffect(() => {
+    //initialize searchParams
+    extractSearchParams()
+  }, []);
+
+  useEffect(() => {
+    //called everytime tagList is changed
     fetchDataAndSetState();
+    updateURL()
   }, [tagList]);
 
   if (isLoading) return <Loading />;
@@ -66,9 +112,7 @@ export default function Page() {
     <div className="px-6">
       <div className="bg-white w-100 h-auto min-h-screen px-6 py-6">
         <div className="w-full border-b py-2">
-          <div className="text-lg font-medium text-slate-600">
-            Showing Results for{" "}
-          </div>
+          <div className="text-lg font-medium text-slate-600">Showing Results for </div>
         </div>
         <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-evenly">
           {cardData?.map((cardInfo, i) => (

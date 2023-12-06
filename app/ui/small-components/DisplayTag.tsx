@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { KnownLibraries } from "@/app/lib/knownLibraries";
 import clsx from "clsx";
 
@@ -18,19 +19,20 @@ export function DisplayTag({ label }: { label: string }) {
   const libraryColor = libraryInfo ? libraryInfo.bgColor : "bg-teal-500";
   const libraryImageSrc = libraryInfo ? libraryInfo.logo : "";
 
-
   return (
-    <div className="flex min-w-fit">
-      <div
-        className={`inline-flex items-center rounded-full border px-2.5
+    <Link href={`/search?tags=${label}`} prefetch={false} target="_blank">
+      <div className="flex min-w-fit">
+        <div
+          className={`inline-flex items-center rounded-full border px-2.5
       py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 
       focus:ring-ring focus:ring-offset-2 border-transparent text-white ${libraryColor}  
        hover:${libraryColor}/80 flex-row gap-x-1 `}
-      >
-        {libraryImageSrc ? <Image src={libraryImageSrc} alt="" width={16} height={16} /> : null}
-        {CapitalizedLabel}
+        >
+          {libraryImageSrc ? <Image src={libraryImageSrc} alt="" width={16} height={16} /> : null}
+          {CapitalizedLabel}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -66,16 +68,18 @@ export function TagListDisplayTag({ label }: { label: string }) {
   const libraryImageSrc = libraryInfo ? libraryInfo.logo : "";
 
   return (
-    <div className="flex min-w-fit">
-      <div
-        className={`inline-flex items-center rounded-full border px-3 py-1 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 
+    <Link href={`/search?tags=${label}`} prefetch={false} target="_blank">
+      <div className="flex min-w-fit">
+        <div
+          className={`inline-flex items-center rounded-full border px-3 py-1 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 
       focus:ring-ring focus:ring-offset-2 border-transparent text-white ${libraryColor}  
        hover:${libraryColor}/80 flex-row gap-x-1`}
-      >
-        {libraryImageSrc ? <Image src={libraryImageSrc} alt="" width={16} height={16} /> : null}
-        {CapitalizedLabel}
+        >
+          {libraryImageSrc ? <Image src={libraryImageSrc} alt="" width={16} height={16} /> : null}
+          {CapitalizedLabel}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
