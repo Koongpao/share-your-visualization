@@ -1,5 +1,9 @@
+'use client'
 import React from "react";
 import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-components/DisplayTag";
+import { useState, useEffect } from "react";
+import { fetchData } from "@/app/lib/controller";
+import Loading from "./loading";
 
 export default function Page() {
   const libraryList = [
@@ -35,6 +39,26 @@ export default function Page() {
     "themed",
     "machine_learning",
   ];
+
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    const fetchDataAndSetState = async () => {
+      try {
+        setIsLoading(true)
+        const data = await fetchData();
+        console.log("test", data);
+      } catch (error) {
+        // Handle error, if needed
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false)
+      }
+    };
+    fetchDataAndSetState();
+  },[]);
+
+  if (isLoading) return <Loading/>
 
   return (
     <div className="py-6 px-8 md:px-24 lg:px-36 xl:container xl:px-80 pb-12 flex flex-col gap-2">

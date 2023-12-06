@@ -19,7 +19,7 @@ interface VisMinicardProps {
 export function VisMinicard({ cardInfo }: VisMinicardProps) {
   return (
     <Card className="pt-4 pb-2 w-80 h-[auto]">
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start h-[10rem] max-h-[10rem] relative">
+      <CardHeader className="pb-0 pt-2 px-4 flex items-start h-[10rem] max-h-[10rem] relative">
         <Link href="/visualization">
           <Image
             alt="Card background"
