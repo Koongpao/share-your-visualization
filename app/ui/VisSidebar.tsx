@@ -38,7 +38,6 @@ const categoryList = ["static", "interactive"];
 export const availableTagList = [...libraryList, ...chartTypeList, ...categoryList];
 
 export default function VisSidebar() {
-  // const [activeTagList, setActiveTagList] = useState<string[]>([]);
   const [activeTagList, setActiveTagList] = useAtom(atomTagList);
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
 
@@ -76,8 +75,6 @@ export default function VisSidebar() {
                 <SidebarTagRm
                   label={eachTag}
                   key={i}
-                  // activeTagList={activeTagList}
-                  // setActiveTagList={setActiveTagList}
                 />
               ))}
             </div>
@@ -122,8 +119,6 @@ export default function VisSidebar() {
                   <SidebarTag
                     key={i}
                     label={eachTag}
-                    // activeTagList={activeTagList}
-                    // setActiveTagList={setActiveTagList}
                   />
                 ))}
               </div>
@@ -139,8 +134,6 @@ export default function VisSidebar() {
                   <SidebarTag
                     key={i}
                     label={eachTag}
-                    // activeTagList={activeTagList}
-                    // setActiveTagList={setActiveTagList}
                   />
                 ))}
               </div>
@@ -156,8 +149,6 @@ export default function VisSidebar() {
                   <SidebarTag
                     key={i}
                     label={eachTag}
-                    // activeTagList={activeTagList}
-                    // setActiveTagList={setActiveTagList}
                   />
                 ))}
               </div>

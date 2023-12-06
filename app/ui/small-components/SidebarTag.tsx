@@ -8,8 +8,6 @@ import { availableTagList } from "../VisSidebar";
 
 interface SidebarTagProps {
   label: string;
-  // activeTagList?: string[];
-  // setActiveTagList?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const CapitalizeWords = (str: string) => {
@@ -22,8 +20,6 @@ const CapitalizeWords = (str: string) => {
 
 export function SidebarTag({
   label,
-  // activeTagList,
-  // setActiveTagList,
 }: SidebarTagProps) {
   //used in VisSidebar component
 
@@ -81,8 +77,6 @@ export function SidebarTag({
 
 export function SidebarTagRm({
   label,
-  // activeTagList,
-  // setActiveTagList,
 }: SidebarTagProps) {
   //used in VisSidebar component
   const CapitalizedLabel = CapitalizeWords(label);
