@@ -61,7 +61,7 @@ export default function Page() {
   //Handle on input field change (not exceeding maxChar)
 
   return (
-    <div className={"container py-6 px-8 md:px-24 lg:px-48 pb-12"}>
+    <div className={"container py-6 px-8 md:px-24 lg:px-72 pb-12"}>
       <div className="flex flex-col">
         <div className="py-2 border-b w-full">
           <div className="text-4xl font-semibold py-2 flex flex-row gap-x-2">

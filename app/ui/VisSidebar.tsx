@@ -1,8 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Accordion, AccordionItem, Input, Button } from "@nextui-org/react";
+import {
+  Accordion,
+  AccordionItem,
+  Input,
+  Button,
+  Listbox,
+  ListboxItem,
+  Autocomplete,
+  AutocompleteItem,
+} from "@nextui-org/react";
 
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
+import { MiniDisplayTag, DisplayTag } from "./small-components/DisplayTag";
 
 import { useAtom } from "jotai";
 import { atomSidebarActive, atomTagList } from "../atoms";
@@ -14,6 +24,8 @@ import { FaChartPie } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
 import { RxCross1 } from "react-icons/rx";
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,8 +53,38 @@ export default function VisSidebar() {
   const [activeTagList, setActiveTagList] = useAtom(atomTagList);
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
 
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
+
+  const handleSearch = (query: string) => {
+    if (query.trim() === "") {
+      setSearchResults([]);
+      return;
+    }
+    const results = availableTagList.filter((tag) => tag.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
+    setSearchResults(results);
+  };
+
   const showSidebarClass = showSidebar ? "right-0" : "-right-[100vw]";
-  // const showSidebarClass = showSidebar ? "right-0" : "-right-screen";
+
+  const handleTagClick = (key: string) => {
+    console.log(key);
+    // Check if the tag is already in the list
+    setSearchTerm("");
+    setSearchResults([]);
+    if (!availableTagList.includes(key)) {
+      // If tag is not available, terminate the function
+      console.log("Tag not found")
+      return;
+    }
+    if (!activeTagList?.includes(key)) {
+      // If not, add the label to the list
+      setActiveTagList?.((prevTagList) => [...prevTagList, key]);
+    } else {
+      return;
+    }
+  };
 
   //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
@@ -55,7 +97,6 @@ export default function VisSidebar() {
       <div className="flex flex-col justify-start item-center">
         <div className="pb-4 border-b w-full transition-all duration-300">
           <div className="flex flex-row items-center justify-between">
-            
             <div className="flex flex-row items-center gap-x-2">
               <VscSettings className="text-3xl" />
               {showSidebar}
@@ -67,15 +108,11 @@ export default function VisSidebar() {
                 <RxCross1 className="text-2xl text-slate-500" />
               </div>
             </div>
-
           </div>
           <div className="pt-2">
             <div className="flex flex-row flex-wrap gap-2">
               {activeTagList.map((eachTag, i) => (
-                <SidebarTagRm
-                  label={eachTag}
-                  key={i}
-                />
+                <SidebarTagRm label={eachTag} key={i} />
               ))}
             </div>
           </div>
@@ -95,8 +132,47 @@ export default function VisSidebar() {
           </div>
         </div>
 
-        <div className="mt-4">
-          <Input label="Search For Tag..." />
+        <div className="mt-4 relative" onFocus={() => setIsInputFocused(true)} onBlur={() => setIsInputFocused(false)}>
+          <Input
+            type="text"
+            placeholder="Search for Tags..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              handleSearch(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleTagClick(searchResults[0] || "");
+              }
+            }}
+          />
+          {isInputFocused && searchResults.length > 0 && (
+            <Listbox
+              aria-label="Actions"
+              //@ts-ignore
+              onAction={handleTagClick}
+              className="absolute z-10 bg-white border rounded-md mt-1 p-1 w-full"
+            >
+              {searchResults.map((result, index) => (
+                <ListboxItem key={result}>
+                  <DisplayTag label={result}/>
+                  {/* <div className="text-slate-500 font-semibold lowercase bg-slate-200 py-0.5 px-2.5 shadow-sm border-b-1 border-r-1 border-slate-300 w-fit">
+                    {result}
+                  </div> */}
+                </ListboxItem>
+              ))}
+            </Listbox>
+          )}
+          {isInputFocused && searchTerm.trim() !== "" && searchResults.length === 0 && (
+            <Listbox
+              disabledKeys={["noresult"]}
+              aria-label="Actions"
+              className="absolute z-10 bg-white border rounded-md mt-1 p-1 w-full"
+            >
+              <ListboxItem key="noresult">No results found</ListboxItem>
+            </Listbox>
+          )}
         </div>
 
         <div className="my-4 border-b pb-4">
@@ -116,10 +192,7 @@ export default function VisSidebar() {
             >
               <div className="flex flex-row flex-wrap gap-2">
                 {libraryList.map((eachTag, i) => (
-                  <SidebarTag
-                    key={i}
-                    label={eachTag}
-                  />
+                  <SidebarTag key={i} label={eachTag} />
                 ))}
               </div>
             </AccordionItem>
@@ -131,10 +204,7 @@ export default function VisSidebar() {
             >
               <div className="flex flex-row flex-wrap gap-2">
                 {chartTypeList.map((eachTag, i) => (
-                  <SidebarTag
-                    key={i}
-                    label={eachTag}
-                  />
+                  <SidebarTag key={i} label={eachTag} />
                 ))}
               </div>
             </AccordionItem>
@@ -146,10 +216,7 @@ export default function VisSidebar() {
             >
               <div className="flex flex-row flex-wrap gap-2">
                 {categoryList.map((eachTag, i) => (
-                  <SidebarTag
-                    key={i}
-                    label={eachTag}
-                  />
+                  <SidebarTag key={i} label={eachTag} />
                 ))}
               </div>
             </AccordionItem>

@@ -11,10 +11,10 @@ export default function Empty() {
     <div className="flex flex-col justify-center items-center gap-y-4 h-[80vh]">
       <div className="mt-4">
         {currentPath === "/user/my-visualizations" && (
-          <Image src="/page-pics/empty-my-visualizations.svg" alt="Empty" height={700} width={700} />
+          <Image src="/page-pics/empty-my-visualizations.svg" alt="Empty" height={650} width={650} />
         )}
         {currentPath === "/user/favorites" && (
-          <Image src="/page-pics/empty-favorites.svg" alt="Empty" height={500} width={500} />
+          <Image src="/page-pics/empty-favorites.svg" alt="Empty" height={450} width={450} />
         )}
       </div>
       <div className="text-xl sm:text-3xl font-bold uppercase tracking-wider text-slate-700 text-center">
