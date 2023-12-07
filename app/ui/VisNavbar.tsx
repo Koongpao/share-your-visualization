@@ -187,18 +187,21 @@ function NavbarSecondaryLink({
 }) {
   return (
     <div className="flex flex-row items-center gap-x-1 h-full">
-      <Button
-        className={clsx("h-full bg-transparent rounded-none", {
-          "bg-teal-600 text-white": usePathname() === hrefValue,
-          "relative after:block after:top-0 after:content-[''] after:absolute after:h-[3px] after:bg-teal-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center":
-            usePathname() !== hrefValue,
-        })}
+      <div
+        className={clsx(
+          "h-full bg-transparent rounded-none z-0 group inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-unit-4 min-w-unit-20 text-small gap-unit-2 [&>svg]:max-w-[theme(spacing.unit-8)] data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none text-default-foreground data-[hover=true]:opacity-hover relative after:block after:top-0 after:content-[''] after:absolute after:h-[3px] after:bg-teal-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center",
+          {
+            "!bg-teal-600 text-white": usePathname() === hrefValue,
+            "relative after:block after:top-0 after:content-[''] after:absolute after:h-[3px] after:bg-teal-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center":
+              usePathname() !== hrefValue,
+          }
+        )}
       >
         {icon}
         <Link className="text-inherit font-semibold" href={hrefValue || "/"}>
           {labelValue}
         </Link>
-      </Button>
+      </div>
     </div>
   );
 }
