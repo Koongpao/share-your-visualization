@@ -29,7 +29,7 @@ import { RxCross1 } from "react-icons/rx";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const libraryList = [
+export const libraryList = [
   "d3.js",
   "altair",
   "vega",
