@@ -4,44 +4,9 @@ import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-com
 import { useState, useEffect } from "react";
 import { fetchData } from "@/app/lib/controller";
 import Loading from "./loading";
-
-export const libraryList = [
-  "d3.js",
-  "altair",
-  "vega",
-  "apache_echarts",
-  "chart.js",
-  "seaborn",
-  "recharts",
-  "victory",
-  "c3.js",
-  "matplotlib",
-  "bokeh",
-  "highcharts",
-  "plotly",
-];
-export const tagList = [
-  "bar",
-  "line",
-  "pie",
-  "scatter",
-  "map",
-  "candlestick",
-  "boxplot",
-  "heatmap",
-  "tree",
-  "static",
-  "interactive",
-  "linear_regression",
-  "geography",
-  "business",
-  "themed",
-  "machine_learning",
-];
+import { tagList, libraryList } from "@/app/lib/tagList";
 
 export default function Page() {
-
-
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {

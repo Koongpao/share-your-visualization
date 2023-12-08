@@ -13,6 +13,7 @@ import {
 
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
 import { MiniDisplayTag, DisplayTag } from "./small-components/DisplayTag";
+import { availableTagList } from "../lib/tagList";
 
 import { useAtom } from "jotai";
 import { atomSidebarActive, atomTagList } from "../atoms";
@@ -46,8 +47,7 @@ export const libraryList = [
 ];
 const chartTypeList = ["bar", "line", "pie", "scatter", "map", "candlestick", "boxplot", "heatmap", "tree"];
 const categoryList = ["static", "interactive"];
-
-export const availableTagList = [...libraryList, ...chartTypeList, ...categoryList];
+//This is for local defined for classifying tags in sidebar. For all global available tags, see tagList.ts
 
 export default function VisSidebar() {
   const [activeTagList, setActiveTagList] = useAtom(atomTagList);

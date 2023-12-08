@@ -2,22 +2,25 @@
 import Link from "next/link";
 import { Button, Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
 
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Roboto } from "next/font/google";
 
 import { BsPencilSquare } from "react-icons/bs";
 import { IoMdInformationCircle } from "react-icons/io";
-import { FaCirclePlus } from "react-icons/fa6";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { libraryList, tagList } from "../tag-list/page";
-import { DisplayTag, DisplayTagNoLink, DisplayTagNoLinkRemovable, DisplayLibraryNoLinkRemovable } from "@/app/ui/small-components/DisplayTag";
+
+import { tagList, libraryList } from "@/app/lib/tagList";
+import {
+  DisplayTagNoLink,
+  DisplayTagNoLinkRemovable,
+  DisplayLibraryNoLinkRemovable,
+} from "@/app/ui/small-components/DisplayTag";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -216,7 +219,7 @@ export default function Page() {
                   //@ts-ignore
                   if (tagValue?.includes(key)) {
                     // If tag is not available, terminate the function
-                    console.log("Tag dupes")
+                    console.log("Tag dupes");
                     return;
                   }
                   //@ts-ignore
