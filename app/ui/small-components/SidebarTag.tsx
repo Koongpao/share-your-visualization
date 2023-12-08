@@ -4,7 +4,7 @@ import Image from "next/image";
 import { MouseEvent } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { KnownLibraries } from "@/app/lib/knownLibraries";
-import { availableTagList } from "../VisSidebar";
+import { availableTagList } from "@/app/lib/tagList";
 
 interface SidebarTagProps {
   label: string;
