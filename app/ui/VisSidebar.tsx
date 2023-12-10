@@ -13,10 +13,11 @@ import {
 
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
 import { MiniDisplayTag, DisplayTag } from "./small-components/DisplayTag";
-import { availableTagList } from "../lib/tagList";
+import { availableTagList } from "../lib/resources";
 
 import { useAtom } from "jotai";
 import { atomSidebarActive, atomTagList } from "../atoms";
+import clsx from "clsx";
 
 import { Inter } from "next/font/google";
 import { RiProhibitedLine } from "react-icons/ri";
@@ -25,8 +26,6 @@ import { FaChartPie } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
 import { RxCross1 } from "react-icons/rx";
-
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -66,8 +65,6 @@ export default function VisSidebar() {
     setSearchResults(results);
   };
 
-  const showSidebarClass = showSidebar ? "right-0" : "-right-[100vw]";
-
   const handleTagClick = (key: string) => {
     console.log(key);
     // Check if the tag is already in the list
@@ -75,7 +72,7 @@ export default function VisSidebar() {
     setSearchResults([]);
     if (!availableTagList.includes(key)) {
       // If tag is not available, terminate the function
-      console.log("Tag not found")
+      console.log("Tag not found");
       return;
     }
     if (!activeTagList?.includes(key)) {
@@ -89,7 +86,10 @@ export default function VisSidebar() {
   //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
     <aside
-      className={`p-6 h-[calc(100vh_-_4rem)] lg:h-[calc(100vh_-_5.5rem)] ${showSidebarClass} w-screen lg:w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`}
+      className={clsx(
+        `p-6 h-[calc(100vh_-_4rem)] lg:h-[calc(100vh_-_5.5rem)] w-screen lg:w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`,
+        {"right-0" : showSidebar, "-right-[100vw]": !showSidebar}
+      )}
     >
       {/* height for primary navbar = 4 rem
       height for secondary navbar = 1.5 rem */}
@@ -142,7 +142,7 @@ export default function VisSidebar() {
               handleSearch(e.target.value);
             }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleTagClick(searchResults[0] || "");
               }
             }}
@@ -156,7 +156,7 @@ export default function VisSidebar() {
             >
               {searchResults.map((result, index) => (
                 <ListboxItem key={result}>
-                  <DisplayTag label={result}/>
+                  <DisplayTag label={result} />
                   {/* <div className="text-slate-500 font-semibold lowercase bg-slate-200 py-0.5 px-2.5 shadow-sm border-b-1 border-r-1 border-slate-300 w-fit">
                     {result}
                   </div> */}
@@ -170,7 +170,7 @@ export default function VisSidebar() {
               aria-label="Actions"
               className="absolute z-10 bg-white border rounded-md mt-1 p-1 w-full"
             >
-              <ListboxItem key="noresult">No results found</ListboxItem>
+              <ListboxItem key="noresult">No results found.</ListboxItem>
             </Listbox>
           )}
         </div>

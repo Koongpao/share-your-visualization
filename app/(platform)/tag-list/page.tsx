@@ -4,7 +4,7 @@ import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-com
 import { useState, useEffect } from "react";
 import { fetchData } from "@/app/lib/controller";
 import Loading from "./loading";
-import { tagList, libraryList } from "@/app/lib/tagList";
+import { tagList, libraryList } from "@/app/lib/resources";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(true)

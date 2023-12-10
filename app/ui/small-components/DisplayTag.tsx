@@ -1,16 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { KnownLibraries } from "@/app/lib/knownLibraries";
+import { KnownLibraries } from "@/app/lib/resources";
 import clsx from "clsx";
 import { RxCross2 } from "react-icons/rx";
+import { CapitalizeWords } from "@/app/lib/functions";
 
-const CapitalizeWords = (str: string) => {
-  return str
-    .toLowerCase()
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
 
 export function DisplayTag({ label }: { label: string }) {
   //used in /visualization

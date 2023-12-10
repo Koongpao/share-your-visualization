@@ -3,27 +3,18 @@ import { useAtom } from "jotai";
 import Image from "next/image";
 import { MouseEvent } from "react";
 import { RxCross2 } from "react-icons/rx";
-import { KnownLibraries } from "@/app/lib/knownLibraries";
-import { availableTagList } from "@/app/lib/tagList";
+import { KnownLibraries } from "@/app/lib/resources";
+import { availableTagList } from "@/app/lib/resources";
+import { CapitalizeWords } from "@/app/lib/functions";
 
 interface SidebarTagProps {
   label: string;
 }
 
-const CapitalizeWords = (str: string) => {
-  return str
-    .toLowerCase()
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
-
-export function SidebarTag({
-  label,
-}: SidebarTagProps) {
+export function SidebarTag({ label }: SidebarTagProps) {
   //used in VisSidebar component
 
-  const [activeTagList,setActiveTagList] = useAtom(atomTagList)
+  const [activeTagList, setActiveTagList] = useAtom(atomTagList);
 
   const CapitalizedLabel = CapitalizeWords(label);
 
@@ -31,18 +22,14 @@ export function SidebarTag({
   const libraryColor = libraryInfo ? libraryInfo.bgColor : "bg-teal-500";
   const libraryImageSrc = libraryInfo ? libraryInfo.logo : "";
 
-  const currentColor = activeTagList?.includes(label)
-    ? libraryColor
-    : "bg-slate-200";
-  const currentText = activeTagList?.includes(label)
-    ? "text-white"
-    : "text-black";
+  const currentColor = activeTagList?.includes(label) ? libraryColor : "bg-slate-200";
+  const currentText = activeTagList?.includes(label) ? "text-white" : "text-black";
 
   const handleTagClick = async (event: MouseEvent<HTMLDivElement>) => {
-    console.log(availableTagList)
+    console.log(availableTagList);
     if (!availableTagList.includes(label)) {
       // If tag is not available, terminate the function
-      console.log("Tag not found")
+      console.log("Tag not found");
       return;
     }
     // Check if the tag is already in the list
@@ -51,9 +38,7 @@ export function SidebarTag({
       setActiveTagList?.((prevTagList) => [...prevTagList, label]);
     } else if (activeTagList?.includes(label)) {
       // If it is, remove label from the list
-      setActiveTagList?.((prevTagList) =>
-        prevTagList.filter((tag) => tag !== label)
-      );
+      setActiveTagList?.((prevTagList) => prevTagList.filter((tag) => tag !== label));
     }
   };
 
@@ -66,31 +51,25 @@ export function SidebarTag({
       ${currentText} hover:${currentColor}/80 flex-row gap-x-1 cursor-pointer`}
         onClick={handleTagClick}
       >
-        {libraryImageSrc ? (
-          <Image src={libraryImageSrc} alt="" width={16} height={16} />
-        ) : null}
+        {libraryImageSrc ? <Image src={libraryImageSrc} alt="" width={16} height={16} /> : null}
         {CapitalizedLabel}
       </div>
     </div>
   );
 }
 
-export function SidebarTagRm({
-  label,
-}: SidebarTagProps) {
+export function SidebarTagRm({ label }: SidebarTagProps) {
   //used in VisSidebar component
   const CapitalizedLabel = CapitalizeWords(label);
 
-  const [activeTagList,setActiveTagList] = useAtom(atomTagList)
+  const [activeTagList, setActiveTagList] = useAtom(atomTagList);
 
   const libraryInfo = KnownLibraries[label];
   const libraryColor = libraryInfo ? libraryInfo.bgColor : "bg-teal-500";
   const libraryImageSrc = libraryInfo ? libraryInfo.logo : "";
 
   const handleRemoveClick = (event: MouseEvent<HTMLDivElement>) => {
-    setActiveTagList?.((prevTagList) =>
-      prevTagList.filter((tag) => tag !== label)
-    );
+    setActiveTagList?.((prevTagList) => prevTagList.filter((tag) => tag !== label));
   };
 
   return (
@@ -101,9 +80,7 @@ export function SidebarTagRm({
         focus:ring-ring focus:ring-offset-2 border-transparent ${libraryColor}  
         text-white hover:${libraryColor}/80 flex-row gap-x-1 cursor-pointer`}
       >
-        {libraryImageSrc ? (
-          <Image src={libraryImageSrc} alt="" width={16} height={16} />
-        ) : null}
+        {libraryImageSrc ? <Image src={libraryImageSrc} alt="" width={16} height={16} /> : null}
         {CapitalizedLabel}
         <RxCross2 className="text-xl" onClick={handleRemoveClick} />
       </div>

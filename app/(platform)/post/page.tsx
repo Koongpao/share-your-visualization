@@ -15,7 +15,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
-import { tagList, libraryList } from "@/app/lib/tagList";
+import { tagList, libraryList } from "@/app/lib/resources";
 import {
   DisplayTagNoLink,
   DisplayTagNoLinkRemovable,

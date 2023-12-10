@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { atomTagList } from "@/app/atoms";
 import Loading from "./loading";
 import { useRouter } from "next/navigation";
-import { availableTagList } from "@/app/lib/tagList";
+import { availableTagList } from "@/app/lib/resources";
 
 export default function Page({
   searchParams,
