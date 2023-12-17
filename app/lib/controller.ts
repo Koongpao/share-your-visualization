@@ -2,10 +2,13 @@ import { unstable_noStore } from "next/cache";
 
 const baseURL = "https://localhost:3001"
 
-export async function testFetch(){
+const baseProdURL = "https://share-your-visualization-backend.vercel.app"
+
+export async function fetchTestRoute(){
   try{
-    const response = await fetch(baseURL + "/")
-    return response
+    const response = await fetch(baseProdURL + "/")
+    const data = await response.json()
+    return data
   }
   catch (err){
     console.error("error")
@@ -32,5 +35,20 @@ export async function fetchData() {
     } catch (error) {
       console.error('Error:', error);
       throw new Error('Failed to fetch data.');
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  //API FUNCTIONS
+  ///////////////////////////////////////////////////////////////////////////
+
+  export async function getAllTags(){
+    try{
+      const response = await fetch(baseProdURL + "/api/tags")
+      const data = await response.json()
+      return data
+    }
+    catch (err){
+      console.error("error")
     }
   }

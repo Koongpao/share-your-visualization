@@ -11,9 +11,10 @@ import {
   AutocompleteItem,
 } from "@nextui-org/react";
 
+import { getAllTags } from "../lib/controller";
+
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
 import { MiniDisplayTag, DisplayTag } from "./small-components/DisplayTag";
-import { availableTagList } from "../lib/resources";
 
 import { useAtom } from "jotai";
 import { atomSidebarActive, atomTagList } from "../atoms";
@@ -29,7 +30,7 @@ import { RxCross1 } from "react-icons/rx";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const libraryList = [
+const staticLibraryList = [
   "d3.js",
   "altair",
   "vega",
@@ -55,6 +56,25 @@ export default function VisSidebar() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
+
+  const [availableTagList, setAvailableTagList] = useState<string[]>([]);
+
+  const initializePage = async () => {
+    try {
+      const res = await getAllTags();
+      //@ts-ignore
+      const resTagList = (res.data.library.map((item) => item.name))
+      //@ts-ignore
+      const resLibraryList = (res.data.tags.map((item) => item.name))
+      setAvailableTagList([...resTagList, ...resLibraryList])
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    initializePage();
+  }, []);
 
   const handleSearch = (query: string) => {
     if (query.trim() === "") {
@@ -191,7 +211,7 @@ export default function VisSidebar() {
               startContent={<IoLibrary className="text-xl" />}
             >
               <div className="flex flex-row flex-wrap gap-2">
-                {libraryList.map((eachTag, i) => (
+                {staticLibraryList.map((eachTag, i) => (
                   <SidebarTag key={i} label={eachTag} />
                 ))}
               </div>

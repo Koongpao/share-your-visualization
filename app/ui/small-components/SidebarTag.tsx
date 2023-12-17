@@ -4,7 +4,6 @@ import Image from "next/image";
 import { MouseEvent } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { KnownLibraries } from "@/app/lib/resources";
-import { availableTagList } from "@/app/lib/resources";
 import { CapitalizeWords } from "@/app/lib/functions";
 
 interface SidebarTagProps {
@@ -26,12 +25,6 @@ export function SidebarTag({ label }: SidebarTagProps) {
   const currentText = activeTagList?.includes(label) ? "text-white" : "text-black";
 
   const handleTagClick = async (event: MouseEvent<HTMLDivElement>) => {
-    console.log(availableTagList);
-    if (!availableTagList.includes(label)) {
-      // If tag is not available, terminate the function
-      console.log("Tag not found");
-      return;
-    }
     // Check if the tag is already in the list
     if (!activeTagList?.includes(label)) {
       // If not, add the label to the list

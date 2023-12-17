@@ -115,7 +115,7 @@ export default function Page() {
           </div>
           <div className="flex justify-center">
             <Button className="bg-teal-600 text-white font-semibold shadow-xl">
-              Preview Visualization
+              Preview Demo
             </Button>
           </div>
         </div>

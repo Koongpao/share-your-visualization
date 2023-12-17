@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { atomTagList } from "@/app/atoms";
 import Loading from "./loading";
 import { useRouter } from "next/navigation";
-import { availableTagList } from "@/app/lib/resources";
+import { getAllTags } from "@/app/lib/controller";
 
 export default function Page({
   searchParams,
@@ -53,16 +53,51 @@ export default function Page({
     ] || null;
 
   cardData = Array.from({ length: 6 }, () => [...cardData]).flat();
+  //extract searchParams by 1. select the tags value, 2. split the tags value by " ", 3.remove duplicates by filter
+  const [availableTagList, setAvailableTagList] = useState<string[]>([]);
+
+  const getTagList = async () => {
+    try {
+      const res = await getAllTags();
+      //@ts-ignore
+      const resTagList = (res.data.library.map((item) => item.name))
+      //@ts-ignore
+      const resLibraryList = (res.data.tags.map((item) => item.name))
+      setAvailableTagList([...resTagList, ...resLibraryList])
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   var searchParamTags = searchParams?.tags ? searchParams.tags.split(" ") : [];
   searchParamTags = searchParamTags.filter((item, pos) => {
     return searchParamTags.indexOf(item) === pos;
   });
-  //extract searchParams by 1. select the tags value, 2. split the tags value by " ", 3.remove duplicates by filter
+
+  const extractSearchParams = () => {
+    // searchParamTags.filter((tags, index) => {searchParamTags.indexOf(tags) === index})
+    searchParamTags.forEach((eachTag) => {
+      if (!availableTagList.includes(eachTag)) {
+        // If tag is not available, terminate the function
+        console.log("Tag not found:", eachTag);
+        return;
+      }
+      if (!tagList?.includes(eachTag)) {
+        // Check if the tag is already in the list
+        console.log("Valid tag:", eachTag);
+        setTagList((prevTagList) => [...prevTagList, eachTag]);
+      }
+    });
+  };
+
+  useEffect(() => {
+    //initialize searchParams
+    getTagList();
+    extractSearchParams();
+  }, []);
 
   const fetchDataAndSetState = async () => {
     setIsLoading(true);
-
     try {
       const data = await fetchData();
       console.log("test", data);
@@ -81,30 +116,6 @@ export default function Page({
       router.push(`/search`);
     }
   };
-
-  const extractSearchParams = () => {
-    // searchParamTags.filter((tags, index) => {searchParamTags.indexOf(tags) === index})
-
-    console.log(searchParamTags);
-
-    searchParamTags.forEach((eachTag) => {
-      if (!availableTagList.includes(eachTag)) {
-        // If tag is not available, terminate the function
-        console.log("Tag not found:", eachTag);
-        return;
-      }
-      if (!tagList?.includes(eachTag)) {
-        // Check if the tag is already in the list
-        console.log("Valid tag:", eachTag);
-        setTagList((prevTagList) => [...prevTagList, eachTag]);
-      }
-    });
-  };
-
-  useEffect(() => {
-    //initialize searchParams
-    extractSearchParams();
-  }, []);
 
   useEffect(() => {
     //called everytime tagList is changed

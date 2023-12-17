@@ -1,28 +1,32 @@
 'use client'
-import React from "react";
 import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-components/DisplayTag";
-import { useState, useEffect } from "react";
-import { fetchData } from "@/app/lib/controller";
+import { useState, useEffect } from "react"
 import Loading from "./loading";
-import { tagList, libraryList } from "@/app/lib/resources";
+import { getAllTags } from "@/app/lib/controller";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
+  const [tagList, setTagList] = useState<string[]>([])
+  const [libraryList, setLibraryList] = useState<string[]>([])
+
+  const initializePage = async () => {
+    try {
+      setIsLoading(true)
+      const res = await getAllTags();
+      //@ts-ignore
+      setLibraryList(res.data.library.map((item) => item.name));
+      //@ts-ignore
+      setTagList(res.data.tags.map((item) => item.name));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
   useEffect(() => {
-    const fetchDataAndSetState = async () => {
-      try {
-        setIsLoading(true)
-        const data = await fetchData();
-        console.log("test", data);
-      } catch (error) {
-        // Handle error, if needed
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false)
-      }
-    };
-    fetchDataAndSetState();
+    initializePage();
   },[]);
 
   if (isLoading) return <Loading/>

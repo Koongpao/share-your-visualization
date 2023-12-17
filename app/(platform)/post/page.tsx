@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button, Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
 
 import { BsPencilSquare } from "react-icons/bs";
@@ -15,7 +15,8 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
-import { tagList, libraryList } from "@/app/lib/resources";
+import { getAllTags } from "@/app/lib/controller";
+
 import {
   DisplayTagNoLink,
   DisplayTagNoLinkRemovable,
@@ -61,6 +62,25 @@ export default function Page() {
     }
   };
   //Handle on input field change (not exceeding maxChar)
+
+  const [tagList, setTagList] = useState<string[]>([]);
+  const [libraryList, setLibraryList] = useState<string[]>([]);
+
+  const initializePage = async () => {
+    try {
+      const res = await getAllTags();
+      //@ts-ignore
+      setLibraryList(res.data.library.map((item) => item.name));
+      //@ts-ignore
+      setTagList(res.data.tags.map((item) => item.name));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    initializePage();
+  }, []);
 
   return (
     <div className={"container py-6 px-8 md:px-24 lg:px-72 pb-12"}>
