@@ -1,35 +1,35 @@
-'use client'
+"use client";
 import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-components/DisplayTag";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import Loading from "./loading";
 import { getAllTags } from "@/app/lib/controller";
 
 export default function Page() {
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const [tagList, setTagList] = useState<string[]>([])
-  const [libraryList, setLibraryList] = useState<string[]>([])
+  const [tagList, setTagList] = useState<string[]>([]);
+  const [libraryList, setLibraryList] = useState<string[]>([]);
 
   const initializePage = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const res = await getAllTags();
       //@ts-ignore
-      setLibraryList(res.data.library.map((item) => item.name));
+      setLibraryList(res.data.library.filter((item) => item.status == "approved").map((item) => item.name));
       //@ts-ignore
-      setTagList(res.data.tags.map((item) => item.name));
+      setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     initializePage();
-  },[]);
+  }, []);
 
-  if (isLoading) return <Loading/>
+  if (isLoading) return <Loading />;
 
   return (
     <div className="py-6 px-8 md:px-24 lg:px-36 xl:container xl:px-80 pb-12 flex flex-col gap-2">

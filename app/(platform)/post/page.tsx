@@ -70,9 +70,9 @@ export default function Page() {
     try {
       const res = await getAllTags();
       //@ts-ignore
-      setLibraryList(res.data.library.map((item) => item.name));
+      setLibraryList(res.data.library.filter((item) => item.status == "approved").map((item) => item.name));
       //@ts-ignore
-      setTagList(res.data.tags.map((item) => item.name));
+      setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
     } catch (error) {
       console.error("Error fetching data:", error);
     }

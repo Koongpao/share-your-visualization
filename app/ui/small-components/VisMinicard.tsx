@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardHeader, CardBody, Skeleton } from "@nextui-org/react";
 import { FaRegCalendarAlt } from "react-icons/fa";
-import { DisplayTag, MiniDisplayTag } from "./DisplayTag";
+import { DisplayTag, MiniDisplayTag, TagListDisplayTag } from "./DisplayTag";
 
 interface VisMinicardProps {
   cardInfo: {
@@ -43,9 +43,10 @@ export function VisMinicard({ cardInfo }: VisMinicardProps) {
         <div className="inline-block items-center py-1">
           <div className="flex flex-row gap-1 whitespace-nowrap flex-wrap lg:flex-nowrap lg:overflow-scroll">
             <DisplayTag label={cardInfo.library} />
-            {cardInfo.tags.map((tagsInfo, i) => (
+            {/* {cardInfo.tags.map((tagsInfo, i) => (
               <MiniDisplayTag label={tagsInfo} key={i} />
-            ))}
+            ))} */}
+            <MiniDisplayTag label={cardInfo.tags.length.toString() + " More Tags"}/>
           </div>
         </div>
       </CardBody>

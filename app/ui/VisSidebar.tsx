@@ -63,9 +63,9 @@ export default function VisSidebar() {
     try {
       const res = await getAllTags();
       //@ts-ignore
-      const resTagList = (res.data.library.map((item) => item.name))
+      const resTagList = (res.data.library.filter((item) => item.status === "approved").map((item) => item.name))
       //@ts-ignore
-      const resLibraryList = (res.data.tags.map((item) => item.name))
+      const resLibraryList = (res.data.tags.filter((item) => item.status === "approved").map((item) => item.name))
       setAvailableTagList([...resTagList, ...resLibraryList])
     } catch (error) {
       console.error("Error fetching data:", error);
