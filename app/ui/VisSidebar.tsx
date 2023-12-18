@@ -11,7 +11,7 @@ import {
   AutocompleteItem,
 } from "@nextui-org/react";
 
-import { getAllTags } from "../lib/controller";
+import { GetAllTags } from "../lib/controller";
 
 import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
 import { MiniDisplayTag, DisplayTag } from "./small-components/DisplayTag";
@@ -60,16 +60,12 @@ export default function VisSidebar() {
   const [availableTagList, setAvailableTagList] = useState<string[]>([]);
 
   const initializePage = async () => {
-    try {
-      const res = await getAllTags();
-      //@ts-ignore
-      const resTagList = (res.data.library.filter((item) => item.status === "approved").map((item) => item.name))
-      //@ts-ignore
-      const resLibraryList = (res.data.tags.filter((item) => item.status === "approved").map((item) => item.name))
-      setAvailableTagList([...resTagList, ...resLibraryList])
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    const res = await GetAllTags();
+    //@ts-ignore
+    const resTagList = res.data.library.filter((item) => item.status === "approved").map((item) => item.name);
+    //@ts-ignore
+    const resLibraryList = res.data.tags.filter((item) => item.status === "approved").map((item) => item.name);
+    setAvailableTagList([...resTagList, ...resLibraryList]);
   };
 
   useEffect(() => {
@@ -108,7 +104,7 @@ export default function VisSidebar() {
     <aside
       className={clsx(
         `p-6 h-[calc(100vh_-_4rem)] lg:h-[calc(100vh_-_5.5rem)] w-screen lg:w-80 lg:left-0 border-r border-l overflow-y-scroll bg-white z-20 fixed peer-focus:left-0 peer:transition ease-out delay-150 duration-200`,
-        {"right-0" : showSidebar, "-right-[100vw]": !showSidebar}
+        { "right-0": showSidebar, "-right-[100vw]": !showSidebar }
       )}
     >
       {/* height for primary navbar = 4 rem

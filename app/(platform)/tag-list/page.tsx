@@ -2,7 +2,7 @@
 import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-components/DisplayTag";
 import { useState, useEffect } from "react";
 import Loading from "./loading";
-import { getAllTags } from "@/app/lib/controller";
+import { GetAllTags } from "@/app/lib/controller";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -11,22 +11,17 @@ export default function Page() {
   const [libraryList, setLibraryList] = useState<string[]>([]);
 
   const initializePage = async () => {
-    try {
       setIsLoading(true);
-      const res = await getAllTags();
+      const res = await GetAllTags();
       //@ts-ignore
       setLibraryList(res.data.library.filter((item) => item.status == "approved").map((item) => item.name));
       //@ts-ignore
       setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
       setIsLoading(false);
-    }
   };
 
   useEffect(() => {
-    initializePage();
+    initializePage()
   }, []);
 
   if (isLoading) return <Loading />;

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import {
@@ -17,14 +17,14 @@ import Link from "next/link";
 
 import { FaSearch, FaHome, FaStar } from "react-icons/fa";
 import { IoIosPricetag, IoIosPricetags } from "react-icons/io";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch,IoExitOutline } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
 import { MdLogin } from "react-icons/md";
 import { FaPowerOff, FaRegFolderOpen, FaUserPlus } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 
-import { atomSidebarActive } from "../atoms";
+import { atomSidebarActive, atomTokenExist } from "../atoms";
 import { useAtom } from "jotai";
 
 export default function VisNavbar() {
@@ -32,6 +32,13 @@ export default function VisNavbar() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const currentPath = usePathname();
+
+  const [tokenExist, setTokenExist] = useAtom(atomTokenExist)
+
+  useMemo(() => {
+    const token = localStorage.getItem("token");
+    setTokenExist(!!token);
+  },[tokenExist]);
 
   const NavbarMenuLinkList = [
     { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
@@ -55,7 +62,7 @@ export default function VisNavbar() {
     { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
   ];
 
-  if (currentPath === "/login" || currentPath === "/sign-up") return <></>;
+  if (currentPath === "/login" || currentPath === "/sign-up" || currentPath ==="/logout") return <></>;
 
   return (
     <div className="sticky top-0 z-40">
@@ -99,29 +106,47 @@ export default function VisNavbar() {
         </NavbarContent>
 
         <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex font-semibold">
-            <Link className="text-teal-600" href="/login">
-              Login
-            </Link>
-          </NavbarItem>
-          <NavbarItem className="hidden lg:flex">
-            <Button as={Link} href="/sign-up" variant="flat" className="bg-teal-600 text-white font-semibold shadow-lg">
-              Sign Up
-            </Button>
-          </NavbarItem>
-
-          {/* <NavbarItem>
-            <Avatar showFallback size={"md"} src="https://images.unsplash.com/broken" />
-          </NavbarItem>
-          <NavbarItem>
-            <div className="font-semibold">@Username</div>
-          </NavbarItem>
-          <NavbarItem>
-            <Button as={Link} href="/logout" className="bg-white text-red-500 font-semibold text-base hidden lg:flex">
-              <FaPowerOff />
-              <div>Log Out</div>
-            </Button>
-          </NavbarItem> */}
+          {!tokenExist ? (
+            <>
+              <NavbarItem className="hidden lg:flex font-semibold">
+                <Link className="text-teal-600" href="/login">
+                  Login
+                </Link>
+              </NavbarItem>
+              <NavbarItem className="hidden lg:flex">
+                <Button
+                  as={Link}
+                  href="/sign-up"
+                  variant="flat"
+                  className="bg-teal-600 text-white font-semibold shadow-lg"
+                >
+                  Sign Up
+                </Button>
+              </NavbarItem>
+            </>
+          ) : (
+            <>
+              <NavbarItem className="hidden lg:flex">
+                <Avatar showFallback size={"md"} classNames={{
+                  base: "bg-teal-50",
+                  icon: "text-teal-600"
+                }} />
+              </NavbarItem>
+              <NavbarItem className="hidden lg:flex">
+                <div className="font-semibold">@Username</div>
+              </NavbarItem>
+              <NavbarItem>
+                <Button
+                  as={Link}
+                  href="/logout"
+                  className="bg-teal-600 text-white font-semibold text-base hidden lg:flex hover:bg-red-500 duration-200"
+                >
+                  <IoExitOutline className="text-xl"/>
+                  <div>Log Out</div>
+                </Button>
+              </NavbarItem>
+            </>
+          )}
 
           <NavbarItem className="flex lg:hidden">
             <Button

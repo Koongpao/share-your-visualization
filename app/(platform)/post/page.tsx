@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { Button, Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
+import { Button, Autocomplete, AutocompleteItem} from "@nextui-org/react";
 
-import { ChangeEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
 
 import { BsPencilSquare } from "react-icons/bs";
@@ -15,7 +15,8 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
-import { getAllTags } from "@/app/lib/controller";
+import { GetAllTags } from "@/app/lib/controller";
+import { handleTab, handleOnChange } from "@/app/lib/functions";
 
 import {
   DisplayTagNoLink,
@@ -41,41 +42,15 @@ export default function Page() {
   const sourceCodeMaxChar = 5000;
   const externalLinkMaxChar = 100;
 
-  const handleTab = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
-    setFunction: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      setFunction((prev: string) => prev + "\t");
-    }
-  };
-  //Let Input to be able to type tab, instead of default event (skipping to next input)
-
-  const handleOnChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    setFunction: React.Dispatch<React.SetStateAction<string>>,
-    maxChar: number
-  ) => {
-    if (e.target.value.length <= maxChar) {
-      setFunction(e.target.value);
-    }
-  };
-  //Handle on input field change (not exceeding maxChar)
-
   const [tagList, setTagList] = useState<string[]>([]);
   const [libraryList, setLibraryList] = useState<string[]>([]);
 
   const initializePage = async () => {
-    try {
-      const res = await getAllTags();
+      const res = await GetAllTags();
       //@ts-ignore
       setLibraryList(res.data.library.filter((item) => item.status == "approved").map((item) => item.name));
       //@ts-ignore
       setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
   };
 
   useEffect(() => {

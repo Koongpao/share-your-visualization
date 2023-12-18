@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { atomTagList } from "@/app/atoms";
 import Loading from "./loading";
 import { useRouter } from "next/navigation";
-import { getAllTags } from "@/app/lib/controller";
+import { GetAllTags } from "@/app/lib/controller";
 
 export default function Page({
   searchParams,
@@ -58,7 +58,7 @@ export default function Page({
 
   const getTagList = async () => {
     try {
-      const res = await getAllTags();
+      const res = await GetAllTags();
       //@ts-ignore
       const resTagList = (res.data.library.filter((item) => item.status == "approved").map((item) => item.name))
       //@ts-ignore
