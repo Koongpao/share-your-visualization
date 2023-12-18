@@ -26,7 +26,6 @@ export default function Page() {
 
   const [FormComplete, setFormComplete] = useState<boolean>(false);
   //To allow button to be pressed or not
-
   const [SuccessfullyLogin, setSuccessfullyLogin] = useState<boolean>(false);
   //To allow page to switch to success.tsx
 

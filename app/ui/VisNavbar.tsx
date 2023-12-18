@@ -41,18 +41,19 @@ export default function VisNavbar() {
   const [displayUsername, setDisplayUsername] = useState<string>("");
 
   const InitializeRightNavbarComponent = async () => {
+    setNavLoading(true)
     const token = localStorage.getItem("token");
     setTokenExist(!!token);
     if (token) {
       const res = await GetMyInformation(token);
       setDisplayUsername(res.data.username);
     }
+    setNavLoading(false);
   };
   //Ensure to render correct navbar component (don't remove)
 
   useEffect(() => {
     InitializeRightNavbarComponent();
-    setNavLoading(false);
   }, [tokenExist]);
 
   const NavbarMenuLinkList = [
@@ -122,7 +123,7 @@ export default function VisNavbar() {
             <div className="hidden lg:flex flex-row gap-x-2 items-center">
               <Skeleton className="rounded-full h-[2.5rem] w-[2.5rem]" />
               <Skeleton className="rounded-lg h-[1.5rem] w-[7rem]" />
-              <Skeleton className="rounded-lg h-[2.5rem] w-[7rem]" />
+              <Skeleton className="rounded-lg h-[1.5rem] w-[7rem]" />
             </div>
           )}
           {!tokenExist && !navLoading && (

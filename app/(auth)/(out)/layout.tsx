@@ -1,18 +1,21 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const token = localStorage.getItem("token");
+  const [Loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     if (!token) {
       router.replace("/");
+    } else {
+      setLoading(false);
     }
   }, []);
 
-  if (!token) return null
+  if (Loading) return null
 
   return <div>{children}</div>;
 };
