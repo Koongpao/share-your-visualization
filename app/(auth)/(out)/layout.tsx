@@ -6,7 +6,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const token = localStorage.getItem("token");
 
-  useMemo(() => {
+  useEffect(() => {
     if (!token) {
       router.replace("/");
     }

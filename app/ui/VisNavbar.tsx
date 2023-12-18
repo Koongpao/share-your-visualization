@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import {
@@ -12,12 +12,13 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   Avatar,
+  Skeleton,
 } from "@nextui-org/react";
 import Link from "next/link";
 
 import { FaSearch, FaHome, FaStar } from "react-icons/fa";
 import { IoIosPricetag, IoIosPricetags } from "react-icons/io";
-import { IoSearch,IoExitOutline } from "react-icons/io5";
+import { IoSearch, IoExitOutline } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
 import { MdLogin } from "react-icons/md";
@@ -26,6 +27,7 @@ import { HiBars3 } from "react-icons/hi2";
 
 import { atomSidebarActive, atomTokenExist } from "../atoms";
 import { useAtom } from "jotai";
+import { GetMyInformation } from "../lib/controller";
 
 export default function VisNavbar() {
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
@@ -33,23 +35,33 @@ export default function VisNavbar() {
 
   const currentPath = usePathname();
 
-  const [tokenExist, setTokenExist] = useAtom(atomTokenExist)
+  const [tokenExist, setTokenExist] = useAtom(atomTokenExist);
 
-  useMemo(() => {
+  const [navLoading, setNavLoading] = useState<boolean>(true);
+  const [displayUsername, setDisplayUsername] = useState<string>("");
+
+  const InitializeRightNavbarComponent = async () => {
     const token = localStorage.getItem("token");
     setTokenExist(!!token);
-  },[tokenExist]);
+    if (token) {
+      const res = await GetMyInformation(token);
+      setDisplayUsername(res.data.username);
+    }
+  };
+  //Ensure to render correct navbar component (don't remove)
+
+  useEffect(() => {
+    InitializeRightNavbarComponent();
+    setNavLoading(false);
+  }, [tokenExist]);
 
   const NavbarMenuLinkList = [
     { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
     { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
-
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
-    { hrefValue: "/sign-up", labelValue: "Sign Up", icon: <FaUserPlus /> },
-    { hrefValue: "/login", labelValue: "Log In", icon: <MdLogin /> },
   ];
   //Does not include /logout because it needs special classname
 
@@ -62,7 +74,7 @@ export default function VisNavbar() {
     { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
   ];
 
-  if (currentPath === "/login" || currentPath === "/sign-up" || currentPath ==="/logout") return <></>;
+  if (currentPath === "/login" || currentPath === "/sign-up" || currentPath === "/logout") return <></>;
 
   return (
     <div className="sticky top-0 z-40">
@@ -106,7 +118,14 @@ export default function VisNavbar() {
         </NavbarContent>
 
         <NavbarContent justify="end">
-          {!tokenExist ? (
+          {navLoading && (
+            <div className="hidden lg:flex flex-row gap-x-2 items-center">
+              <Skeleton className="rounded-full h-[2.5rem] w-[2.5rem]" />
+              <Skeleton className="rounded-lg h-[1.5rem] w-[7rem]" />
+              <Skeleton className="rounded-lg h-[2.5rem] w-[7rem]" />
+            </div>
+          )}
+          {!tokenExist && !navLoading && (
             <>
               <NavbarItem className="hidden lg:flex font-semibold">
                 <Link className="text-teal-600" href="/login">
@@ -124,16 +143,21 @@ export default function VisNavbar() {
                 </Button>
               </NavbarItem>
             </>
-          ) : (
+          )}
+          {tokenExist && !navLoading && (
             <>
-              <NavbarItem className="hidden lg:flex">
-                <Avatar showFallback size={"md"} classNames={{
-                  base: "bg-teal-50",
-                  icon: "text-teal-600"
-                }} />
+            <NavbarItem className="hidden lg:flex">
+                <Avatar
+                  showFallback
+                  size={"md"}
+                  classNames={{
+                    base: "bg-teal-50",
+                    icon: "text-teal-600",
+                  }}
+                />
               </NavbarItem>
               <NavbarItem className="hidden lg:flex">
-                <div className="font-semibold">@Username</div>
+                <div className="font-semibold">@{displayUsername}</div>
               </NavbarItem>
               <NavbarItem>
                 <Button
@@ -141,7 +165,7 @@ export default function VisNavbar() {
                   href="/logout"
                   className="bg-teal-600 text-white font-semibold text-base hidden lg:flex hover:bg-red-500 duration-200"
                 >
-                  <IoExitOutline className="text-xl"/>
+                  <IoExitOutline className="text-xl" />
                   <div>Log Out</div>
                 </Button>
               </NavbarItem>
@@ -170,13 +194,26 @@ export default function VisNavbar() {
                   setMenuOpen={setMenuOpen}
                 />
               ))}
-              <NavbarMenuLink
-                hrefValue="/logout"
-                labelValue="Log Out"
-                icon={<FaPowerOff />}
-                classNames={"text-red-500"}
-                setMenuOpen={setMenuOpen}
-              />
+              {!tokenExist && (
+                <>
+                  <NavbarMenuLink hrefValue="/login" labelValue="Login" icon={<MdLogin />} setMenuOpen={setMenuOpen} />
+                  <NavbarMenuLink
+                    hrefValue="/sign-up"
+                    labelValue="Sign Up"
+                    icon={<FaUserPlus />}
+                    setMenuOpen={setMenuOpen}
+                  />
+                </>
+              )}
+              {tokenExist && (
+                <NavbarMenuLink
+                  hrefValue="/logout"
+                  labelValue="Log Out"
+                  icon={<FaPowerOff />}
+                  classNames={"text-red-500"}
+                  setMenuOpen={setMenuOpen}
+                />
+              )}
             </div>
           </NavbarMenuItem>
         </NavbarMenu>

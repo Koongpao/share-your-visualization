@@ -41,7 +41,7 @@ export async function fetchData() {
 //API FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////
 
-// GetAllTags GET - /api/tags
+// GetAllTags - GET /api/tags
 export async function GetAllTags() {
   try {
     const response = await fetch(baseProdURL + "/api/tags", { method: "GET" });
@@ -52,7 +52,7 @@ export async function GetAllTags() {
   }
 }
 
-// POST - /api/users
+//SignUp - POST /api/users
 export async function SignUp(body: { username: string; email: string; password: string }) {
   try {
     const response = await fetch(baseProdURL + "/api/users", {
@@ -69,7 +69,7 @@ export async function SignUp(body: { username: string; email: string; password: 
   }
 }
 
-//POST - /api/login
+//Login - POST /api/login
 export async function Login(body: { usernameOrEmail: string; password: string }) {
   try {
     const response = await fetch(baseProdURL + "/api/login", {
@@ -86,10 +86,10 @@ export async function Login(body: { usernameOrEmail: string; password: string })
   }
 }
 
-//GET - /api/users/me
+//GetMyInformation - GET /api/users/me
 export async function GetMyInformation(token: string) {
   try {
-    const response = await fetch(baseURL + "/api/users/me/name", {
+    const response = await fetch(baseProdURL + "/api/users/me", {
       method: "GET",
       headers: {
         authorization: token,
