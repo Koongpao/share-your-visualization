@@ -44,7 +44,9 @@ export default function Page() {
     };
 
     const res = await Login(body);
-    localStorage.setItem('token', res.data.token);
+    if(res.success){
+      localStorage.setItem('token', res.data.token);
+    }
     setTokenExist(res.success)
     //Store tokens
 
