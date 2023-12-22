@@ -9,7 +9,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      router.replace("/");
+      router.replace("/login");
     } else {
       setLoading(false);
     }
