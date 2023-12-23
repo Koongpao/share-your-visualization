@@ -52,7 +52,6 @@ export default function Page() {
       //@ts-ignore
       setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
   };
-
   useEffect(() => {
     initializePage();
   }, []);

@@ -1,23 +1,19 @@
-"use client";
+'use client'
 import Link from "next/link";
 import { IoExitOutline } from "react-icons/io5";
 import { Spinner } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
-import { useAtom } from "jotai";
-import { atomTokenExist } from "@/app/atoms";
+import { useEffect } from "react";
+import { signOut } from "next-auth/react";
 
-export default function Success() {
-  const router = useRouter();
-  const [tokenExist, setTokenExist] = useAtom(atomTokenExist);
+export default function Page() {
 
   useEffect(() => {
-      localStorage.removeItem("token");
-      setTokenExist(false);
-      const redirectTimer = setTimeout(() => {
-        router.push("/");
-      }, 2000);
-      return () => clearTimeout(redirectTimer);
+    const redirectTimer = setTimeout(() => {
+      signOut({
+        callbackUrl: "/",
+      });
+    }, 2000);
+    return () => clearTimeout(redirectTimer);
   }, []);
 
   return (
@@ -29,7 +25,7 @@ export default function Success() {
       <div>You will be redirected to Home Page Shortly.</div>
       <Spinner size="lg" color="default" />
       <div className="mt-6">
-        <Link href="/login">
+        <Link href="/">
           <div className="text-white bg-teal-600 font-semibold py-2 px-3 rounded-md">Home Page</div>
         </Link>
       </div>

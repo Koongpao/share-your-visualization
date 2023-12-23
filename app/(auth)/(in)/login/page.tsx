@@ -1,18 +1,18 @@
 "use client";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button, Input } from "@nextui-org/react";
 import { MdArrowBack } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { BsKey } from "react-icons/bs";
 import { handleOnChange } from "@/app/lib/functions";
-import { Login } from "@/app/lib/controller";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Success from "./success";
-import { atomTokenExist } from "@/app/atoms";
+import { signIn } from "next-auth/react";
 import { useAtom } from "jotai";
+import { atomLoginDependency } from "@/app/atoms";
 
 export default function Page() {
   const [UsernameOrEmailData, setUsernameOrEmailData] = useState<string>("");
@@ -24,49 +24,46 @@ export default function Page() {
   const [UsernameOrEmailWarning, setUsernameOrEmailWarning] = useState<boolean>(false);
   const [PasswordWarning, setPasswordWarning] = useState<boolean>(false);
 
-  const [FormComplete, setFormComplete] = useState<boolean>(false);
-  //To allow button to be pressed or not
   const [SuccessfullyLogin, setSuccessfullyLogin] = useState<boolean>(false);
   //To allow page to switch to success.tsx
 
-  const [tokenExist, setTokenExist] = useAtom(atomTokenExist);
+  const [FormComplete, setFormComplete] = useState<boolean>(false);
+  //To allow button to be pressed or not
 
+  const [loginDependency, setLoginDependency] = useAtom(atomLoginDependency);
+  
   useEffect(() => {
     setFormComplete(UsernameOrEmailData != "" && PasswordData != "");
   }, [UsernameOrEmailData, PasswordData]);
 
   const handleLogin = async () => {
     setFormComplete(false);
-    //Prevent Clicking button multiple times
-    const body = {
+
+    const signInResult = await signIn("credentials", {
       usernameOrEmail: UsernameOrEmailData,
       password: PasswordData,
-    };
-
-    const res = await Login(body);
-    if(res.success){
-      localStorage.setItem('token', res.data.token);
-    }
-    setTokenExist(res.success)
-    //Store tokens
-
-    setUsernameOrEmailWarning(!res.success);
-    setPasswordWarning(!res.success);
-    //Style input boxes if not success
-
-    setSuccessfullyLogin(res.success)
-
-    toast.info(res.message, {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      type: res.success ? "info" : "error",
-      theme: "light",
+      redirect: false,
     });
+
+    setUsernameOrEmailWarning(signInResult?.ok || false);
+    setPasswordWarning(signInResult?.ok || false);
+
+    if (signInResult?.ok) {
+      setSuccessfullyLogin(true);
+      setLoginDependency(true)
+    } else {
+      toast.info("Incorrect username or password", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        type: "error",
+        theme: "light",
+      });
+    }
   };
 
   if (SuccessfullyLogin) return <Success />;

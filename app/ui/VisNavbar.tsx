@@ -25,9 +25,10 @@ import { MdLogin } from "react-icons/md";
 import { FaPowerOff, FaRegFolderOpen, FaUserPlus } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 
-import { atomSidebarActive, atomTokenExist } from "../atoms";
+import { atomSidebarActive } from "../atoms";
 import { useAtom } from "jotai";
-import { GetMyInformation } from "../lib/controller";
+import { atomLoginDependency } from "../atoms";
+import { getSession } from "next-auth/react";
 
 export default function VisNavbar() {
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
@@ -35,26 +36,20 @@ export default function VisNavbar() {
 
   const currentPath = usePathname();
 
-  const [tokenExist, setTokenExist] = useAtom(atomTokenExist);
-
   const [navLoading, setNavLoading] = useState<boolean>(true);
-  const [displayUsername, setDisplayUsername] = useState<string>("");
+  const [session, setSession] = useState<any>();
 
-  const InitializeRightNavbarComponent = async () => {
-    setNavLoading(true)
-    const token = localStorage.getItem("token");
-    setTokenExist(!!token);
-    if (token) {
-      const res = await GetMyInformation(token);
-      setDisplayUsername(res.data.username);
-    }
+  const [loginDependency, setLoginDependency] = useAtom(atomLoginDependency);
+
+  const getSessionData = async () => {
+    const mysession = await getSession();
+    setSession(mysession);
     setNavLoading(false);
   };
-  //Ensure to render correct navbar component (don't remove)
 
   useEffect(() => {
-    InitializeRightNavbarComponent();
-  }, [tokenExist]);
+    getSessionData();
+  }, [loginDependency]);
 
   const NavbarMenuLinkList = [
     { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
@@ -126,7 +121,7 @@ export default function VisNavbar() {
               <Skeleton className="rounded-lg h-[1.5rem] w-[7rem]" />
             </div>
           )}
-          {!tokenExist && !navLoading && (
+          {!session && !navLoading && (
             <>
               <NavbarItem className="hidden lg:flex font-semibold">
                 <Link className="text-teal-600" href="/login">
@@ -145,7 +140,7 @@ export default function VisNavbar() {
               </NavbarItem>
             </>
           )}
-          {tokenExist && !navLoading && (
+          {session && !navLoading && (
             <>
             <NavbarItem className="hidden lg:flex">
                 <Avatar
@@ -158,7 +153,7 @@ export default function VisNavbar() {
                 />
               </NavbarItem>
               <NavbarItem className="hidden lg:flex">
-                <div className="font-semibold">@{displayUsername}</div>
+                <div className="font-semibold">@{session.user.name}</div>
               </NavbarItem>
               <NavbarItem>
                 <Button
@@ -195,7 +190,7 @@ export default function VisNavbar() {
                   setMenuOpen={setMenuOpen}
                 />
               ))}
-              {!tokenExist && (
+              {!session && (
                 <>
                   <NavbarMenuLink hrefValue="/login" labelValue="Login" icon={<MdLogin />} setMenuOpen={setMenuOpen} />
                   <NavbarMenuLink
@@ -206,7 +201,7 @@ export default function VisNavbar() {
                   />
                 </>
               )}
-              {tokenExist && (
+              {session && (
                 <NavbarMenuLink
                   hrefValue="/logout"
                   labelValue="Log Out"

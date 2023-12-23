@@ -1,34 +1,15 @@
 "use client";
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import { IoMdInformationCircle } from "react-icons/io";
 import { BsPencilSquare } from "react-icons/bs";
 import { RadioGroup, Radio, cn, Button } from "@nextui-org/react";
+import { handleTab, handleOnChange } from "@/app/lib/functions";
 
 export default function Page() {
   const [tagName, setTagName] = useState<string>("");
   const [isLibrary, setIsLibrary] = useState<string>("yes");
 
   const tagNameMaxChar = 20;
-
-  const handleTab = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
-    setFunction: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      setFunction((prev: string) => prev + "\t");
-    }
-  };
-
-  const handleOnChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    setFunction: React.Dispatch<React.SetStateAction<string>>,
-    maxChar: number
-  ) => {
-    if (e.target.value.length <= maxChar) {
-      setFunction(e.target.value);
-    }
-  };
 
   return (
     <div className="container py-6 px-8 md:px-24 lg:px-72 xl:px-96 pb-12">
@@ -55,15 +36,8 @@ export default function Page() {
         </div>
       </div>
       <div className="py-4">
-        <div className="font-medium pb-2 text-xl text-gray-500">
-          Library Tag?
-        </div>
-        <RadioGroup
-          defaultValue="no"
-          orientation="horizontal"
-          value={isLibrary}
-          onValueChange={setIsLibrary}
-        >
+        <div className="font-medium pb-2 text-xl text-gray-500">Library Tag?</div>
+        <RadioGroup defaultValue="no" orientation="horizontal" value={isLibrary} onValueChange={setIsLibrary}>
           <Radio
             value="yes"
             classNames={{
@@ -91,12 +65,8 @@ export default function Page() {
         </RadioGroup>
       </div>
       <div className="py-4 flex flex-row gap-4 items-center">
-        <Button className="font-semibold text-md text-white bg-teal-600">
-          Submit
-        </Button>
-        <Button className="font-semibold text-md text-gray-500 bg-transparent">
-          Cancel
-        </Button>
+        <Button className="font-semibold text-md text-white bg-teal-600">Submit</Button>
+        <Button className="font-semibold text-md text-gray-500 bg-transparent">Cancel</Button>
       </div>
     </div>
   );

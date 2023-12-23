@@ -26,11 +26,11 @@ export async function fetchData() {
     console.log("Fetching revenue data...");
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const data = "test";
+    const jsonResponse = "test";
 
     console.log("Data fetch complete after 2 seconds.");
 
-    return data;
+    return jsonResponse;
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to fetch data.");
@@ -45,8 +45,8 @@ export async function fetchData() {
 export async function GetAllTags() {
   try {
     const response = await fetch(baseProdURL + "/api/tags", { method: "GET" });
-    const data = await response.json();
-    return data;
+    const jsonResponse = await response.json();
+    return jsonResponse;
   } catch (error) {
     console.error(error);
   }
@@ -62,8 +62,8 @@ export async function SignUp(body: { username: string; email: string; password: 
       },
       body: JSON.stringify(body),
     });
-    const data = await response.json();
-    return data;
+    const jsonResponse = await response.json();
+    return jsonResponse;
   } catch (error) {
     console.error(error);
   }
@@ -79,8 +79,8 @@ export async function Login(body: { usernameOrEmail: string; password: string })
       },
       body: JSON.stringify(body),
     });
-    const data = await response.json();
-    return data;
+    const jsonResponse = await response.json();
+    return jsonResponse;
   } catch (error) {
     console.error(error);
   }
@@ -95,8 +95,8 @@ export async function GetMyInformation(token: string) {
         authorization: token,
       },
     });
-    const data = await response.json();
-    return data;
+    const jsonResponse = await response.json();
+    return jsonResponse;
   } catch (error) {
     console.error(error);
   }

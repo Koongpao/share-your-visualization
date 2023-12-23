@@ -1,23 +1,12 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { getServerAuthSession } from "@/app/api/auth/[...nextauth]/route";
+import { redirect} from "next/navigation";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const [Loading, setLoading] = useState<boolean>(true);
+export default async function layout({ children }: { children: React.ReactNode }) {
+  const session = await getServerAuthSession();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.replace("/login");
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  if (Loading) return null
+  if(!session) redirect("/login");
+  if(!session) return null;
 
   return <div>{children}</div>;
 };
 
-export default layout;
