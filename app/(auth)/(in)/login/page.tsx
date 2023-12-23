@@ -45,8 +45,8 @@ export default function Page() {
       redirect: false,
     });
 
-    setUsernameOrEmailWarning(signInResult?.ok || false);
-    setPasswordWarning(signInResult?.ok || false);
+    setUsernameOrEmailWarning(!signInResult?.ok);
+    setPasswordWarning(!signInResult?.ok);
 
     if (signInResult?.ok) {
       setSuccessfullyLogin(true);
