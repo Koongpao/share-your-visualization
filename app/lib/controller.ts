@@ -101,3 +101,20 @@ export async function GetMyInformation(token: string) {
     console.error(error);
   }
 }
+
+//PostVisualization - POST /api/visualizations
+export async function PostVisualization(token: string, formData: FormData) {
+  try {
+    const response = await fetch(baseURL + "/api/visualizations", {
+      method: "POST",
+      headers: {
+        authorization: token,
+      },
+      body: formData,
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}

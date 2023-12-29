@@ -13,10 +13,23 @@ import Success from "./success";
 import { signIn } from "next-auth/react";
 import { useAtom } from "jotai";
 import { atomLoginDependency } from "@/app/atoms";
+import { useForm } from "react-hook-form";
+
+interface LoginFormData {
+  usernameOrEmail: string;
+  password: string;
+}
 
 export default function Page() {
-  const [UsernameOrEmailData, setUsernameOrEmailData] = useState<string>("");
-  const [PasswordData, setPasswordData] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<LoginFormData>();
+
+  const UsernameOrEmailData = watch("usernameOrEmail");
+  const PasswordData = watch("password");
 
   const UsernameOrEmailMaxChar = 20;
   const PasswordMaxChar = 64;
@@ -31,26 +44,23 @@ export default function Page() {
   //To allow button to be pressed or not
 
   const [loginDependency, setLoginDependency] = useAtom(atomLoginDependency);
-  
+
   useEffect(() => {
     setFormComplete(UsernameOrEmailData != "" && PasswordData != "");
   }, [UsernameOrEmailData, PasswordData]);
 
-  const handleLogin = async () => {
+  const handleLogin = async (data: LoginFormData) => {
     setFormComplete(false);
-
     const signInResult = await signIn("credentials", {
       usernameOrEmail: UsernameOrEmailData,
       password: PasswordData,
       redirect: false,
     });
-
     setUsernameOrEmailWarning(!signInResult?.ok);
     setPasswordWarning(!signInResult?.ok);
-
     if (signInResult?.ok) {
       setSuccessfullyLogin(true);
-      setLoginDependency(true)
+      setLoginDependency(true);
     } else {
       toast.info("Incorrect username or password", {
         position: "bottom-center",
@@ -78,7 +88,10 @@ export default function Page() {
           </div>
         </Link>
       </div>
-      <div className="w-full sm:w-3/4 lg:w-3/5 xl:w-1/2 mx-auto flex flex-col justify-center items-center h-screen gap-y-6">
+      <form
+        className="w-full sm:w-3/4 lg:w-3/5 xl:w-1/2 mx-auto flex flex-col justify-center items-center h-screen gap-y-6"
+        onSubmit={handleSubmit(handleLogin)}
+      >
         <div className="font-bold text-4xl text-teal-700">Log in</div>
         <div className="w-full lg:w-1/2 my-6 flex gap-y-2 flex-col text-slate-500">
           <Input
@@ -90,12 +103,10 @@ export default function Page() {
                 Username or Email
               </div>
             }
-            value={UsernameOrEmailData}
             type="text"
-            onChange={(e) => {
-              handleOnChange(e, setUsernameOrEmailData, UsernameOrEmailMaxChar);
-            }}
             isInvalid={UsernameOrEmailWarning}
+            maxLength={UsernameOrEmailMaxChar}
+            {...register("usernameOrEmail", { required: true, maxLength: UsernameOrEmailMaxChar })}
           />
           <Input
             size={"sm"}
@@ -106,19 +117,18 @@ export default function Page() {
                 Password
               </div>
             }
-            value={PasswordData}
             type="password"
-            onChange={(e) => {
-              handleOnChange(e, setPasswordData, PasswordMaxChar);
-            }}
             isInvalid={PasswordWarning}
+            maxLength={PasswordMaxChar}
+            {...register("password", { required: true, maxLength: PasswordMaxChar })}
           />
         </div>
         <div className="w-full lg:w-1/2">
           <Button
             isDisabled={!FormComplete}
-            onClick={() => handleLogin()}
+            // onClick={() => handleLogin()}
             className="bg-teal-600 w-full text-white font-semibold"
+            type="submit"
           >
             Log In
           </Button>
@@ -133,7 +143,7 @@ export default function Page() {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
       <ToastContainer />
     </div>
   );

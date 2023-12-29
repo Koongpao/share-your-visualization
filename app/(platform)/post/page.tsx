@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
-import { Button, Autocomplete, AutocompleteItem} from "@nextui-org/react";
+import { Button, Autocomplete, AutocompleteItem } from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
+import { useForm } from "react-hook-form";
 
 import { BsPencilSquare } from "react-icons/bs";
 import { IoMdInformationCircle } from "react-icons/io";
@@ -15,7 +16,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
-import { GetAllTags } from "@/app/lib/controller";
+import { GetAllTags, PostVisualization } from "@/app/lib/controller";
 import { handleTab, handleOnChange } from "@/app/lib/functions";
 
 import {
@@ -23,6 +24,7 @@ import {
   DisplayTagNoLinkRemovable,
   DisplayLibraryNoLinkRemovable,
 } from "@/app/ui/small-components/DisplayTag";
+import { getSession } from "next-auth/react";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -45,20 +47,43 @@ export default function Page() {
   const [tagList, setTagList] = useState<string[]>([]);
   const [libraryList, setLibraryList] = useState<string[]>([]);
 
-  const initializePage = async () => {
-      const res = await GetAllTags();
-      //@ts-ignore
-      setLibraryList(res.data.library.filter((item) => item.status == "approved").map((item) => item.name));
-      //@ts-ignore
-      setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
+  const [token, setToken] = useState<string>("");
+
+  const getTags = async () => {
+    const res = await GetAllTags();
+    //@ts-ignore
+    setLibraryList(res.data.library.filter((item) => item.status == "approved").map((item) => item.name));
+    //@ts-ignore
+    setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
   };
+
+  const getToken = async () => {
+    const session = await getSession();
+    setToken(session?.user.accessToken);
+  };
+
   useEffect(() => {
-    initializePage();
+    getTags();
+    getToken();
   }, []);
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("title", titleValue);
+    formData.append("description", descriptionValue);
+    formData.append("code", sourceCodeValue);
+    formData.append("image", sourceImage[0]);
+    formData.append("externalLink", externalLinkValue);
+    formData.append("library", libraryValue);
+    formData.append("tags", JSON.stringify(tagValue));
+
+    const response = await PostVisualization(token, formData);
+    console.log(response);
+  };
 
   return (
     <div className={"container py-6 px-8 md:px-24 lg:px-72 pb-12"}>
-      <div className="flex flex-col">
+      <form className="flex flex-col" encType="multipart/form-data">
         <div className="py-2 border-b w-full">
           <div className="text-4xl font-semibold py-2 flex flex-row gap-x-2">
             <BsPencilSquare />
@@ -119,7 +144,7 @@ export default function Page() {
           <div className="text-gray-300 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
-              <label>Image preview of visualization. (Max 5 MB.)</label>
+              <label>Image preview of visualization. (Allowed File Types: .jpeg, .png)(Max 5 MB.)</label>
             </div>
           </div>
         </div>
@@ -127,7 +152,7 @@ export default function Page() {
         <div className="pb-4">
           <input
             className="py-2 text-lg font-regular flex h-10 w-full border-gray-200 rounded-md border-medium border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Link to Preview"
+            placeholder="Link to Demo"
             onChange={(e) => handleOnChange(e, setExternalLinkValue, externalLinkMaxChar)}
             onKeyDown={(e) => handleTab(e, setExternalLinkValue)}
             value={externalLinkValue}
@@ -254,10 +279,12 @@ export default function Page() {
         </div>
 
         <div className="py-4 flex flex-row gap-4 items-center">
-          <Button className="font-semibold text-md text-white bg-teal-600">Submit</Button>
-          <Button className="font-semibold text-md text-gray-500 bg-transparent">Cancel</Button>
+          <Button className="font-semibold text-md text-white bg-teal-600" onClick={() => handleSubmit()}>
+            Submit
+          </Button>
+          <Button className="font-semibold text-md text-gray-500 bg-transparent">Clear</Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
