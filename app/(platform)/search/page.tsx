@@ -54,7 +54,19 @@ export default function Page({
         setTagList((prevTagList) => [...prevTagList, eachTag]);
       }
     });
-    //SetTagList with Tags
+    //SetTagList with Tags from Search Params
+
+    let searchParamSearchQuery = Params.get("search_query") || "";
+    setSearchQuery(searchParamSearchQuery);
+    //SetSearchQuery with Search Query from Search Params
+    const {
+      Initialdata,
+      Initialmessage,
+      Initialsuccess,
+    }: { Initialdata: TVisualizationsArray; Initialmessage: string; Initialsuccess: boolean } =
+      await SearchVisualization(searchParamSearchQuery, searchParamTags.join(","));
+    setCardData(Initialdata);
+    // getVisualizationsData() but without states;
   };
 
   useEffect(() => {
@@ -71,7 +83,7 @@ export default function Page({
 
   const updateURLOnTagChange = () => {
     Params.set("tags", tagList.join(","));
-    Params.set("search_query", searchQuery)
+    Params.set("search_query", searchQuery);
     router.push(`/search?${Params.toString()}`);
   };
 
