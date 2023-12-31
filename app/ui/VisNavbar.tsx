@@ -86,7 +86,6 @@ export default function VisNavbar() {
                 <Input
                   size={"sm"}
                   placeholder="Search Visualization..."
-                  value={searchQuery}
                   endContent={
                     <div className="flex flex-row h-full items-center">
                       <Button

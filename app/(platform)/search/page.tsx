@@ -28,6 +28,8 @@ export default function Page({
 
   const [searchDependency, setSearchDependency] = useAtom(atomSearchDependency);
 
+  const [searchQuerySnapshot, setSearchQuerySnapshot] = useState<string>("");
+
   const InitializePage = async () => {
     const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
     const resTagList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
@@ -59,15 +61,16 @@ export default function Page({
     let searchParamSearchQuery = Params.get("search_query") || "";
     setSearchQuery(searchParamSearchQuery);
     //SetSearchQuery with Search Query from Search Params
+
     const {
-      Initialdata,
-      Initialmessage,
-      Initialsuccess,
-    }: { Initialdata: TVisualizationsArray; Initialmessage: string; Initialsuccess: boolean } =
-      await SearchVisualization(searchParamSearchQuery, searchParamTags.join(","));
-    setCardData(Initialdata);
+      data: InitialData,
+      message: InitialMessage,
+      success: InitialSuccess,
+    }: { data: TVisualizationsArray; message: string; success: boolean } = await SearchVisualization(searchParamSearchQuery, searchParamTags.join(","));
+    setCardData(InitialData);
+    setSearchQuerySnapshot(searchParamSearchQuery);
     setIsLoading(false);
-    // getVisualizationsData() but without states;
+    // getVisualizationsData() but without states because useEffect does not set states on first render;
   };
 
   useEffect(() => {
@@ -79,6 +82,7 @@ export default function Page({
     const { data, message, success }: { data: TVisualizationsArray; message: string; success: boolean } =
       await SearchVisualization(searchQuery, tagList.join(","));
     setCardData(data);
+    setSearchQuerySnapshot(searchQuery);
     setIsLoading(false);
   };
 
@@ -107,7 +111,9 @@ export default function Page({
     <div className="px-6">
       <div className="bg-white w-100 h-auto min-h-screen px-6 py-6">
         <div className="w-full border-b py-2">
-          <div className="text-lg font-medium text-slate-600">Showing Results for </div>
+          {searchQuerySnapshot && <div className="text-lg font-medium text-slate-600">
+            Showing Results for <span className="font-bold text-slate-800">{searchQuerySnapshot}</span>
+          </div>}
         </div>
         <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-start">
           {cardData?.map((eachCard: TVisualization, i: number) => (
