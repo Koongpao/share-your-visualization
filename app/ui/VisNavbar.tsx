@@ -44,7 +44,7 @@ export default function VisNavbar() {
   const [session, setSession] = useState<any>();
 
   const [loginDependency, setLoginDependency] = useAtom(atomLoginDependency);
-  const [searchDependency, setSearchDependecy] = useAtom(atomSearchDependency)
+  const [searchDependency, setSearchDependecy] = useAtom(atomSearchDependency);
 
   const [searchQuery, setSearchQuery] = useAtom(atomSearchQuery);
 
@@ -73,31 +73,41 @@ export default function VisNavbar() {
         <NavbarContent className="flex gap-4 w-4/5 sm:w-2/5" justify="center">
           <NavbarItem className="w-full">
             <div className="flex flex-row items-center gap-x-2">
-              <Input
-                size={"sm"}
-                placeholder="Search Visualization..."
-                endContent={
-                  <div className="flex flex-row h-full items-center">
-                    <Button
-                      className="cursor-pointer min-w-3 flex items-center bg-color-none"
-                      onClick={() => {
-                        setSearchDependecy((prev) => !prev);
-                        //Notify useEffect in Mainpage to update
-                      }}
-                    >
-                      <FaSearch className="text-slate-400 text-lg" />
-                    </Button>
-                  </div>
-                }
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
+              <form
+                className="w-full"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setSearchDependecy((prev) => !prev);
+                  Params.set("search_query", searchQuery);
+                  router.push(`/search?${Params.toString()}`);
+                  //Notify useEffect in Mainpage to update
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    setSearchDependecy((prev) => !prev);
+              >
+                <Input
+                  size={"sm"}
+                  placeholder="Search Visualization..."
+                  value={searchQuery}
+                  endContent={
+                    <div className="flex flex-row h-full items-center">
+                      <Button
+                        type="submit"
+                        className="cursor-pointer min-w-3 flex items-center bg-color-none"
+                        onClick={() => {
+                          setSearchDependecy((prev) => !prev);
+                          Params.set("search_query", searchQuery);
+                          router.push(`/search?${Params.toString()}`);
+                          //Notify useEffect in Mainpage to update
+                        }}
+                      >
+                        <FaSearch className="text-slate-400 text-lg" />
+                      </Button>
+                    </div>
                   }
-                }}
-              />
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                  }}
+                />
+              </form>
               {currentPath === "/search" && (
                 <Button
                   className="flex lg:hidden cursor-pointer min-w-3 max-w-[5rem] p-1.5 items-center bg-white border-solid border-2 rounded-none"
