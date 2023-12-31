@@ -8,7 +8,7 @@ export default function Loading() {
         <div className="w-full border-b py-2">
           <div className="text-lg font-medium text-slate-600">Showing Results for </div>
         </div>
-        <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-evenly">
+        <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-start">
           <VisMinicardSkeleton/>
           <VisMinicardSkeleton/>
           <VisMinicardSkeleton/>

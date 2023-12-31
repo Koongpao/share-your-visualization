@@ -20,3 +20,4 @@ export const KnownLibraries: {
   recharts: { bgColor: "bg-blue-500", logo: "/library-icons/recharts_logo.png" },
   victory: { bgColor: "bg-red-400", logo: "/library-icons/victory_logo.png" },
 };
+

@@ -102,16 +102,47 @@ export async function GetMyInformation(token: string) {
   }
 }
 
+
 //PostVisualization - POST /api/visualizations
 export async function PostVisualization(token: string, formData: FormData) {
   try {
-    const response = await fetch(baseURL + "/api/visualizations", {
+    const response = await fetch(baseProdURL + "/api/visualizations", {
       method: "POST",
       headers: {
         authorization: token,
       },
       body: formData,
     });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//GetSpecificVisualization - GET /api/visualizations/:id
+export async function GetSpecificVisualization(id: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id, { method: "GET" });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//SearchVisualization - GET /api/visualizations?search_query=...&tags=...
+export async function SearchVisualization(search_query?: string, tags?: string) {
+  try {
+    let url = "/api/visualizations?";
+
+    if (search_query) {
+      url += "search_query=" + search_query;
+    }
+    if (tags && tags.length > 0) {
+      url += "&tags=" + tags;
+    }
+    const response = await fetch(baseProdURL + url, { method: "GET" });
     const jsonResponse = await response.json();
     return jsonResponse;
   } catch (error) {

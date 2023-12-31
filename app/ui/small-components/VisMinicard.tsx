@@ -4,55 +4,46 @@ import Image from "next/image";
 import { Card, CardHeader, CardBody, Skeleton } from "@nextui-org/react";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { DisplayTag, MiniDisplayTag, TagListDisplayTag } from "./DisplayTag";
+import { TVisualization } from "@/app/lib/definitions";
+import { format } from "date-fns";
 
 interface VisMinicardProps {
-  cardInfo: {
-    title: string;
-    image: string;
-    user: string;
-    date: string;
-    library: string;
-    tags: string[];
-  };
+  cardInfo: TVisualization;
 }
 
-export function VisMinicard({ cardInfo }: VisMinicardProps) {
+export const VisMinicard: React.FC<VisMinicardProps> = ({
+  cardInfo
+}) => {
   return (
     <Card className="pt-4 pb-2 w-80 h-[auto]">
       <CardHeader className="pb-0 pt-2 px-4 flex items-start h-[10rem] max-h-[10rem] relative">
-        <Link href="/visualization">
-          <Image
-            alt="Card background"
-            className="object-cover w-full h-full rounded-xl"
-            src={cardInfo.image}
-            fill
-          />
+        <Link href={`/visualization/${cardInfo._id}`}>
+          <Image alt="Card background" className="object-cover w-full h-full rounded-xl" src={cardInfo.image} fill />
         </Link>
       </CardHeader>
       <CardBody className="overflow-visible py-2">
-        <h4 className="font-bold text-large whitespace-nowrap overflow-hidden overflow-ellipsis">
-          {cardInfo.title}
-        </h4>
+        <h4 className="font-bold text-large whitespace-nowrap overflow-hidden overflow-ellipsis">{cardInfo.title}</h4>
         <div className="flex flex-row gap-x-1 items-center">
-          <p className="text-sm">{cardInfo.user}</p>
+          <p className="text-sm">@{cardInfo.creator.username}</p>
         </div>
         <div className="text-default-500 text-sm flex flex-row gap-x-1 items-center">
           <FaRegCalendarAlt className="text-slate-600 text-md" />
-          {cardInfo.date}
+          {format(new Date(cardInfo.created_date), "dd MMMM yyyy")}
         </div>
         <div className="inline-block items-center py-1">
           <div className="flex flex-row gap-1 whitespace-nowrap flex-wrap lg:flex-nowrap lg:overflow-scroll">
-            <DisplayTag label={cardInfo.library} />
+            <DisplayTag label={cardInfo.library.name} />
             {/* {cardInfo.tags.map((tagsInfo, i) => (
               <MiniDisplayTag label={tagsInfo} key={i} />
             ))} */}
-            <MiniDisplayTag label={cardInfo.tags.length.toString() + " More Tags"}/>
+
+            <MiniDisplayTag label={cardInfo.tags.length.toString() + " More Tags"} />
           </div>
         </div>
       </CardBody>
     </Card>
   );
-}
+};
 
 export function VisMinicardSkeleton() {
   return (

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import {
   Navbar,
@@ -16,21 +16,25 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 
-import { FaSearch, FaHome, FaStar } from "react-icons/fa";
-import { IoIosPricetag, IoIosPricetags } from "react-icons/io";
-import { IoSearch, IoExitOutline } from "react-icons/io5";
-import { BsPencilSquare } from "react-icons/bs";
+import { FaSearch, FaHome } from "react-icons/fa";
+import { IoExitOutline } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
 import { MdLogin } from "react-icons/md";
-import { FaPowerOff, FaRegFolderOpen, FaUserPlus } from "react-icons/fa6";
+import { FaPowerOff, FaUserPlus } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 
-import { atomSidebarActive } from "../atoms";
+import { atomSidebarActive, atomLoginDependency, atomSearchQuery, atomSearchDependency } from "../atoms";
 import { useAtom } from "jotai";
-import { atomLoginDependency } from "../atoms";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+import { NavbarMenuLinkList, NavbarSecondaryLinkList } from "../lib/resourcesExtension";
 
 export default function VisNavbar() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const Params = new URLSearchParams(searchParams);
+
   const [showSidebar, setShowSidebar] = useAtom(atomSidebarActive);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
@@ -40,6 +44,9 @@ export default function VisNavbar() {
   const [session, setSession] = useState<any>();
 
   const [loginDependency, setLoginDependency] = useAtom(atomLoginDependency);
+  const [searchDependency, setSearchDependecy] = useAtom(atomSearchDependency)
+
+  const [searchQuery, setSearchQuery] = useAtom(atomSearchQuery);
 
   const getSessionData = async () => {
     const mysession = await getSession();
@@ -50,25 +57,6 @@ export default function VisNavbar() {
   useEffect(() => {
     getSessionData();
   }, [loginDependency]);
-
-  const NavbarMenuLinkList = [
-    { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
-    { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
-    { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
-    { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
-    { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
-    { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
-  ];
-  //Does not include /logout because it needs special classname
-
-  const NavbarSecondaryLinkList = [
-    { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
-    { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
-    { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
-    { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
-    { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
-    { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
-  ];
 
   if (currentPath === "/login" || currentPath === "/sign-up" || currentPath === "/logout") return <></>;
 
@@ -92,12 +80,23 @@ export default function VisNavbar() {
                   <div className="flex flex-row h-full items-center">
                     <Button
                       className="cursor-pointer min-w-3 flex items-center bg-color-none"
-                      onClick={() => console.log("Test")}
+                      onClick={() => {
+                        setSearchDependecy((prev) => !prev);
+                        //Notify useEffect in Mainpage to update
+                      }}
                     >
                       <FaSearch className="text-slate-400 text-lg" />
                     </Button>
                   </div>
                 }
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setSearchDependecy((prev) => !prev);
+                  }
+                }}
               />
               {currentPath === "/search" && (
                 <Button
@@ -142,7 +141,7 @@ export default function VisNavbar() {
           )}
           {session && !navLoading && (
             <>
-            <NavbarItem className="hidden lg:flex">
+              <NavbarItem className="hidden lg:flex">
                 <Avatar
                   showFallback
                   size={"md"}

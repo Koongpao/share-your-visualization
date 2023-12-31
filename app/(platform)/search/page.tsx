@@ -1,127 +1,92 @@
 "use client";
-import { fetchData } from "@/app/lib/controller";
+import { SearchVisualization } from "@/app/lib/controller";
 import { VisMinicard } from "@/app/ui/small-components/VisMinicard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
-import { atomTagList } from "@/app/atoms";
+import { atomSearchQuery, atomTagList, atomSearchDependency } from "@/app/atoms";
 import Loading from "./loading";
 import { useRouter } from "next/navigation";
 import { GetAllTags } from "@/app/lib/controller";
+import { TVisualization, TVisualizationsArray, TlibraryAndTags } from "@/app/lib/definitions";
 
 export default function Page({
   searchParams,
 }: {
   searchParams?: {
-    query?: string;
+    search_query?: string;
     tags?: string;
   };
 }) {
   const router = useRouter();
+  const Params = new URLSearchParams(searchParams);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tagList, setTagList] = useAtom(atomTagList);
+  const [searchQuery, setSearchQuery] = useAtom(atomSearchQuery);
 
-  var cardData =
-    [
-      {
-        source_code: "test",
-        title: "Loess Regression",
-        image: "/loess_regression.png",
-        user: "@Username",
-        date: "12 December 2023",
-        library: "d3.js",
-        tags: ["graph", "static", "dynamic", "interactive"],
-      },
-      {
-        source_code: "test2",
-        title: "test",
-        image: "/country.png",
-        user: "@Admin",
-        date: "15 December 2023",
-        library: "vega",
-        tags: ["graph"],
-      },
-      {
-        source_code: "test2",
-        title: "test",
-        image: "/high.png",
-        user: "@Admin",
-        date: "15 December 2023",
-        library: "vega",
-        tags: ["graph"],
-      },
-    ] || null;
+  const [cardData, setCardData] = useState<TVisualizationsArray>();
 
-  cardData = Array.from({ length: 6 }, () => [...cardData]).flat();
-  //extract searchParams by 1. select the tags value, 2. split the tags value by " ", 3.remove duplicates by filter
-  const [availableTagList, setAvailableTagList] = useState<string[]>([]);
+  const [searchDependency, setSearchDependency] = useAtom(atomSearchDependency);
 
-  const getTagList = async () => {
-    try {
-      const res = await GetAllTags();
-      //@ts-ignore
-      const resTagList = (res.data.library.filter((item) => item.status == "approved").map((item) => item.name))
-      //@ts-ignore
-      const resLibraryList = (res.data.tags.filter((item) => item.status == "approved").map((item) => item.name))
-      setAvailableTagList([...resTagList, ...resLibraryList])
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  const InitializePage = async () => {
+    const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
+    const resTagList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
+    const resLibraryList = data.tags.filter((item) => item.status == "approved").map((item) => item.name);
 
-  var searchParamTags = searchParams?.tags ? searchParams.tags.split(" ") : [];
-  searchParamTags = searchParamTags.filter((item, pos) => {
-    return searchParamTags.indexOf(item) === pos;
-  });
+    const availableTagList = [...resTagList, ...resLibraryList];
+    //Get Available Tags from server
 
-  const extractSearchParams = () => {
-    // searchParamTags.filter((tags, index) => {searchParamTags.indexOf(tags) === index})
-    searchParamTags.forEach((eachTag) => {
+    let searchParamTags = Params.get("tags")?.split(",") || [];
+    //Extract Tags from Search Params
+
+    searchParamTags = searchParamTags.filter((item, pos) => {
+      return searchParamTags.indexOf(item) === pos;
+    });
+    //Prevent duplicate tags
+
+    searchParamTags?.forEach((eachTag) => {
       if (!availableTagList.includes(eachTag)) {
-        // If tag is not available, terminate the function
-        console.log("Tag not found:", eachTag);
+        // If tag is not available, terminate the loop
         return;
       }
       if (!tagList?.includes(eachTag)) {
         // Check if the tag is already in the list
-        console.log("Valid tag:", eachTag);
         setTagList((prevTagList) => [...prevTagList, eachTag]);
       }
     });
+    //SetTagList with Tags
   };
 
   useEffect(() => {
-    //initialize searchParams
-    getTagList();
-    extractSearchParams();
+    InitializePage();
   }, []);
 
-  const fetchDataAndSetState = async () => {
+  const getVisualizationsData = async () => {
     setIsLoading(true);
-    try {
-      const data = await fetchData();
-      console.log("test", data);
-    } catch (error) {
-      // Handle error, if needed
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    const { data, message, success }: { data: TVisualizationsArray; message: string; success: boolean } =
+      await SearchVisualization(searchQuery, tagList.join(","));
+    setCardData(data);
+    setIsLoading(false);
   };
 
-  const updateURL = () => {
-    if (tagList.length > 0) {
-      router.push(`/search?tags=${tagList.join("+")}`);
-    } else {
-      router.push(`/search`);
-    }
+  const updateURLOnTagChange = () => {
+    Params.set("tags", tagList.join(","));
+    Params.set("search_query", searchQuery)
+    router.push(`/search?${Params.toString()}`);
   };
+
+  const firstUpdate = useRef(true);
 
   useEffect(() => {
-    //called everytime tagList is changed
-    fetchDataAndSetState();
-    updateURL();
-  }, [tagList]);
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    //Prevent useEffect from running on first render
+    //called everytime tagList is changed from VisSidebar or searchDependency is called by button in input in VisNavbar
+    updateURLOnTagChange();
+    getVisualizationsData();
+  }, [tagList, searchDependency]);
 
   if (isLoading) return <Loading />;
 
@@ -131,9 +96,9 @@ export default function Page({
         <div className="w-full border-b py-2">
           <div className="text-lg font-medium text-slate-600">Showing Results for </div>
         </div>
-        <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-evenly">
-          {cardData?.map((cardInfo, i) => (
-            <VisMinicard key={i} cardInfo={cardInfo} />
+        <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-start">
+          {cardData?.map((eachCard: TVisualization, i: number) => (
+            <VisMinicard key={i} cardInfo={eachCard} />
           ))}
         </div>
       </div>
