@@ -66,6 +66,7 @@ export default function Page({
     }: { Initialdata: TVisualizationsArray; Initialmessage: string; Initialsuccess: boolean } =
       await SearchVisualization(searchParamSearchQuery, searchParamTags.join(","));
     setCardData(Initialdata);
+    setIsLoading(false);
     // getVisualizationsData() but without states;
   };
 
