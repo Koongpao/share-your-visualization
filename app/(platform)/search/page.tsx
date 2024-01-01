@@ -34,7 +34,6 @@ export default function Page({
     const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
     const resTagList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
     const resLibraryList = data.tags.filter((item) => item.status == "approved").map((item) => item.name);
-
     const availableTagList = [...resTagList, ...resLibraryList];
     //Get Available Tags from server
 
@@ -48,7 +47,7 @@ export default function Page({
 
     searchParamTags?.forEach((eachTag) => {
       if (!availableTagList.includes(eachTag)) {
-        // If tag is not available, terminate the loop
+        // Check validity of tags
         return;
       }
       if (!tagList?.includes(eachTag)) {
@@ -59,17 +58,11 @@ export default function Page({
     //SetTagList with Tags from Search Params
 
     let searchParamSearchQuery = Params.get("search_query") || "";
+    //Extract Search Query from Search Params
     setSearchQuery(searchParamSearchQuery);
     //SetSearchQuery with Search Query from Search Params
 
-    const {
-      data: InitialData,
-      message: InitialMessage,
-      success: InitialSuccess,
-    }: { data: TVisualizationsArray; message: string; success: boolean } = await SearchVisualization(searchParamSearchQuery, searchParamTags.join(","));
-    setCardData(InitialData);
-    setSearchQuerySnapshot(searchParamSearchQuery);
-    setIsLoading(false);
+    getVisualizationsData(searchParamSearchQuery, searchParamTags);
     // getVisualizationsData() but without states because useEffect does not set states on first render;
   };
 
@@ -77,16 +70,16 @@ export default function Page({
     InitializePage();
   }, []);
 
-  const getVisualizationsData = async () => {
+  const getVisualizationsData = async (searchQuery: string, tagQuery: string[]) => {
     setIsLoading(true);
     const { data, message, success }: { data: TVisualizationsArray; message: string; success: boolean } =
-      await SearchVisualization(searchQuery, tagList.join(","));
+      await SearchVisualization(searchQuery, tagQuery.join(","));
     setCardData(data);
     setSearchQuerySnapshot(searchQuery);
     setIsLoading(false);
   };
 
-  const updateURLOnTagChange = () => {
+  const updateURLOnParamsChange = () => {
     Params.set("tags", tagList.join(","));
     Params.set("search_query", searchQuery);
     router.push(`/search?${Params.toString()}`);
@@ -100,9 +93,10 @@ export default function Page({
       return;
     }
     //Prevent useEffect from running on first render
-    //called everytime tagList is changed from VisSidebar or searchDependency is called by button in input in VisNavbar
-    updateURLOnTagChange();
-    getVisualizationsData();
+    //useEffect with dependencies must be used because router.push() does not trigger a page refresh when on the same page
+    //called everytime tagList is changed from VisSidebar or searchDependency is called by search button in VisNavbar
+    updateURLOnParamsChange();
+    getVisualizationsData(searchQuery, tagList);
   }, [tagList, searchDependency]);
 
   if (isLoading) return <Loading />;

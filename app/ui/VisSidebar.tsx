@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -27,6 +27,9 @@ import { FaChartPie } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
 import { RxCross1 } from "react-icons/rx";
+
+import { TlibraryAndTags } from "../lib/definitions";
+import VisSidebarLoading from "./VisSidebarLoading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -58,18 +61,19 @@ export default function VisSidebar() {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
 
   const [availableTagList, setAvailableTagList] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const initializePage = async () => {
-    const res = await GetAllTags();
-    //@ts-ignore
-    const resTagList = res.data.library.filter((item) => item.status === "approved").map((item) => item.name);
-    //@ts-ignore
-    const resLibraryList = res.data.tags.filter((item) => item.status === "approved").map((item) => item.name);
+  const InitializePage = async () => {
+    setIsLoading(true);
+    const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
+    const resTagList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
+    const resLibraryList = data.tags.filter((item) => item.status == "approved").map((item) => item.name);
     setAvailableTagList([...resTagList, ...resLibraryList]);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    initializePage();
+    InitializePage();
   }, []);
 
   const handleSearch = (query: string) => {
@@ -82,13 +86,11 @@ export default function VisSidebar() {
   };
 
   const handleTagClick = (key: string) => {
-    console.log(key);
     // Check if the tag is already in the list
     setSearchTerm("");
     setSearchResults([]);
     if (!availableTagList.includes(key)) {
       // If tag is not available, terminate the function
-      console.log("Tag not found");
       return;
     }
     if (!activeTagList?.includes(key)) {
@@ -98,6 +100,8 @@ export default function VisSidebar() {
       return;
     }
   };
+
+  if (isLoading) return <VisSidebarLoading />;
 
   //Initial classes: -left-96 lg:left-0 lg:w-80
   return (
