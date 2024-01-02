@@ -61,6 +61,7 @@ export default function Page({
     //Extract Search Query from Search Params
     setSearchQuery(searchParamSearchQuery);
     //SetSearchQuery with Search Query from Search Params
+    console.log(searchParamTags, searchParamSearchQuery)
 
     getVisualizationsData(searchParamSearchQuery, searchParamTags);
     // getVisualizationsData() but without states because useEffect does not set states on first render;

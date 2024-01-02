@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
         <div>
           <div className="flex justify-center">
-            <Image src={data.image} alt="" width={900} height={400} />
+            <Image src={data.image} alt="" width={900} height={400}/>
           </div>
           <div className="flex justify-center">
             <Button className="bg-teal-600 text-white font-semibold shadow-xl">Preview Demo</Button>
