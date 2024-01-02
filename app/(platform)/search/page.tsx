@@ -37,7 +37,8 @@ export default function Page({
     const availableTagList = [...resTagList, ...resLibraryList];
     //Get Available Tags from server
 
-    let searchParamTags = Params.get("tags")?.split(",") || [];
+    // let searchParamTags = Params.get("tags")?.split(",") || [];
+    let searchParamTags = searchParams?.tags?.split(",") || [];
     //Extract Tags from Search Params
 
     searchParamTags = searchParamTags.filter((item, pos) => {
@@ -57,7 +58,8 @@ export default function Page({
     });
     //SetTagList with Tags from Search Params
 
-    let searchParamSearchQuery = Params.get("search_query") || "";
+    // let searchParamSearchQuery = Params.get("search_query") || "";
+    let searchParamSearchQuery = searchParams?.search_query || "";
     //Extract Search Query from Search Params
     setSearchQuery(searchParamSearchQuery);
     //SetSearchQuery with Search Query from Search Params
