@@ -6,7 +6,7 @@ import { RxCross2 } from "react-icons/rx";
 import { CapitalizeWords } from "@/app/lib/functions";
 
 
-export function DisplayTag({ label }: { label: string }) {
+export function DisplayTagWithLink({ label }: { label: string }) {
   //used in /visualization
   const CapitalizedLabel = CapitalizeWords(label);
 
@@ -106,7 +106,7 @@ export function TagListDisplayTagLanguage({ label }: { label: string }) {
   );
 }
 
-export function DisplayTagNoLink({ label }: { label: string }) {
+export function DisplayTag({ label }: { label: string }) {
   //used in /post
   const CapitalizedLabel = CapitalizeWords(label);
 

@@ -1,4 +1,4 @@
-import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-components/DisplayTag";
+import { TagListDisplayTag, TagListDisplayTagLanguage } from "@/app/ui/small-components/display-tag";
 import { GetAllTags } from "@/app/lib/controller";
 import { TlibraryAndTags } from "@/app/lib/definitions";
 

@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import Providers from "./providers";
-import VisNavbar from "./ui/VisNavbar";
+import VisNavbar from "./ui/vis-navbar";
 import SsProvider from "./SsProvider";
 
 const inter = Inter({ subsets: ["latin"] });

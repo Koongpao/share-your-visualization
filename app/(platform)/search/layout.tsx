@@ -1,4 +1,4 @@
-import VisSidebar from '@/app/ui/VisSidebar'
+import VisSidebar from '@/app/ui/vis-sidebar'
 import React from 'react'
 
 const layout = ({ children }: { children: React.ReactNode }) => {

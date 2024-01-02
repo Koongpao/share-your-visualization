@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button, Avatar } from "@nextui-org/react";
-import { DisplayTag } from "@/app/ui/small-components/DisplayTag";
+import { DisplayTagWithLink } from "@/app/ui/small-components/display-tag";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
@@ -27,14 +27,14 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Library</p>
             <div className="flex flex-row gap-x-1">
-              <DisplayTag label={data.library.name} />
+              <DisplayTagWithLink label={data.library.name} />
             </div>
           </div>
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Tags</p>
             <div className="flex flex-row gap-x-1">
               {data.tags.map((tag: { name: string }, i) => (
-                <DisplayTag key={i} label={tag.name} />
+                <DisplayTagWithLink key={i} label={tag.name} />
               ))}
             </div>
           </div>

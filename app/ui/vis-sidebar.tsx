@@ -13,8 +13,8 @@ import {
 
 import { GetAllTags } from "../lib/controller";
 
-import { SidebarTag, SidebarTagRm } from "./small-components/SidebarTag";
-import { MiniDisplayTag, DisplayTag } from "./small-components/DisplayTag";
+import { SidebarTag, SidebarTagRm } from "./small-components/sidebar-tag";
+import { MiniDisplayTag, DisplayTagWithLink } from "./small-components/display-tag";
 
 import { useAtom } from "jotai";
 import { atomSidebarActive, atomTagList } from "../atoms";
@@ -29,7 +29,7 @@ import { VscSettings } from "react-icons/vsc";
 import { RxCross1 } from "react-icons/rx";
 
 import { TlibraryAndTags } from "../lib/definitions";
-import VisSidebarLoading from "./VisSidebarLoading";
+import VisSidebarLoading from "./vis-sidebar-loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -176,7 +176,7 @@ export default function VisSidebar() {
             >
               {searchResults.map((result, index) => (
                 <ListboxItem key={result}>
-                  <DisplayTag label={result} />
+                  <DisplayTagWithLink label={result} />
                   {/* <div className="text-slate-500 font-semibold lowercase bg-slate-200 py-0.5 px-2.5 shadow-sm border-b-1 border-r-1 border-slate-300 w-fit">
                     {result}
                   </div> */}

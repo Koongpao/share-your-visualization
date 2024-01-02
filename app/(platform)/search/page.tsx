@@ -1,6 +1,6 @@
 "use client";
 import { SearchVisualization } from "@/app/lib/controller";
-import { VisMinicard } from "@/app/ui/small-components/VisMinicard";
+import { VisMinicard } from "@/app/ui/small-components/vis-minicard";
 import { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
 import { atomSearchQuery, atomTagList, atomSearchDependency } from "@/app/atoms";
@@ -9,9 +9,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { GetAllTags } from "@/app/lib/controller";
 import { TVisualization, TVisualizationsArray, TlibraryAndTags } from "@/app/lib/definitions";
 
-
-
-export const dynamic='force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default function Page({}: // searchParams,
 {
@@ -23,7 +21,6 @@ export default function Page({}: // searchParams,
   const searchParams = useSearchParams();
   const router = useRouter();
   const Params = new URLSearchParams(searchParams);
-
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tagList, setTagList] = useAtom(atomTagList);
@@ -120,6 +117,14 @@ export default function Page({}: // searchParams,
           {cardData?.map((eachCard: TVisualization, i: number) => (
             <VisMinicard key={i} cardInfo={eachCard} />
           ))}
+          {cardData?.length === 0 && (
+            <div className="flex flex-col justify-start gap-y-2">
+              <div className="text-2xl font-semibold text-slate-600">No Results Found.</div>
+              <div className="text-md font-medium text-slate-400">
+                Try something else.
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

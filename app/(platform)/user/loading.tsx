@@ -1,5 +1,5 @@
 import React from 'react'
-import { VisMinicardSkeleton } from '@/app/ui/small-components/VisMinicard'
+import { VisMinicardSkeleton } from '@/app/ui/small-components/vis-minicard'
 
 export default function Loading() {
   return (

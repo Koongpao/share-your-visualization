@@ -20,10 +20,10 @@ import { GetAllTags, PostVisualization } from "@/app/lib/controller";
 import { handleTab, handleOnChange } from "@/app/lib/functions";
 
 import {
-  DisplayTagNoLink,
+  DisplayTag,
   DisplayTagNoLinkRemovable,
   DisplayLibraryNoLinkRemovable,
-} from "@/app/ui/small-components/DisplayTag";
+} from "@/app/ui/small-components/display-tag";
 import { getSession } from "next-auth/react";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
@@ -205,7 +205,7 @@ export default function Page() {
             >
               {libraryList.map((tag) => (
                 <AutocompleteItem key={tag} textValue={tag}>
-                  <DisplayTagNoLink label={tag} />
+                  <DisplayTag label={tag} />
                 </AutocompleteItem>
               ))}
             </Autocomplete>
@@ -248,7 +248,7 @@ export default function Page() {
             >
               {tagList.map((tag) => (
                 <AutocompleteItem key={tag} textValue={tag}>
-                  <DisplayTagNoLink label={tag} />
+                  <DisplayTag label={tag} />
                 </AutocompleteItem>
               ))}
             </Autocomplete>

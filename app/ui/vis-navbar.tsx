@@ -29,7 +29,7 @@ import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 
-import { NavbarMenuLinkList, NavbarSecondaryLinkList } from "../lib/resourcesExtension";
+import { NavbarMenuLinkList, NavbarSecondaryLinkList } from "../lib/resources-extension";
 
 export default function VisNavbar() {
   const router = useRouter();
