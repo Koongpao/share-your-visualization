@@ -24,7 +24,7 @@ export const VisMinicard: React.FC<VisMinicardProps> = ({
       <CardBody className="overflow-visible py-2">
         <h4 className="font-bold text-large whitespace-nowrap overflow-hidden overflow-ellipsis">{cardInfo.title}</h4>
         <div className="flex flex-row gap-x-1 items-center">
-          <p className="text-sm">@{cardInfo.creator.username}</p>
+          <p className="text-sm font-medium">By @{cardInfo.creator.username}</p>
         </div>
         <div className="text-default-500 text-sm flex flex-row gap-x-1 items-center">
           <FaRegCalendarAlt className="text-slate-600 text-md" />

@@ -28,6 +28,7 @@ import { useAtom } from "jotai";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+
 import { NavbarMenuLinkList, NavbarSecondaryLinkList } from "../lib/resourcesExtension";
 
 export default function VisNavbar() {
@@ -58,6 +59,14 @@ export default function VisNavbar() {
     getSessionData();
   }, [loginDependency]);
 
+  useEffect(() => {
+    console.log(currentPath)
+    if (currentPath !== "/search") {
+      setSearchQuery("")
+    }
+  }, [currentPath]);
+  //Reset Search Query when not in search page
+
   if (currentPath === "/login" || currentPath === "/sign-up" || currentPath === "/logout") return <></>;
 
   return (
@@ -86,6 +95,7 @@ export default function VisNavbar() {
                 <Input
                   size={"sm"}
                   placeholder="Search Visualization..."
+                  value={searchQuery}
                   endContent={
                     <div className="flex flex-row h-full items-center">
                       <Button

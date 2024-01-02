@@ -1,13 +1,15 @@
 "use client";
 import { SearchVisualization } from "@/app/lib/controller";
 import { VisMinicard } from "@/app/ui/small-components/VisMinicard";
-import { useEffect, useState, useRef, use } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
 import { atomSearchQuery, atomTagList, atomSearchDependency } from "@/app/atoms";
 import Loading from "./loading";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { GetAllTags } from "@/app/lib/controller";
 import { TVisualization, TVisualizationsArray, TlibraryAndTags } from "@/app/lib/definitions";
+
+
 
 export const dynamic='force-dynamic';
 
@@ -21,6 +23,7 @@ export default function Page({}: // searchParams,
   const searchParams = useSearchParams();
   const router = useRouter();
   const Params = new URLSearchParams(searchParams);
+
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tagList, setTagList] = useAtom(atomTagList);
@@ -49,6 +52,7 @@ export default function Page({}: // searchParams,
     const availableTagList = [...resTagList, ...resLibraryList];
     //Get Available Tags from server
 
+    setTagList([]);
     searchParamTags?.forEach((eachTag) => {
       if (!availableTagList.includes(eachTag)) {
         // Check validity of tags
@@ -63,8 +67,6 @@ export default function Page({}: // searchParams,
 
     setSearchQuery(searchParamSearchQuery);
     //SetSearchQuery with Search Query from Search Params
-    console.log(searchParamTags, searchParamSearchQuery);
-
     getVisualizationsData(searchParamSearchQuery, searchParamTags);
     // getVisualizationsData() but without states because useEffect does not set states on first render;
   };
