@@ -1,35 +1,31 @@
-'use client'
 import React from 'react'
 import Empty from '../empty'
-import { useState, useEffect } from 'react';
-import { fetchData } from '@/app/lib/controller';
-import Loading from '../loading';
+import { GetMyVisualizations } from '@/app/lib/controller';
+import { VisMinicard } from '@/app/ui/small-components/vis-minicard';
+import {TVisualization, TVisualizationsArray} from '@/app/lib/definitions';
+import { getServerAuthSession } from '@/app/lib/auth';
+import Unauthenticated from '../../unauthenticated';
 
-export default function Page() {
+export default async function Page() {
 
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const session = await getServerAuthSession()
 
-  useEffect(() => {
-    const fetchDataAndSetState = async () => {
-      try {
-        setIsLoading(true)
-        const data = await fetchData();
-        console.log("test", data);
-      } catch (error) {
-        // Handle error, if needed
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false)
-      }
-    };
-    fetchDataAndSetState();
-  },[]);
+  if (!session) return <Unauthenticated/>
 
-  if (isLoading) return <Loading/>
+  const {data, message, success}: {data: TVisualizationsArray, message: string, success: boolean} = await GetMyVisualizations(session?.user.accessToken)
 
-  if (true) return <Empty/>
+  if (data.length === 0) return <Empty/>
+
 
   return (
-    <div>Page</div>
+    <div className="px-6 lg:px-32">
+      <div className="bg-white w-100 h-auto min-h-screen px-6 py-6">
+        <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-evenly">
+          {data.map((eachCard: TVisualization, i: number) => (
+            <VisMinicard key={i} cardInfo={eachCard} />
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }

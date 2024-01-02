@@ -149,3 +149,19 @@ export async function SearchVisualization(search_query?: string, tags?: string) 
     console.error(error);
   }
 }
+
+//GetMyVisualizations - GET /api/visualizations/my-visualizations
+export async function GetMyVisualizations(token: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/my-visualizations", {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}

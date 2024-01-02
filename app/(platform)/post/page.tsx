@@ -18,6 +18,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 import { GetAllTags, PostVisualization } from "@/app/lib/controller";
 import { handleTab, handleOnChange } from "@/app/lib/functions";
+import {TlibraryAndTags} from "@/app/lib/definitions";
 
 import {
   DisplayTag,
@@ -25,6 +26,7 @@ import {
   DisplayLibraryNoLinkRemovable,
 } from "@/app/ui/small-components/display-tag";
 import { getSession } from "next-auth/react";
+import { set } from "date-fns";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -50,11 +52,11 @@ export default function Page() {
   const [token, setToken] = useState<string>("");
 
   const getTags = async () => {
-    const res = await GetAllTags();
-    //@ts-ignore
-    setLibraryList(res.data.library.filter((item) => item.status == "approved").map((item) => item.name));
-    //@ts-ignore
-    setTagList(res.data.tags.filter((item) => item.status == "approved").map((item) => item.name));
+    const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
+    const resTagList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
+    const resLibraryList = data.tags.filter((item) => item.status == "approved").map((item) => item.name);
+    setTagList(resTagList);
+    setLibraryList(resLibraryList);
   };
 
   const getToken = async () => {

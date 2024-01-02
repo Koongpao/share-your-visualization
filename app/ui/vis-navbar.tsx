@@ -60,7 +60,6 @@ export default function VisNavbar() {
   }, [loginDependency]);
 
   useEffect(() => {
-    console.log(currentPath)
     if (currentPath !== "/search") {
       setSearchQuery("")
     }
