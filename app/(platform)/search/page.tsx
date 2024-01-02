@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { GetAllTags } from "@/app/lib/controller";
 import { TVisualization, TVisualizationsArray, TlibraryAndTags } from "@/app/lib/definitions";
 
+export const dynamic='force-dynamic';
+
 export default function Page({
   searchParams,
 }: {
