@@ -1,24 +1,24 @@
 "use client";
 import { SearchVisualization } from "@/app/lib/controller";
 import { VisMinicard } from "@/app/ui/small-components/VisMinicard";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import { useAtom } from "jotai";
 import { atomSearchQuery, atomTagList, atomSearchDependency } from "@/app/atoms";
 import Loading from "./loading";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { GetAllTags } from "@/app/lib/controller";
 import { TVisualization, TVisualizationsArray, TlibraryAndTags } from "@/app/lib/definitions";
 
 export const dynamic='force-dynamic';
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    search_query?: string;
-    tags?: string;
-  };
+export default function Page({}: // searchParams,
+{
+  // searchParams?: {
+  //   search_query?: string;
+  //   tags?: string;
+  // };
 }) {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const Params = new URLSearchParams(searchParams);
 
@@ -32,21 +32,22 @@ export default function Page({
 
   const [searchQuerySnapshot, setSearchQuerySnapshot] = useState<string>("");
 
+  let searchParamTags = searchParams?.get("tags")?.split(",") || [];
+  //Extract Tags from Search Params
+  searchParamTags = searchParamTags.filter((item, pos) => {
+    return searchParamTags.indexOf(item) === pos;
+  });
+  //Prevent duplicate tags
+
+  let searchParamSearchQuery = searchParams?.get("search_query") || "";
+  //Extract Search Query from Search Params
+
   const InitializePage = async () => {
     const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
     const resTagList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
     const resLibraryList = data.tags.filter((item) => item.status == "approved").map((item) => item.name);
     const availableTagList = [...resTagList, ...resLibraryList];
     //Get Available Tags from server
-
-    // let searchParamTags = Params.get("tags")?.split(",") || [];
-    let searchParamTags = searchParams?.tags?.split(",") || [];
-    //Extract Tags from Search Params
-
-    searchParamTags = searchParamTags.filter((item, pos) => {
-      return searchParamTags.indexOf(item) === pos;
-    });
-    //Prevent duplicate tags
 
     searchParamTags?.forEach((eachTag) => {
       if (!availableTagList.includes(eachTag)) {
@@ -60,12 +61,9 @@ export default function Page({
     });
     //SetTagList with Tags from Search Params
 
-    // let searchParamSearchQuery = Params.get("search_query") || "";
-    let searchParamSearchQuery = searchParams?.search_query || "";
-    //Extract Search Query from Search Params
     setSearchQuery(searchParamSearchQuery);
     //SetSearchQuery with Search Query from Search Params
-    console.log(searchParamTags, searchParamSearchQuery)
+    console.log(searchParamTags, searchParamSearchQuery);
 
     getVisualizationsData(searchParamSearchQuery, searchParamTags);
     // getVisualizationsData() but without states because useEffect does not set states on first render;
@@ -110,9 +108,11 @@ export default function Page({
     <div className="px-6">
       <div className="bg-white w-100 h-auto min-h-screen px-6 py-6">
         <div className="w-full border-b py-2">
-          {searchQuerySnapshot && <div className="text-lg font-medium text-slate-600">
-            Showing Results for <span className="font-bold text-slate-800">{searchQuerySnapshot}</span>
-          </div>}
+          {searchQuerySnapshot && (
+            <div className="text-lg font-medium text-slate-600">
+              Showing Results for <span className="font-bold text-slate-800">{searchQuerySnapshot}</span>
+            </div>
+          )}
         </div>
         <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-start">
           {cardData?.map((eachCard: TVisualization, i: number) => (
