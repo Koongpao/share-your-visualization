@@ -53,8 +53,8 @@ export default function Page() {
 
   const getTags = async () => {
     const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
-    const resTagList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
-    const resLibraryList = data.tags.filter((item) => item.status == "approved").map((item) => item.name);
+    const resLibraryList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
+    const resTagList = data.tags.filter((item) => item.status == "approved").map((item) => item.name);
     setTagList(resTagList);
     setLibraryList(resLibraryList);
   };

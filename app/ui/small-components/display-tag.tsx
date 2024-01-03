@@ -24,7 +24,7 @@ export function DisplayTagWithLink({ label }: { label: string }) {
        hover:${libraryColor}/80`}
         >
           {libraryImageSrc ? (
-            <Image className="min-w-[16px]" src={libraryImageSrc} alt="" width={16} height={16} />
+            <Image className="min-w-[16px] h-[16px]" src={libraryImageSrc} alt="" height={16} width={16} />
           ) : null}
           {CapitalizedLabel}
         </div>

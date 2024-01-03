@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div className="flex flex-col">
         <div className="text-4xl font-semibold py-2">{data.title}</div>
         <div className="flex flex-col sm:flex-row gap-x-4 gap-y-2 pt-2">
-          <div className="flex flex-row gap-x-2">
+          <div className="flex flex-row gap-x-2 items-center">
             <p className="font-bold">Library</p>
             <div className="flex flex-row gap-x-1">
               <DisplayTagWithLink label={data.library.name} />
@@ -33,6 +33,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Tags</p>
             <div className="flex flex-row gap-x-1">
+              {data.tags.length === 0 && <p className="text-slate-600 font-semibold">None</p>}
               {data.tags.map((tag: { name: string }, i) => (
                 <DisplayTagWithLink key={i} label={tag.name} />
               ))}
@@ -66,7 +67,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
         <div>
           <div className="flex justify-center">
-            <Image src={data.image} alt="" width={900} height={400}/>
+            <Image src={data.image} alt="" width={900} height={400} quality={100}/>
           </div>
           <div className="flex justify-center">
             <Button className="bg-teal-600 text-white font-semibold shadow-xl">Preview Demo</Button>
