@@ -13,6 +13,9 @@ export default function Error() {
       <div className="text-xl sm:text-3xl font-bold uppercase tracking-wider text-slate-700 text-center">
         <p>An Error has Occured.</p>
       </div>
+      <div className="text-lg text-center font-medium">
+        This may have been caused by server, network or client-side issues. Please try again later.
+      </div>
 
       <Link href="/">
         <Button className="bg-red-400 text-white font-medium text-lg">Back to Home</Button>

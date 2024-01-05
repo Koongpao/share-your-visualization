@@ -52,7 +52,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p className="text-slate-600 "> Posted {format(new Date(data.created_date), "dd MMMM yyyy")}</p>
             </div>
           </div>
-          {/* <LikesFavorite visId={params.id} /> */}
+          <LikesFavorite visId={params.id} />
         </div>
         {data.description && (
           <div className="py-4 border-b">

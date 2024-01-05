@@ -1,5 +1,7 @@
 import { unstable_noStore } from "next/cache";
 import { getServerAuthSession } from "./auth";
+import { getSession } from "next-auth/react";
+import { CallbackFunction } from "./definitions";
 
 const baseURL = "http://localhost:3001";
 
@@ -76,8 +78,8 @@ export async function Login(body: { usernameOrEmail: string; password: string })
 }
 
 //GetMyInformation - GET /api/users/me
-export async function GetMyInformation() {
-  const session = await getServerAuthSession();
+export async function GetMyInformation(getSessionFunc: CallbackFunction,) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/users/me", {
       method: "GET",
@@ -92,12 +94,12 @@ export async function GetMyInformation() {
   }
 }
 
-
 //PostVisualization - POST /api/visualizations
-export async function PostVisualization(formData: FormData) {
-  const session = await getServerAuthSession();
+//Currently disabled
+export async function PostVisualization(getSessionFunc: CallbackFunction,formData: FormData) {
+  const session = await getSessionFunc();
   try {
-    const response = await fetch(baseProdURL + "/api/visualizations", {
+    const response = await fetch(baseURL + "/api/visualizations", {
       method: "POST",
       headers: {
         authorization: session?.user.accessToken,
@@ -142,8 +144,8 @@ export async function SearchVisualization(search_query?: string, tags?: string) 
 }
 
 //GetMyVisualizations - GET /api/visualizations/my-visualizations
-export async function GetMyVisualizations() {
-  const session = await getServerAuthSession();
+export async function GetMyVisualizations(getSessionFunc: CallbackFunction) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/my-visualizations", {
       method: "GET",
@@ -158,12 +160,12 @@ export async function GetMyVisualizations() {
   }
 }
 
-//FavoriteVisualizations - GET /api/visualizations/:id/favorite
-export async function FavoriteVisualizations(id: string) {
-  const session = await getServerAuthSession();
+//FavoriteVisualizations - PUT /api/visualizations/:id/favorite
+export async function FavoriteVisualizations(getSessionFunc: CallbackFunction,id: string) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/favorite", {
-      method: "GET",
+      method: "PUT",
       headers: {
         authorization: session?.user.accessToken,
       },
@@ -175,12 +177,12 @@ export async function FavoriteVisualizations(id: string) {
   }
 }
 
-//UnfavoriteVisualizations - GET /api/visualizations/:id/unfavorite
-export async function UnfavoriteVisualizations(id: string) {
-  const session = await getServerAuthSession();
+//UnfavoriteVisualizations - PUT /api/visualizations/:id/unfavorite
+export async function UnfavoriteVisualizations(getSessionFunc: CallbackFunction,id: string) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/unfavorite", {
-      method: "GET",
+      method: "PUT",
       headers: {
         authorization: session?.user.accessToken,
       },
@@ -193,8 +195,8 @@ export async function UnfavoriteVisualizations(id: string) {
 }
 
 //IsFavorited - GET /api/visualizations/:id/is-favorited
-export async function IsFavorited(id: string) {
-  const session = await getServerAuthSession();
+export async function IsFavorited(getSessionFunc: CallbackFunction,id: string) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/is-favorited", {
       method: "GET",
@@ -209,12 +211,12 @@ export async function IsFavorited(id: string) {
   }
 }
 
-//LikeVisualizations - GET /api/visualizations/:id/like
-export async function LikeVisualizations(id: string) {
-  const session = await getServerAuthSession();
+//LikeVisualizations - PUT /api/visualizations/:id/like
+export async function LikeVisualizations(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/like", {
-      method: "GET",
+      method: "PUT",
       headers: {
         authorization: session?.user.accessToken,
       },
@@ -226,12 +228,12 @@ export async function LikeVisualizations(id: string) {
   }
 }
 
-//UnlikeVisualizations - GET /api/visualizations/:id/unlike
-export async function UnlikeVisualizations(id: string) {
-  const session = await getServerAuthSession();
+//UnlikeVisualizations - PUT /api/visualizations/:id/unlike
+export async function UnlikeVisualizations(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/unlike", {
-      method: "GET",
+      method: "PUT",
       headers: {
         authorization: session?.user.accessToken,
       },
@@ -244,10 +246,27 @@ export async function UnlikeVisualizations(id: string) {
 }
 
 //IsLiked - GET /api/visualizations/:id/is-liked
-export async function IsLiked(id: string) {
-  const session = await getServerAuthSession();
+export async function IsLiked(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/is-liked", {
+      method: "GET",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//GetMyFavoriteVisualization - GET /api/visualizations/favorite-visualizations
+export async function GetMyFavoriteVisualizations(getSessionFunc: CallbackFunction) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/favorite-visualizations", {
       method: "GET",
       headers: {
         authorization: session?.user.accessToken,

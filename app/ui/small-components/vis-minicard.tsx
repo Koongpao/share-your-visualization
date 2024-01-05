@@ -15,7 +15,7 @@ export function VisMinicard({ cardInfo }: VisMinicardProps) {
   return (
     <Card className="pt-4 pb-2 w-80 h-[auto]">
       <CardHeader className="pb-0 pt-2 px-4 flex items-start h-[10rem] max-h-[10rem] relative">
-        <Link href={`/visualization/${cardInfo._id}`}>
+        <Link href={`/visualization/${cardInfo._id}`} prefetch={false}>
           <Image alt="Card background" className="object-cover w-full h-full rounded-xl" src={cardInfo.image} fill />
         </Link>
       </CardHeader>
@@ -35,13 +35,13 @@ export function VisMinicard({ cardInfo }: VisMinicardProps) {
               <MiniDisplayTag label={tagsInfo} key={i} />
             ))} */}
 
-            <MiniDisplayTag label={cardInfo.tags.length.toString() + " More Tags"} />
+            {cardInfo.tags.length !== 0 && <MiniDisplayTag label={cardInfo.tags.length.toString() + " More Tags"} />}
           </div>
         </div>
       </CardBody>
     </Card>
   );
-};
+}
 
 export function VisMinicardSkeleton() {
   return (

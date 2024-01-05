@@ -27,10 +27,10 @@ export default function Home() {
   ];
 
   return (
-    <div className="container flex flex-col flex-wrap justify-center items-center pt-40">
-      <div className="font-medium text-2xl">Search for visualizations examples</div>
+    <div className="container flex flex-col justify-center items-center pt-40">
+      <div className="font-medium text-2xl text-center">Search for visualizations examples</div>
       <form
-        className="w-full lg:w-1/2 pt-5"
+        className="w-3/4 lg:w-1/2 pt-5"
         onSubmit={(e) => {
           e.preventDefault();
           Params.set("search_query", searchQuery);
@@ -60,7 +60,7 @@ export default function Home() {
           }}
         />
       </form>
-      <div className="flex flex-row gap-2 py-4">
+      <div className="flex flex-row flex-wrap justify-center gap-2 py-4">
         {searchSuggestion.map((eachSuggestion, i) => (
           <Link href={`/search?tags=${eachSuggestion}`} prefetch={false} key={i}>
             <div className="flex flex-row items-center gap-1 text-gray-500 font-medium lowercase bg-gray-200 py-0.5 px-2.5 shadow-sm border-b-1 border-r-1 border-slate-300">

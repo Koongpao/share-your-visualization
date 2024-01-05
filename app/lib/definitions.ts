@@ -1,3 +1,5 @@
+export type CallbackFunction = () => Promise<any>;
+
 export type TlibraryAndTags = {
   library: {
     name: string;

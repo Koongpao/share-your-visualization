@@ -72,7 +72,7 @@ export default function Page() {
     formData.append("library", libraryValue);
     formData.append("tags", JSON.stringify(tagValue));
 
-    const response = await PostVisualization(formData);
+    const response = await PostVisualization(()=> getSession(), formData);
     console.log(response);
   };
 

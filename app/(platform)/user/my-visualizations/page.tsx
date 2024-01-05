@@ -3,10 +3,11 @@ import Empty from "../empty";
 import { GetMyVisualizations } from "@/app/lib/controller";
 import { VisMinicard } from "@/app/ui/small-components/vis-minicard";
 import { TVisualization, TVisualizationsArray } from "@/app/lib/definitions";
+import { getServerAuthSession } from "@/app/lib/auth";
 
 export default async function Page() {
   const { data, message, success }: { data: TVisualizationsArray; message: string; success: boolean } =
-    await GetMyVisualizations();
+    await GetMyVisualizations(() => getServerAuthSession());
 
   if (data?.length === 0) return <Empty />;
 

@@ -5,7 +5,7 @@ import { Button, Input } from "@nextui-org/react";
 import { MdArrowBack } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { BsKey } from "react-icons/bs";
-import { handleOnChange } from "@/app/lib/functions";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -42,6 +42,8 @@ export default function Page() {
 
   const [FormComplete, setFormComplete] = useState<boolean>(false);
   //To allow button to be pressed or not
+
+  const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const [loginDependency, setLoginDependency] = useAtom(atomLoginDependency);
 
@@ -117,10 +119,19 @@ export default function Page() {
                 Password
               </div>
             }
-            type="password"
+            type={isHidden ? "password" : "text"}
             isInvalid={PasswordWarning}
             maxLength={PasswordMaxChar}
             {...register("password", { required: true, maxLength: PasswordMaxChar })}
+            endContent={
+              <button className="focus:outline-none" type="button" onClick={() => setIsHidden((prev) => !prev)}>
+                {isHidden ? (
+                  <FaEyeSlash className="text-xl text-default-400 pointer-events-none" />
+                ) : (
+                  <FaEye className="text-xl text-default-400 pointer-events-none" />
+                )}
+              </button>
+            }
           />
         </div>
         <div className="w-full lg:w-1/2">
