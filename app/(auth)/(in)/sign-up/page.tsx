@@ -13,6 +13,7 @@ import { SignUp } from "@/app/lib/controller";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Page() {
   const [UsernameData, setUsernameData] = useState<string>("");
@@ -39,6 +40,9 @@ export default function Page() {
 
   const [SuccessfullySignUp, setSuccessfullySignUp] = useState<boolean>(false)
   //To allow page to switch to success.tsx
+
+  const [isHiddenPassword, setIsHiddenPassword] = useState<boolean>(true);
+  const [isHiddenCfPassword, setIsHiddenCfPassword] = useState<boolean>(true);
 
   const CheckUsername = () => {
     if (UsernameData !== "" && UsernameData.length < 4) {
@@ -201,13 +205,22 @@ export default function Page() {
                 Password
               </div>
             }
-            type="password"
+            type={isHiddenPassword ? "password" : "text"}
             onChange={(e) => {
               handleOnChange(e, setPasswordData, PasswordMaxChar);
             }}
             value={PasswordData}
             isInvalid={PasswordWarning}
             errorMessage={PasswordWarning && PasswordErrMessage}
+            endContent={
+              <button className="focus:outline-none" type="button" onClick={() => setIsHiddenPassword((prev) => !prev)}>
+                {isHiddenPassword ? (
+                  <FaEyeSlash className="text-xl text-default-400 pointer-events-none" />
+                ) : (
+                  <FaEye className="text-xl text-default-400 pointer-events-none" />
+                )}
+              </button>
+            }
           />
           <div className="flex flex-col">
             <Input
@@ -219,13 +232,22 @@ export default function Page() {
                   Confirm Password
                 </div>
               }
-              type="password"
+              type={isHiddenCfPassword ? "password" : "text"}
               onChange={(e) => {
                 handleOnChange(e, setConfirmPasswordData, UsernameMaxChar);
               }}
               value={ConfirmPasswordData}
               isInvalid={CfPasswordWarning}
               errorMessage={CfPasswordWarning && CfPasswordErrMessage}
+              endContent={
+                <button className="focus:outline-none" type="button" onClick={() => setIsHiddenCfPassword((prev) => !prev)}>
+                  {isHiddenCfPassword ? (
+                    <FaEyeSlash className="text-xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <FaEye className="text-xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
             />
             {/* {showPasswordWarn && <div className="">Test Text</div>} */}
           </div>
