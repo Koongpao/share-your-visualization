@@ -1,5 +1,4 @@
 'use client'
-import React from "react";
 import { FaRegCopy } from "react-icons/fa";
 import ClipboardJS from "clipboard";
 import { toast, ToastContainer } from "react-toastify";

@@ -9,8 +9,6 @@ import {
   FavoriteVisualizations,
   UnfavoriteVisualizations,
 } from "@/app/lib/controller";
-import { useSearchParams } from "next/navigation";
-import { getSession } from "next-auth/react";
 
 
 //<LikesFavorite visId={params.id} />
@@ -18,26 +16,15 @@ export default function LikesFavorite(visId: string) {
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
-  const [session, setSession] = useState<any>(null);
-
-  const getSessionData = async () => {
-    const session = await getSession();
-    setSession(session);
-  }
-
   const getIsLiked = async () => {
-    const {message, data, success} = await IsLiked(session?.user.accessToken, visId);
+    const {message, data, success} = await IsLiked(visId);
     setIsLiked(data);
   }
 
   const getIsFavorited = async () => {
-    const {message, data, success} = await IsFavorited(session?.user.accessToken, visId);
+    const {message, data, success} = await IsFavorited(visId);
     setIsFavorited(data);
   }
-
-  useEffect(() => {
-    getSessionData();
-  }, [])
 
   return (
     <div className="flex flex-row gap-x-2">
@@ -55,5 +42,12 @@ export default function LikesFavorite(visId: string) {
         <p>Likes</p>
       </div>
     </div>
+  );
+}
+
+
+function IconLoading() {
+  return (
+    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
   );
 }

@@ -9,15 +9,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { GetAllTags } from "@/app/lib/controller";
 import { TVisualization, TVisualizationsArray, TlibraryAndTags } from "@/app/lib/definitions";
 
-export const dynamic = "force-dynamic";
-
-export default function Page({}: // searchParams,
-{
-  // searchParams?: {
-  //   search_query?: string;
-  //   tags?: string;
-  // };
-}) {
+export default function Page({}: {}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const Params = new URLSearchParams(searchParams);
@@ -120,9 +112,7 @@ export default function Page({}: // searchParams,
           {cardData?.length === 0 && (
             <div className="flex flex-col justify-start gap-y-2">
               <div className="text-2xl font-semibold text-slate-600">No Results Found.</div>
-              <div className="text-md font-medium text-slate-400">
-                Try something else.
-              </div>
+              <div className="text-md font-medium text-slate-400">Try something else.</div>
             </div>
           )}
         </div>

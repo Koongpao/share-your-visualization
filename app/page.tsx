@@ -62,7 +62,7 @@ export default function Home() {
       </form>
       <div className="flex flex-row gap-2 py-4">
         {searchSuggestion.map((eachSuggestion, i) => (
-          <Link href={`/search?tags=${eachSuggestion}`} prefetch={false}>
+          <Link href={`/search?tags=${eachSuggestion}`} prefetch={false} key={i}>
             <div className="flex flex-row items-center gap-1 text-gray-500 font-medium lowercase bg-gray-200 py-0.5 px-2.5 shadow-sm border-b-1 border-r-1 border-slate-300">
               <FaSearch className="font-regular text-sm" />
               {CapitalizeWords(eachSuggestion)}

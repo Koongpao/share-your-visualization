@@ -18,7 +18,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 import { GetAllTags, PostVisualization } from "@/app/lib/controller";
 import { handleTab, handleOnChange } from "@/app/lib/functions";
-import {TlibraryAndTags} from "@/app/lib/definitions";
+import { TlibraryAndTags } from "@/app/lib/definitions";
 
 import {
   DisplayTag,
@@ -49,8 +49,6 @@ export default function Page() {
   const [tagList, setTagList] = useState<string[]>([]);
   const [libraryList, setLibraryList] = useState<string[]>([]);
 
-  const [token, setToken] = useState<string>("");
-
   const getTags = async () => {
     const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
     const resLibraryList = data.library.filter((item) => item.status == "approved").map((item) => item.name);
@@ -59,14 +57,9 @@ export default function Page() {
     setLibraryList(resLibraryList);
   };
 
-  const getToken = async () => {
-    const session = await getSession();
-    setToken(session?.user.accessToken);
-  };
 
   useEffect(() => {
     getTags();
-    getToken();
   }, []);
 
   const handleSubmit = async () => {
@@ -79,7 +72,7 @@ export default function Page() {
     formData.append("library", libraryValue);
     formData.append("tags", JSON.stringify(tagValue));
 
-    const response = await PostVisualization(token, formData);
+    const response = await PostVisualization(formData);
     console.log(response);
   };
 

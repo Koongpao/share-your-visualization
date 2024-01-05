@@ -1,12 +1,11 @@
 import { unstable_noStore } from "next/cache";
+import { getServerAuthSession } from "./auth";
 
 const baseURL = "http://localhost:3001";
 
 const baseProdURL = "https://share-your-visualization-backend.vercel.app";
 
 export async function fetchData() {
-  // Add noStore() here prevent the response from being cached.
-  // This is equivalent to in fetch(..., {cache: 'no-store'}).
   unstable_noStore();
 
   try {
@@ -77,12 +76,13 @@ export async function Login(body: { usernameOrEmail: string; password: string })
 }
 
 //GetMyInformation - GET /api/users/me
-export async function GetMyInformation(token: string) {
+export async function GetMyInformation() {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/users/me", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
@@ -94,12 +94,13 @@ export async function GetMyInformation(token: string) {
 
 
 //PostVisualization - POST /api/visualizations
-export async function PostVisualization(token: string, formData: FormData) {
+export async function PostVisualization(formData: FormData) {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations", {
       method: "POST",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
       body: formData,
     });
@@ -141,12 +142,13 @@ export async function SearchVisualization(search_query?: string, tags?: string) 
 }
 
 //GetMyVisualizations - GET /api/visualizations/my-visualizations
-export async function GetMyVisualizations(token: string) {
+export async function GetMyVisualizations() {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/my-visualizations", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
@@ -157,12 +159,13 @@ export async function GetMyVisualizations(token: string) {
 }
 
 //FavoriteVisualizations - GET /api/visualizations/:id/favorite
-export async function FavoriteVisualizations(token: string, id: string) {
+export async function FavoriteVisualizations(id: string) {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/favorite", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
@@ -173,12 +176,13 @@ export async function FavoriteVisualizations(token: string, id: string) {
 }
 
 //UnfavoriteVisualizations - GET /api/visualizations/:id/unfavorite
-export async function UnfavoriteVisualizations(token: string, id: string) {
+export async function UnfavoriteVisualizations(id: string) {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/unfavorite", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
@@ -189,12 +193,13 @@ export async function UnfavoriteVisualizations(token: string, id: string) {
 }
 
 //IsFavorited - GET /api/visualizations/:id/is-favorited
-export async function IsFavorited(token: string, id: string) {
+export async function IsFavorited(id: string) {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/is-favorited", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
@@ -205,12 +210,13 @@ export async function IsFavorited(token: string, id: string) {
 }
 
 //LikeVisualizations - GET /api/visualizations/:id/like
-export async function LikeVisualizations(token: string, id: string) {
+export async function LikeVisualizations(id: string) {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/like", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
@@ -221,12 +227,13 @@ export async function LikeVisualizations(token: string, id: string) {
 }
 
 //UnlikeVisualizations - GET /api/visualizations/:id/unlike
-export async function UnlikeVisualizations(token: string, id: string) {
+export async function UnlikeVisualizations(id: string) {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/unlike", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
@@ -237,12 +244,13 @@ export async function UnlikeVisualizations(token: string, id: string) {
 }
 
 //IsLiked - GET /api/visualizations/:id/is-liked
-export async function IsLiked(token: string, id: string) {
+export async function IsLiked(id: string) {
+  const session = await getServerAuthSession();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/is-liked", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: session?.user.accessToken,
       },
     });
     const jsonResponse = await response.json();
