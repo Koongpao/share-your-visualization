@@ -44,7 +44,7 @@ export default function Page() {
   const titleMaxChar = 50;
   const descriptionMaxChar = 1000;
   const sourceCodeMaxChar = 15000;
-  const externalLinkMaxChar = 100;
+  const externalLinkMaxChar = 200;
 
   const [tagList, setTagList] = useState<string[]>([]);
   const [libraryList, setLibraryList] = useState<string[]>([]);

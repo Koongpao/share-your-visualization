@@ -165,3 +165,99 @@ export async function GetMyVisualizations(token: string) {
     console.error(error);
   }
 }
+
+//FavoriteVisualizations - GET /api/visualizations/:id/favorite
+export async function FavoriteVisualizations(token: string, id: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/favorite", {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//UnfavoriteVisualizations - GET /api/visualizations/:id/unfavorite
+export async function UnfavoriteVisualizations(token: string, id: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/unfavorite", {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//IsFavorited - GET /api/visualizations/:id/is-favorited
+export async function IsFavorited(token: string, id: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/is-favorited", {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//LikeVisualizations - GET /api/visualizations/:id/like
+export async function LikeVisualizations(token: string, id: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/like", {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//UnlikeVisualizations - GET /api/visualizations/:id/unlike
+export async function UnlikeVisualizations(token: string, id: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/unlike", {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//IsLiked - GET /api/visualizations/:id/is-liked
+export async function IsLiked(token: string, id: string) {
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/is-liked", {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}

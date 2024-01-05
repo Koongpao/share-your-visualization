@@ -8,12 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { GetSpecificVisualization } from "@/app/lib/controller";
 import { format } from "date-fns";
 
-import { FaRegCalendarAlt, FaRegHeart, FaHeart, FaRegCopy, FaCalendarAlt, FaRegStar } from "react-icons/fa";
-
-import { MdFavoriteBorder } from "react-icons/md";
+import { FaRegCalendarAlt} from "react-icons/fa";
+import { MdDescription} from "react-icons/md";
 
 import { TSpecificVisualization } from "@/app/lib/definitions";
 import CopyIcon from "./copy-icon";
+import LikesFavorite from "./likes-favorite";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { data, message, success }: { data: TSpecificVisualization; message: string; success: boolean } =
@@ -51,25 +51,22 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p className="text-slate-600 "> Posted {format(new Date(data.created_date), "dd MMMM yyyy")}</p>
             </div>
           </div>
-          <div className="flex flex-row gap-x-2">
-            <div className="flex flex-row items-center gap-x-2 cursor-pointer">
-              <FaRegStar className="text-slate-600 text-xl" />
-              <p>Favorite</p>
-            </div>
-            <div className="flex flex-row items-center gap-x-2 cursor-pointer">
-              <FaRegHeart className="text-slate-600 text-xl" />
-              <p>Likes</p>
-            </div>
-          </div>
+          {/* <LikesFavorite visId={params.id} /> */}
         </div>
+        {data.description && (
+          <div className="py-4 border-b">
+            <div className="flex flex-row items-center gap-1 text-slate-600 text-lg font-semibold">
+              <MdDescription className="text-2xl" />
+              Description
+            </div>
+            {data.description}
+          </div>
+        )}
         <div className="py-4">
-          {data.description}
-        </div>
-        <div>
           <div className="flex justify-center">
-            <Image src={data.image} alt="" width={900} height={400} quality={100}/>
+            <Image src={data.image} alt="" width={600} height={600} quality={100} />
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center py-4">
             <Button className="bg-teal-600 text-white font-semibold shadow-xl">Preview Demo</Button>
           </div>
         </div>

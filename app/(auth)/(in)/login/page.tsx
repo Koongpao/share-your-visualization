@@ -31,7 +31,7 @@ export default function Page() {
   const UsernameOrEmailData = watch("usernameOrEmail");
   const PasswordData = watch("password");
 
-  const UsernameOrEmailMaxChar = 20;
+  const UsernameOrEmailMaxChar = 64;
   const PasswordMaxChar = 64;
 
   const [UsernameOrEmailWarning, setUsernameOrEmailWarning] = useState<boolean>(false);
