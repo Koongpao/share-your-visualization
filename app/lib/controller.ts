@@ -4,16 +4,6 @@ const baseURL = "http://localhost:3001";
 
 const baseProdURL = "https://share-your-visualization-backend.vercel.app";
 
-export async function fetchTestRoute() {
-  try {
-    const response = await fetch(baseProdURL + "/");
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.error("error");
-  }
-}
-
 export async function fetchData() {
   // Add noStore() here prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).

@@ -3,13 +3,14 @@ import { Button, Avatar } from "@nextui-org/react";
 import { DisplayTagWithLink } from "@/app/ui/small-components/display-tag";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atelierCaveLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import Link from "next/link";
 
 import "react-toastify/dist/ReactToastify.css";
 import { GetSpecificVisualization } from "@/app/lib/controller";
 import { format } from "date-fns";
 
-import { FaRegCalendarAlt} from "react-icons/fa";
-import { MdDescription} from "react-icons/md";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { MdDescription } from "react-icons/md";
 
 import { TSpecificVisualization } from "@/app/lib/definitions";
 import CopyIcon from "./copy-icon";
@@ -63,11 +64,21 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         )}
         <div className="py-4">
-          <div className="flex justify-center">
+          <div className="flex justify-center pb-4">
             <Image src={data.image} alt="" width={600} height={600} quality={100} />
           </div>
+        </div>
+        <div className="py-4">
+          <div className="text-xl flex justify-center font-semibold">Preview Demo</div>
           <div className="flex justify-center py-4">
-            <Button className="bg-teal-600 text-white font-semibold shadow-xl">Preview Demo</Button>
+            <Button
+              className="bg-teal-600 text-white font-semibold shadow-xl"
+              as={Link}
+              href={data.externalLink}
+              target="_blank"
+            >
+              {data.externalLink}
+            </Button>
           </div>
         </div>
         <div>

@@ -7,7 +7,7 @@ export default function Unauthenticated() {
   return (
     <div className="flex flex-col justify-center items-center gap-y-4 h-[80vh]">
       <div className="mt-4">
-        <Image src="/page-pics/unauthenticated.svg" alt="Empty" height={650} width={650} />
+        <Image src="/page-pics/unauthenticated.svg" alt="Empty" height={450} width={450} />
       </div>
       <div className="text-xl sm:text-3xl font-bold uppercase tracking-wider text-slate-700 text-center">
         <p>You must be logged in to access this page.</p>
