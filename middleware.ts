@@ -46,5 +46,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post"],
-}
+  matcher: "/((?!api|static|.\..|_next).*)",
+};
