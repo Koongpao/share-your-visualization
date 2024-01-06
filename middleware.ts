@@ -35,9 +35,9 @@ export default withAuth(
   },
   {
     callbacks: {
-      // authorized: () => true,
+      authorized: () => true,
       //ถ้า return true จะพาไปฟังก์ชั่นข้างบน ปปบอก
-      authorized: ({ token }) => Boolean(token),
+      // authorized: ({ token }) => Boolean(token),
     },
     // pages: {
     //   signIn: "/login",
@@ -45,10 +45,10 @@ export default withAuth(
   }
 );
 
-// export const config = {
-//   matcher: "/((?!api|static|.\..|_next).*)",
-// };
-
 export const config = {
-  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post"],
+  matcher: "/((?!api|static|.\..|_next).*)",
 };
+
+// export const config = {
+//   matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post"],
+// };
