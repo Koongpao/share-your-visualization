@@ -10,6 +10,7 @@ export default function Success() {
 
   useEffect(() => {
     const redirectTimer = setTimeout(() => {
+      router.refresh();
       router.push("/");
     }, 2000);
 

@@ -18,13 +18,11 @@ export default withAuth(
     //   jti: '7de171d5-ad04-461a-8eef-76223a1b3c2d'
     // }
 
-    console.log(!request.nextauth.token);
-
     if (
-      (request.nextUrl.pathname.startsWith("/user/favorites") ||
-        request.nextUrl.pathname.startsWith("/user/my-visualizations") ||
-        request.nextUrl.pathname.startsWith("/tag-list/add") ||
-        request.nextUrl.pathname.startsWith("/post")) &&
+      // (request.nextUrl.pathname.startsWith("/user/favorites") ||
+      //   request.nextUrl.pathname.startsWith("/user/my-visualizations") ||
+      //   request.nextUrl.pathname.startsWith("/tag-list/add") ||
+      //   request.nextUrl.pathname.startsWith("/post")) &&
       !request.nextauth.token
     ) {
       //redirect unauthorized user to denied page
@@ -36,7 +34,6 @@ export default withAuth(
   {
     callbacks: {
       authorized: () => true,
-      //ถ้า return true จะพาไปฟังก์ชั่นข้างบน ปปบอก
       // authorized: ({ token }) => Boolean(token),
     },
     pages: {
