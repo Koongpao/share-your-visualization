@@ -1,6 +1,4 @@
 import { unstable_noStore } from "next/cache";
-import { getServerAuthSession } from "./auth";
-import { getSession } from "next-auth/react";
 import { CallbackFunction } from "./definitions";
 
 const baseURL = "http://localhost:3001";
@@ -195,7 +193,7 @@ export async function UnfavoriteVisualizations(getSessionFunc: CallbackFunction,
 }
 
 //IsFavorited - GET /api/visualizations/:id/is-favorited
-export async function IsFavorited(getSessionFunc: CallbackFunction,id: string) {
+export async function IsFavorited(getSessionFunc: CallbackFunction, id: string) {
   const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/is-favorited", {
