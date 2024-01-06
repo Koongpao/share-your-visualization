@@ -21,14 +21,14 @@ export default function Page() {
       <div>
         <IoExitOutline className="text-8xl text-teal-600" />
       </div>
-      <div className="text-3xl font-semibold uppercase text-teal-600">Logged Out</div>
-      <div>You will be redirected to Home Page Shortly.</div>
+      <div className="text-3xl font-semibold uppercase text-teal-600">Logging Out...</div>
+      <div>Please do not leave this page.</div>
       <Spinner size="lg" color="default" />
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <Link href="/">
           <div className="text-white bg-teal-600 font-semibold py-2 px-3 rounded-md">Home Page</div>
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

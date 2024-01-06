@@ -38,7 +38,7 @@ export default function Page() {
   const [formComplete, setFormComplete] = useState<boolean>(false);
   //To allow button to be pressed or not
 
-  const [SuccessfullySignUp, setSuccessfullySignUp] = useState<boolean>(false)
+  const [SuccessfullySignUp, setSuccessfullySignUp] = useState<boolean>(false);
   //To allow page to switch to success.tsx
 
   const [isHiddenPassword, setIsHiddenPassword] = useState<boolean>(true);
@@ -69,6 +69,19 @@ export default function Page() {
   useEffect(() => {
     CheckEmailRegex();
   }, [EmailData]);
+
+  const CheckUsernameRegex = () => {
+    if (UsernameData != "" && !/^[a-zA-Z0-9_-]+$/.test(UsernameData)) {
+      setUsernameWarning(true);
+      setUsernameErrMessage("Must be letters, numbers, _ and -");
+    } else {
+      setUsernameWarning(false);
+      setUsernameErrMessage("");
+    }
+  };
+  useEffect(() => {
+    CheckUsernameRegex();
+  }, [UsernameData]);
 
   const CheckPassword = () => {
     if (PasswordData != "" && PasswordData.length < 4) {
@@ -115,7 +128,7 @@ export default function Page() {
   //2: Email Already Taken
 
   const handleSubmitSignUp = async () => {
-    setFormComplete(false)
+    setFormComplete(false);
     //Prevent Clicking button multiple times
     const body = {
       username: UsernameData,
@@ -123,16 +136,16 @@ export default function Page() {
       password: PasswordData,
     };
     const res = await SignUp(body);
-    if(res.error_code === 1){
-      setUsernameWarning(true)
-      setUsernameErrMessage("This username is already taken")
+    if (res.error_code === 1) {
+      setUsernameWarning(true);
+      setUsernameErrMessage("This username is already taken");
     }
-    if(res.error_code === 2){
-      setEmailWarning(true)
-      setEmailErrMessage("This email is already taken")
+    if (res.error_code === 2) {
+      setEmailWarning(true);
+      setEmailErrMessage("This email is already taken");
     }
-    if(res.success){
-      setSuccessfullySignUp(true)
+    if (res.success) {
+      setSuccessfullySignUp(true);
     }
     toast.info(res.message, {
       position: "bottom-center",
@@ -142,11 +155,11 @@ export default function Page() {
       pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      type: res.success? "info": "error",
+      type: res.success ? "info" : "error",
       theme: "light",
     });
   };
-  if (SuccessfullySignUp) return <Success/>
+  if (SuccessfullySignUp) return <Success />;
 
   return (
     <div className="container w-screen h-screen px-12">
@@ -240,7 +253,11 @@ export default function Page() {
               isInvalid={CfPasswordWarning}
               errorMessage={CfPasswordWarning && CfPasswordErrMessage}
               endContent={
-                <button className="focus:outline-none" type="button" onClick={() => setIsHiddenCfPassword((prev) => !prev)}>
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => setIsHiddenCfPassword((prev) => !prev)}
+                >
                   {isHiddenCfPassword ? (
                     <FaEyeSlash className="text-xl text-default-400 pointer-events-none" />
                   ) : (
