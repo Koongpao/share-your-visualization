@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export default withAuth(
   function middleware(request: NextRequestWithAuth) {
     // console.log(request.nextUrl.pathname);
-    console.log(request.nextauth.token);
+    console.log("mytoken:", request.nextauth.token);
     //Example of request.nextauth.token
     // {
     //   name: 'test',
@@ -17,6 +17,7 @@ export default withAuth(
     //   exp: 1707152905,
     //   jti: '7de171d5-ad04-461a-8eef-76223a1b3c2d'
     // }
+
     console.log(!request.nextauth.token);
 
     if (
@@ -34,7 +35,9 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: () => true,
+      // authorized: () => true,
+      //ถ้า return true จะพาไปฟังก์ชั่นข้างบน ปปบอก
+      authorized: ({ token }) => Boolean(token),
     },
     pages: {
       signIn: "/login",
@@ -43,9 +46,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: "/((?!api|static|.*\\..*|_next).*)",
+  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post"],
 }
-
-// export const config = {
-//   matcher: ["/post", "/user/my-visualizations", "/user/favorites", "/tag-list/add"]
-// };
