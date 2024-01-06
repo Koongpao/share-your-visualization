@@ -39,16 +39,16 @@ export default withAuth(
       //ถ้า return true จะพาไปฟังก์ชั่นข้างบน ปปบอก
       // authorized: ({ token }) => Boolean(token),
     },
-    // pages: {
-    //   signIn: "/login",
-    // },
+    pages: {
+      signIn: "/login",
+    },
   }
 );
 
-export const config = {
-  matcher: "/((?!api|static|.\..|_next).*)",
-};
-
 // export const config = {
-//   matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post"],
+//   matcher: "/((?!api|static|.\..|_next).*)",
 // };
+
+export const config = {
+  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post"],
+};
