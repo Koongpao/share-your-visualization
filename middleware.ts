@@ -42,10 +42,10 @@ export default withAuth(
   }
 );
 
-export const config = {
-  matcher: "/((?!api|static|.*\\..*|_next).*)",
-}
-
 // export const config = {
-//   matcher: ["/post", "/user/my-visualizations", "/user/favorites", "/tag-list/add"]
-// };
+//   matcher: "/((?!api|static|.*\\..*|_next).*)",
+// }
+
+export const config = {
+  matcher: ["/post", "/user/my-visualizations", "/user/favorites", "/tag-list/add"]
+};
