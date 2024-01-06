@@ -20,6 +20,7 @@ export default function LikesFavorite({ visId }: { visId: string }) {
 
   const [iconLoading, setIconLoading] = useState<boolean>(true);
 
+
   const getIsLikedFavorited = async () => {
     setIconLoading(true);
     const { message: likeMessage, data: likeData, success: likeSuccess } = await IsLiked(() => getSession(), visId);
@@ -46,13 +47,13 @@ export default function LikesFavorite({ visId }: { visId: string }) {
       if (success) {
         setIsFavorited(false);
       }
-      fireToast(message)
+      fireToast(message);
     } else {
       const { message, success } = await FavoriteVisualizations(() => getSession(), visId);
       if (success) {
         setIsFavorited(true);
       }
-      fireToast(message)
+      fireToast(message);
     }
     setIconLoading(false);
   };
@@ -64,13 +65,13 @@ export default function LikesFavorite({ visId }: { visId: string }) {
       if (success) {
         setIsLiked(false);
       }
-      fireToast(message)
+      fireToast(message);
     } else {
       const { message, data, success } = await LikeVisualizations(() => getSession(), visId);
       if (success) {
         setIsLiked(true);
       }
-      fireToast(message)
+      fireToast(message);
     }
     setIconLoading(false);
   };
@@ -88,7 +89,7 @@ export default function LikesFavorite({ visId }: { visId: string }) {
     });
   };
 
-  if (iconLoading) return <IconLoading />;
+  if (iconLoading) return <TransparentLoading isFavorited={isFavorited} isLiked={isLiked} />;
 
   return (
     <div className="flex flex-row gap-x-2">
@@ -109,10 +110,30 @@ export default function LikesFavorite({ visId }: { visId: string }) {
   );
 }
 
-function IconLoading() {
+// function IconLoading() {
+//   return (
+//     <div className="flex items-center">
+//       <Skeleton className="w-[10rem] h-[1.5rem] rounded-full" />
+//     </div>
+//   );
+// }
+
+function TransparentLoading({ isFavorited, isLiked }: { isFavorited: boolean; isLiked: boolean }) {
   return (
-    <div className="flex items-center">
-      <Skeleton className="w-[10rem] h-[1.5rem] rounded-full" />
+    <div className="flex flex-row gap-x-2">
+      <div className="flex flex-row items-center gap-x-2 opacity-50">
+        {isFavorited ? (
+          <FaStar className="text-yellow-400 text-2xl" />
+        ) : (
+          <FaRegStar className="text-slate-600 text-2xl" />
+        )}
+        <p>Favorite</p>
+      </div>
+      <div className="flex flex-row items-center gap-x-2 opacity-50">
+        {isLiked ? <FaHeart className="text-red-400 text-xl" /> : <FaRegHeart className="text-slate-600 text-xl" />}
+        <p>Like</p>
+      </div>
+      <ToastContainer />
     </div>
   );
 }
