@@ -12,7 +12,7 @@ export default function Success() {
     const redirectTimer = setTimeout(() => {
       router.refresh();
       router.push("/");
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(redirectTimer);
   }, []);

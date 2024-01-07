@@ -146,6 +146,7 @@ export async function GetMyVisualizations(getSessionFunc: CallbackFunction) {
   const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/my-visualizations", {
+      // cache: "no-cache",
       method: "GET",
       headers: {
         authorization: session?.user.accessToken,

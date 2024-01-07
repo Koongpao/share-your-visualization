@@ -14,6 +14,7 @@ import { signIn } from "next-auth/react";
 import { useAtom } from "jotai";
 import { atomLoginDependency } from "@/app/atoms";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 interface LoginFormData {
   usernameOrEmail: string;
@@ -27,6 +28,8 @@ export default function Page() {
     watch,
     formState: { errors },
   } = useForm<LoginFormData>();
+
+  const router = useRouter();
 
   const UsernameOrEmailData = watch("usernameOrEmail");
   const PasswordData = watch("password");
@@ -57,6 +60,7 @@ export default function Page() {
       usernameOrEmail: UsernameOrEmailData,
       password: PasswordData,
       redirect: false,
+      callbackUrl: "/",
     });
     setUsernameOrEmailWarning(!signInResult?.ok);
     setPasswordWarning(!signInResult?.ok);

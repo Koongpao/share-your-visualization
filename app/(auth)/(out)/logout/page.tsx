@@ -4,6 +4,7 @@ import { IoExitOutline } from "react-icons/io5";
 import { Spinner } from "@nextui-org/react";
 import { useEffect } from "react";
 import { signOut } from "next-auth/react";
+import { revalidatePath } from "next/cache";
 
 export default function Page() {
 

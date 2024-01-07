@@ -1,4 +1,3 @@
-
 import Empty from '../empty'
 import { GetMyFavoriteVisualizations, GetMyVisualizations } from '@/app/lib/controller'
 import { VisMinicard } from '@/app/ui/small-components/vis-minicard'
