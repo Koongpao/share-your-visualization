@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 import Link from "next/link";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { Spinner } from "@nextui-org/react";
@@ -6,16 +6,16 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Success() {
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    const redirectTimer = setTimeout(() => {
-      router.refresh();
-      router.push("/");
-    }, 1000);
+  // useEffect(() => {
+  //   const redirectTimer = setTimeout(() => {
+  //     router.refresh();
+  //     router.push("/");
+  //   }, 1000);
 
-    return () => clearTimeout(redirectTimer);
-  }, []);
+  //   return () => clearTimeout(redirectTimer);
+  // }, []);
 
   return (
     <div className="flex flex-col justify-center items-center gap-y-4 h-[80vh]">

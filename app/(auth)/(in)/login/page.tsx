@@ -65,8 +65,9 @@ export default function Page() {
     setUsernameOrEmailWarning(!signInResult?.ok);
     setPasswordWarning(!signInResult?.ok);
     if (signInResult?.ok) {
-      setSuccessfullyLogin(true);
+      // setSuccessfullyLogin(true);
       setLoginDependency(true);
+      router.refresh();
     } else {
       toast.info("Incorrect username or password", {
         position: "bottom-center",
@@ -82,7 +83,7 @@ export default function Page() {
     }
   };
 
-  if (SuccessfullyLogin) return <Success />;
+  // if (SuccessfullyLogin) return <Success />;
 
   return (
     <div className="container w-screen h-screen px-12">
