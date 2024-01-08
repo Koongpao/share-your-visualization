@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { Button, Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Button, Autocomplete, AutocompleteItem, Listbox, ListboxItem, Input, Textarea } from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
 import { useForm } from "react-hook-form";
+import { FaSearch } from "react-icons/fa";
 
 import { BsPencilSquare } from "react-icons/bs";
 import { IoMdInformationCircle } from "react-icons/io";
@@ -24,9 +25,11 @@ import {
   DisplayTag,
   DisplayTagNoLinkRemovable,
   DisplayLibraryNoLinkRemovable,
+  DisplayTagWithLink,
 } from "@/app/ui/small-components/display-tag";
 import { getSession } from "next-auth/react";
 import { set } from "date-fns";
+import { placeholderCode } from "@/app/lib/resources";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -38,10 +41,10 @@ export default function Page() {
   const [sourceCodeValue, setSourceCodeValue] = useState<string>("");
   const [sourceImage, setSourceImage] = useState<File[]>([]);
   const [externalLinkValue, setExternalLinkValue] = useState<string>("");
-  const [libraryValue, setLibraryValue] = useState<string>("");
-  const [tagValue, setTagValue] = useState<string[]>([]);
+  const [selectedLibrary, setSelectedLibrary] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const titleMaxChar = 50;
+  const titleMaxChar = 100;
   const descriptionMaxChar = 1000;
   const sourceCodeMaxChar = 15000;
   const externalLinkMaxChar = 200;
@@ -57,7 +60,6 @@ export default function Page() {
     setLibraryList(resLibraryList);
   };
 
-
   useEffect(() => {
     getTags();
   }, []);
@@ -69,11 +71,64 @@ export default function Page() {
     formData.append("code", sourceCodeValue);
     formData.append("image", sourceImage[0]);
     formData.append("externalLink", externalLinkValue);
-    formData.append("library", libraryValue);
-    formData.append("tags", JSON.stringify(tagValue));
+    formData.append("library", selectedLibrary);
+    formData.append("tags", JSON.stringify(selectedTags));
 
-    const response = await PostVisualization(()=> getSession(), formData);
+    const response = await PostVisualization(() => getSession(), formData);
     console.log(response);
+  };
+
+  const [tagSearchTerm, setTagSearchTerm] = useState<string>("");
+  const [tagSearchResults, setTagSearchResults] = useState<string[]>([]);
+  const [tagIsFocused, setTagIsFocused] = useState<boolean>(false);
+
+  const handleTagSearch = (query: string) => {
+    if (query.trim() === "") {
+      setTagSearchResults([]);
+      return;
+    }
+    const results = tagList.filter((tag) => tag.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
+    setTagSearchResults(results);
+  };
+
+  const handleTagClick = (key: string) => {
+    // Check if the tag is already in the list
+    setTagSearchTerm("");
+    setTagSearchResults([]);
+    if (!tagList.includes(key)) {
+      // If tag is not available, terminate the function
+      return;
+    }
+    if (!selectedTags?.includes(key)) {
+      // If not, add the label to the list
+      setSelectedTags?.((prevTagList) => [...prevTagList, key]);
+    } else {
+      return;
+    }
+  };
+
+  const [librarySearchTerm, setLibrarySearchTerm] = useState<string>("");
+  const [librarySearchResults, setLibrarySearchResults] = useState<string[]>([]);
+  const [libraryIsFocused, setLibraryIsFocused] = useState<boolean>(false);
+
+  const handleLibrarySearch = (query: string) => {
+    if (query.trim() === "") {
+      setLibrarySearchResults([]);
+      return;
+    }
+    const results = libraryList.filter((tag) => tag.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
+    setLibrarySearchResults(results);
+  };
+
+  const handleLibraryClick = (key: string) => {
+    // Check if the tag is already in the list
+    setLibrarySearchTerm("");
+    setLibrarySearchResults([]);
+    if (!libraryList.includes(key)) {
+      // If tag is not available, terminate the function
+      return;
+    }
+    setSelectedLibrary?.(key);
   };
 
   return (
@@ -87,42 +142,58 @@ export default function Page() {
         </div>
 
         <div className="pt-4 pb-2 lg:pt-8">
-          <input
-            className="py-7 text-2xl border-gray-200 font-medium flex h-10 w-full rounded-md border-medium border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Title"
+          <Input
+            label="Title"
+            labelPlacement="outside"
+            variant="bordered"
+            size={"lg"}
+            placeholder="My First Bar Chart..."
+            classNames={{
+              label: "text-2xl font-medium text-slate-700",
+              input: "placeholder:text-slate-300",
+            }}
             onChange={(e) => handleOnChange(e, setTitleValue, titleMaxChar)}
             onKeyDown={(e) => handleTab(e, setTitleValue)}
             value={titleValue}
           />
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
+          <div className="text-gray-400 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
               <label>Visualization Title. (Max {titleMaxChar} characters.)</label>
+              <label className="text-red-400">* Required</label>
             </div>
             <label>{titleValue.length}</label>
           </div>
         </div>
 
-        <div className="pb-4">
-          <textarea
-            className="py-2 text-lg font-regular flex h-40 w-full border-gray-200 rounded-md border-medium border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Description"
+        <div className="py-4">
+          <Textarea
+            variant="bordered"
+            label="Description"
+            labelPlacement="outside"
+            placeholder="A Bar Chart that..."
+            classNames={{
+              label: "text-xl font-medium text-slate-700",
+              input: "placeholder:text-slate-300",
+            }}
             rows={4}
             onChange={(e) => handleOnChange(e, setDescriptionValue, descriptionMaxChar)}
             onKeyDown={(e) => handleTab(e, setDescriptionValue)}
             value={descriptionValue}
           />
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
+          <div className="text-gray-400 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
-              <label>Visualization Description. (Max {descriptionMaxChar} characters.)</label>
+              <label>Visualization Description. (Max {descriptionMaxChar} characters.) </label>
+              <label className="text-slate-400">* Optional</label>
             </div>
             <label>{descriptionValue.length}</label>
           </div>
         </div>
 
-        <div className="pb-4">
+        <div className="py-4">
           <div>
+            <label className="text-xl text-slate-700 font-medium">Image</label>
             <FilePond
               files={sourceImage}
               onupdatefiles={(fileItems) => {
@@ -136,130 +207,191 @@ export default function Page() {
               maxFileSize="5MB"
             />
           </div>
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
+          <div className="text-gray-400 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
               <label>Image preview of visualization. (Allowed File Types: .jpeg, .png)(Max 5 MB.)</label>
+              <label className="text-red-400">* Required</label>
             </div>
           </div>
         </div>
 
-        <div className="pb-4">
-          <input
-            className="py-2 text-lg font-regular flex h-10 w-full border-gray-200 rounded-md border-medium border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Link to Demo"
+        <div className="py-4">
+          <Input
+            label="Link to Demo"
+            labelPlacement={"outside"}
+            variant={"bordered"}
+            classNames={{
+              label: "text-xl font-medium text-slate-700",
+              input: "placeholder:text-slate-300",
+            }}
+            placeholder="my-website.com"
             onChange={(e) => handleOnChange(e, setExternalLinkValue, externalLinkMaxChar)}
             onKeyDown={(e) => handleTab(e, setExternalLinkValue)}
             value={externalLinkValue}
           />
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
+          <div className="text-gray-400 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
-              <label>URL Link to Visualization Demo. (Max {externalLinkMaxChar} characters.) (Optional)</label>
+              <label>
+                URL Link to Visualization Demo. Used to provide link for interactive or live version of visualization
+                (Max {externalLinkMaxChar} characters.)
+              </label>
+              <label>* Optional</label>
             </div>
             <label>{titleValue.length}</label>
           </div>
         </div>
 
-        <div className="pb-4">
-          <textarea
-            className={`${roboto.className} tracking-wide py-2 text-sm placeholder:text-lg flex h-50 w-full border-medium border-gray-200 rounded-md border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
-            placeholder="Source Code"
-            rows={10}
+        <div className="py-4">
+          <Textarea
+            label="Source Code"
+            labelPlacement="outside"
+            variant="bordered"
+            classNames={{
+              label: "text-xl font-medium text-slate-700",
+              input: "placeholder:text-slate-300",
+            }}
+            placeholder={placeholderCode}
+            minRows={15}
+            maxRows={15}
             onChange={(e) => handleOnChange(e, setSourceCodeValue, sourceCodeMaxChar)}
             onKeyDown={(e) => handleTab(e, setSourceCodeValue)}
             value={sourceCodeValue}
           />
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
+          <div className="text-gray-400 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
               <label>Source Code of the Visualization. (Max {sourceCodeMaxChar} characters.)</label>
+              <label className="text-red-400">* Required</label>
             </div>
             <label>{sourceCodeValue.length}</label>
           </div>
         </div>
 
-        <div className="pb-4">
-          {/* <div className="py-2 text-lg font-regular flex h-15 border-gray-300 items-center w-full rounded-md border-medium border-input bg-background px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-            <div className="flex flex-row gap-2 items-center cursor-pointer">
-              <p className="text-gray-400 text-md">Library Tag (Click to select)</p>
-              <FaCirclePlus className="text-gray-400" />
-            </div>
-          </div> */}
-          <div>
-            <Autocomplete
-              variant="bordered"
-              placeholder="Select a Library"
+        <div className="py-4">
+          <div className="relative" onFocus={() => setLibraryIsFocused(true)} onBlur={() => setLibraryIsFocused(false)}>
+            <Input
+              startContent={<FaSearch className="text-slate-400" />}
+              label="Library"
+              labelPlacement="outside"
               classNames={{
-                base: "max-w-xs",
-                listboxWrapper: "max-h-[320px]",
-                selectorButton: "text-gray-400 text-4xl",
+                label: "text-xl font-medium text-slate-700",
               }}
-              //@ts-ignore
-              onSelectionChange={setLibraryValue}
-            >
-              {libraryList.map((tag) => (
-                <AutocompleteItem key={tag} textValue={tag}>
-                  <DisplayTag label={tag} />
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
+              variant="bordered"
+              type="text"
+              placeholder="Search for Library (Must choose 1 library)"
+              value={librarySearchTerm}
+              onChange={(e) => {
+                setLibrarySearchTerm(e.target.value);
+                handleLibrarySearch(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleLibraryClick(librarySearchResults[0] || "");
+                }
+              }}
+            />
+            {libraryIsFocused && librarySearchResults.length > 0 && (
+              <Listbox
+                aria-label="Actions"
+                //@ts-ignore
+                onAction={handleLibraryClick}
+                className="absolute z-10 bg-white border rounded-md mt-1 p-1 w-full"
+              >
+                {librarySearchResults.map((result, index) => (
+                  <ListboxItem key={result}>
+                    <DisplayTagWithLink label={result} />
+                  </ListboxItem>
+                ))}
+              </Listbox>
+            )}
+            {libraryIsFocused && librarySearchTerm.trim() !== "" && librarySearchResults.length === 0 && (
+              <Listbox
+                disabledKeys={["noresult"]}
+                aria-label="Actions"
+                className="absolute z-10 bg-white border rounded-md mt-1 p-1 w-full"
+              >
+                <ListboxItem key="noresult">No results found.</ListboxItem>
+              </Listbox>
+            )}
           </div>
-          {libraryValue && (
-            <div className="py-1">
-              <DisplayLibraryNoLinkRemovable setLibraryValue={setLibraryValue} label={libraryValue} />
-            </div>
-          )}
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
+          <div className="text-gray-400 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
-              <label>Visualization Library. (Max 1 Tag)</label>
+              <label>Choose Library of this visualization. (Max 1 Library.)</label>
+              <label className="text-red-400">* Required</label>
             </div>
+          </div>
+          <div className="flex flex-row flex-wrap gap-1">
+            {selectedLibrary && (
+              <div className="py-1">
+                <DisplayLibraryNoLinkRemovable setLibraryValue={setSelectedLibrary} label={selectedLibrary} />
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="pb-4">
-          <div>
-            <Autocomplete
-              variant="bordered"
-              placeholder="Select Tags"
+        <div className="py-4">
+          <div className="relative" onFocus={() => setTagIsFocused(true)} onBlur={() => setTagIsFocused(false)}>
+            <Input
+              startContent={<FaSearch className="text-slate-400" />}
+              label="Tags"
+              labelPlacement="outside"
               classNames={{
-                base: "max-w-xs",
-                listboxWrapper: "max-h-[320px]",
-                selectorButton: "text-gray-400 text-4xl",
+                label: "text-xl font-medium text-slate-700",
               }}
-              onSelectionChange={(key) => {
-                if (key) {
-                  //@ts-ignore
-                  if (tagValue?.includes(key)) {
-                    // If tag is not available, terminate the function
-                    console.log("Tag dupes");
-                    return;
-                  }
-                  //@ts-ignore
-                  setTagValue([...tagValue, key || ""]);
+              variant="bordered"
+              type="text"
+              placeholder="Search for Tags (May choose multiple tags)"
+              value={tagSearchTerm}
+              onChange={(e) => {
+                setTagSearchTerm(e.target.value);
+                handleTagSearch(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleTagClick(tagSearchResults[0] || "");
                 }
               }}
-            >
-              {tagList.map((tag) => (
-                <AutocompleteItem key={tag} textValue={tag}>
-                  <DisplayTag label={tag} />
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
+            />
+            {tagIsFocused && tagSearchResults.length > 0 && (
+              <Listbox
+                aria-label="Actions"
+                //@ts-ignore
+                onAction={handleTagClick}
+                className="absolute z-10 bg-white border rounded-md mt-1 p-1 w-full"
+              >
+                {tagSearchResults.map((result, index) => (
+                  <ListboxItem key={result}>
+                    <DisplayTagWithLink label={result} />
+                  </ListboxItem>
+                ))}
+              </Listbox>
+            )}
+            {tagIsFocused && tagSearchTerm.trim() !== "" && tagSearchResults.length === 0 && (
+              <Listbox
+                disabledKeys={["noresult"]}
+                aria-label="Actions"
+                className="absolute z-10 bg-white border rounded-md mt-1 p-1 w-full"
+              >
+                <ListboxItem key="noresult">No results found.</ListboxItem>
+              </Listbox>
+            )}
           </div>
-          <div className="flex flex-row gap-1 items-center">
-            {tagValue.map((tag, i) => (
-              <div className="py-1" key={i}>
-                <DisplayTagNoLinkRemovable setTagValue={setTagValue} label={tag} />
-              </div>
-            ))}
-          </div>
-          <div className="text-gray-300 font-regular text-sm flex justify-between">
+          <div className="text-gray-400 font-regular text-sm flex justify-between">
             <div className="flex flex-row gap-1 items-center">
               <IoMdInformationCircle />
-              <label>Other Tags. (No Limit.)</label>
+              <label>Choose tags to classify category of visualization. (No limit.)</label>
+              <label>* Optional</label>
             </div>
+          </div>
+          <div className="flex flex-row flex-wrap gap-1">
+            {selectedTags.map((tag, i) => (
+              <div className="py-1" key={i}>
+                <DisplayTagNoLinkRemovable setTagValue={setSelectedTags} label={tag} />
+              </div>
+            ))}
           </div>
         </div>
 

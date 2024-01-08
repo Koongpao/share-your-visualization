@@ -11,6 +11,8 @@ import { format } from "date-fns";
 
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaArrowTurnDown } from "react-icons/fa6";
 
 import { TSpecificVisualization } from "@/app/lib/definitions";
 import CopyIcon from "./copy-icon";
@@ -69,7 +71,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
         <div className="py-4">
-          <div className="text-xl flex justify-center font-semibold">Preview Demo</div>
+          <div className="text-xl flex flex-row gap-2 items-center justify-center font-semibold">Preview Demo <FaArrowTurnDown /> </div>
           <div className="flex justify-center py-4">
             <Button
               className="bg-teal-600 text-white font-semibold shadow-xl"

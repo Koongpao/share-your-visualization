@@ -30,27 +30,9 @@ import { RxCross1 } from "react-icons/rx";
 
 import { TlibraryAndTags } from "../lib/definitions";
 import VisSidebarLoading from "./vis-sidebar-loading";
+import { sidebarPresentationList, sidebarChartTypeList, sidebarLibraryList, sidebarMiscList } from "../lib/resources";
 
 const inter = Inter({ subsets: ["latin"] });
-
-const staticLibraryList = [
-  "d3.js",
-  "altair",
-  "vega",
-  "apache_echarts",
-  "chart.js",
-  "seaborn",
-  "recharts",
-  "victory",
-  "c3.js",
-  "matplotlib",
-  "bokeh",
-  "highcharts",
-  "plotly",
-];
-const chartTypeList = ["bar", "line", "pie", "scatter", "map", "candlestick", "boxplot", "heatmap", "tree"];
-const categoryList = ["static", "interactive"];
-//This is for local defined for classifying tags in sidebar. For all global available tags, see tagList.ts
 
 export default function VisSidebar() {
   const [activeTagList, setActiveTagList] = useAtom(atomTagList);
@@ -211,7 +193,7 @@ export default function VisSidebar() {
               startContent={<IoLibrary className="text-xl" />}
             >
               <div className="flex flex-row flex-wrap gap-2">
-                {staticLibraryList.map((eachTag, i) => (
+                {sidebarLibraryList.map((eachTag, i) => (
                   <SidebarTag key={i} label={eachTag} />
                 ))}
               </div>
@@ -223,7 +205,7 @@ export default function VisSidebar() {
               startContent={<FaChartPie className="text-xl" />}
             >
               <div className="flex flex-row flex-wrap gap-2">
-                {chartTypeList.map((eachTag, i) => (
+                {sidebarChartTypeList.map((eachTag, i) => (
                   <SidebarTag key={i} label={eachTag} />
                 ))}
               </div>
@@ -231,11 +213,11 @@ export default function VisSidebar() {
             <AccordionItem
               key="3"
               aria-label="Accordion 3"
-              title="Category"
+              title="Presentation"
               startContent={<MdCategory className="text-2xl" />}
             >
               <div className="flex flex-row flex-wrap gap-2">
-                {categoryList.map((eachTag, i) => (
+                {sidebarPresentationList.map((eachTag, i) => (
                   <SidebarTag key={i} label={eachTag} />
                 ))}
               </div>
@@ -245,7 +227,13 @@ export default function VisSidebar() {
               aria-label="Accordion 4"
               title="Miscellaneous"
               startContent={<MdMiscellaneousServices className="text-2xl" />}
-            ></AccordionItem>
+            >
+              <div className="flex flex-row flex-wrap gap-2">
+                {sidebarMiscList.map((eachTag, i) => (
+                  <SidebarTag key={i} label={eachTag} />
+                ))}
+              </div>
+            </AccordionItem>
           </Accordion>
         </div>
       </div>

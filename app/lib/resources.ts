@@ -21,3 +21,60 @@ export const KnownLibraries: {
   victory: { bgColor: "bg-red-400", logo: "/library-icons/victory_logo.png" },
 };
 
+export const searchSuggestion = [
+  "bar_chart",
+  "line_chart",
+  "pie_chart",
+  "scatter_plot",
+  "map",
+  "candlestick",
+  "boxplot",
+  "heatmap",
+  "tree_chart",
+];
+export const librarySuggestion = ["plotly", "chart.js", "d3.js", "matplotlib", "seaborn", "altair", "bokeh", "vega"];
+
+export const sidebarLibraryList = [
+  "d3.js",
+  "altair",
+  "vega",
+  "apache_echarts",
+  "chart.js",
+  "seaborn",
+  "recharts",
+  "victory",
+  "c3.js",
+  "matplotlib",
+  "bokeh",
+  "highcharts",
+  "plotly",
+];
+export const sidebarChartTypeList = [
+  "bar_chart",
+  "line_chart",
+  "pie_chart",
+  "scatter_plot",
+  "map",
+  "candlestick",
+  "boxplot",
+  "heatmap",
+  "tree_chart",
+];
+export const sidebarPresentationList = ["static", "interactive", "animated"];
+export const sidebarMiscList = ["case_study"];
+//This is for local defined for classifying tags in sidebar. For all global available tags, see tagList.ts
+
+export const placeholderCode = `# importing the required module 
+import matplotlib.pyplot as plt 
+	
+x = [1,2,3] 
+y = [2,4,1] 
+	
+plt.plot(x, y) 
+	
+plt.xlabel('x - axis') 
+plt.ylabel('y - axis') 
+	
+plt.title('My first graph!') 
+	
+plt.show() `;

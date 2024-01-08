@@ -4,6 +4,7 @@ import { KnownLibraries } from "@/app/lib/resources";
 import clsx from "clsx";
 import { RxCross2 } from "react-icons/rx";
 import { CapitalizeWords } from "@/app/lib/functions";
+import { FaSearch } from "react-icons/fa";
 
 
 export function DisplayTagWithLink({ label }: { label: string }) {
@@ -200,5 +201,33 @@ export function DisplayLibraryNoLinkRemovable({
         <RxCross2 className="text-xl cursor-pointer" onClick={handleRemoveClick} />
       </div>
     </div>
+  );
+}
+
+export const DisplayTagSearchIcon = ({ label }: { label: string }) => {
+  //used in / (home page)
+  const CapitalizedLabel = CapitalizeWords(label);
+
+  const libraryInfo = KnownLibraries[label];
+  const libraryColor = libraryInfo ? libraryInfo.bgColor : "bg-teal-500";
+  const libraryImageSrc = libraryInfo ? libraryInfo.logo : "";
+
+  return (
+    <Link href={`/search?tags=${label}`} prefetch={false}>
+      <div className="flex min-w-fit">
+        <div
+          className={`min-w-fit inline-flex flex-row gap-x-1 items-center rounded-full border px-3.5
+      py-0.5 text-base font-semibold transition-colors focus:outline-none focus:ring-2 
+      focus:ring-ring focus:ring-offset-2 border-transparent text-white ${libraryColor}  
+       hover:${libraryColor}/80`}
+        >
+          <FaSearch className="text-sm" />
+          {libraryImageSrc ? (
+            <Image className="min-w-[16px]" src={libraryImageSrc} alt="" width={16} height={16} />
+          ) : null}
+          {CapitalizedLabel}
+        </div>
+      </div>
+    </Link>
   );
 }
