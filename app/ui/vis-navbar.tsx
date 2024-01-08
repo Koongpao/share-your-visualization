@@ -92,6 +92,7 @@ export default function VisNavbar() {
                 }}
               >
                 <Input
+                  autoComplete="off"
                   size={"sm"}
                   placeholder="Search Visualization..."
                   value={searchQuery}

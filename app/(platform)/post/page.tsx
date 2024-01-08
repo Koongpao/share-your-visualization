@@ -1,6 +1,20 @@
 "use client";
 import Link from "next/link";
-import { Button, Autocomplete, AutocompleteItem, Listbox, ListboxItem, Input, Textarea } from "@nextui-org/react";
+import {
+  Button,
+  Autocomplete,
+  AutocompleteItem,
+  Listbox,
+  ListboxItem,
+  Input,
+  Textarea,
+  useDisclosure,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
@@ -30,6 +44,8 @@ import {
 import { getSession } from "next-auth/react";
 import { set } from "date-fns";
 import { placeholderCode } from "@/app/lib/resources";
+import PostSuccess from "./post-success";
+import PostFailed from "./post-failed";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -64,19 +80,7 @@ export default function Page() {
     getTags();
   }, []);
 
-  const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("title", titleValue);
-    formData.append("description", descriptionValue);
-    formData.append("code", sourceCodeValue);
-    formData.append("image", sourceImage[0]);
-    formData.append("externalLink", externalLinkValue);
-    formData.append("library", selectedLibrary);
-    formData.append("tags", JSON.stringify(selectedTags));
-
-    const response = await PostVisualization(() => getSession(), formData);
-    console.log(response);
-  };
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [tagSearchTerm, setTagSearchTerm] = useState<string>("");
   const [tagSearchResults, setTagSearchResults] = useState<string[]>([]);
@@ -130,6 +134,42 @@ export default function Page() {
     }
     setSelectedLibrary?.(key);
   };
+
+  const [canSubmit, setCanSubmit] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (titleValue && sourceImage.length > 0 && sourceCodeValue && selectedLibrary) {
+      setCanSubmit(true);
+    } else {
+      setCanSubmit(false);
+    }
+  }, [titleValue, sourceImage, sourceCodeValue, selectedLibrary]);
+
+  const handleSubmit = async () => {
+    setCanSubmit(false);
+    const formData = new FormData();
+    formData.append("title", titleValue);
+    formData.append("description", descriptionValue);
+    formData.append("code", sourceCodeValue);
+    formData.append("image", sourceImage[0]);
+    formData.append("externalLink", externalLinkValue);
+    formData.append("library", selectedLibrary);
+    formData.append("tags", JSON.stringify(selectedTags));
+
+    const response = await PostVisualization(() => getSession(), formData);
+    if (response.success) {
+      setPostSuccess(true);
+    } else if (!response.success) {
+      setPostFailed(true);
+    }
+  };
+
+  const [postSuccess, setPostSuccess] = useState<boolean>(false);
+  const [postFailed, setPostFailed] = useState<boolean>(false);
+
+  if (postFailed) return <PostFailed/>
+
+  if (postSuccess) return <PostSuccess/>
 
   return (
     <div className={"container py-6 px-8 md:px-24 lg:px-72 pb-12"}>
@@ -252,6 +292,7 @@ export default function Page() {
               label: "text-xl font-medium text-slate-700",
               input: "placeholder:text-slate-300",
             }}
+            spellCheck={false}
             placeholder={placeholderCode}
             minRows={15}
             maxRows={15}
@@ -269,15 +310,11 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="py-4">
+        <div className="py-3">
           <div className="relative" onFocus={() => setLibraryIsFocused(true)} onBlur={() => setLibraryIsFocused(false)}>
+            <label className="text-xl text-slate-700 font-medium">Library</label>
             <Input
               startContent={<FaSearch className="text-slate-400" />}
-              label="Library"
-              labelPlacement="outside"
-              classNames={{
-                label: "text-xl font-medium text-slate-700",
-              }}
               variant="bordered"
               type="text"
               placeholder="Search for Library (Must choose 1 library)"
@@ -332,15 +369,11 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="py-4">
-          <div className="relative" onFocus={() => setTagIsFocused(true)} onBlur={() => setTagIsFocused(false)}>
+        <div className="py-3">
+          <div className="relative z-5" onFocus={() => setTagIsFocused(true)} onBlur={() => setTagIsFocused(false)}>
+            <label className="text-xl text-slate-700 font-medium">Tags</label>
             <Input
               startContent={<FaSearch className="text-slate-400" />}
-              label="Tags"
-              labelPlacement="outside"
-              classNames={{
-                label: "text-xl font-medium text-slate-700",
-              }}
               variant="bordered"
               type="text"
               placeholder="Search for Tags (May choose multiple tags)"
@@ -405,13 +438,73 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="py-4 flex flex-row gap-4 items-center">
-          <Button className="font-semibold text-md text-white bg-teal-600" onClick={() => handleSubmit()}>
-            Submit
+        <div className="py-4 mt-12 flex flex-row gap-4 items-center">
+          <Button className="font-semibold text-md text-white bg-teal-600" onClick={onOpen}>
+            Proceed
           </Button>
           <Button className="font-semibold text-md text-gray-500 bg-transparent">Clear</Button>
         </div>
       </form>
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Are you sure to submit?</ModalHeader>
+              <ModalBody>
+                {!titleValue && (
+                  <div>
+                    Title is not filled yet. <label className="text-red-400 font-semibold">* Required</label>{" "}
+                  </div>
+                )}
+                {!descriptionValue && (
+                  <div>
+                    Description is not filled yet. <label className="text-slate-900 font-semibold">* Optional</label>{" "}
+                  </div>
+                )}
+                {sourceImage.length === 0 && (
+                  <div>
+                    Image is not provided yet. <label className="text-red-400 font-semibold">* Required</label>{" "}
+                  </div>
+                )}
+                {!externalLinkValue && (
+                  <div>
+                    Link to Demo is not filled yet.{" "}
+                    <label className="text-slate-900 font-semibold">* Optional (Recommended)</label>{" "}
+                  </div>
+                )}
+                {!sourceCodeValue && (
+                  <div>
+                    Source Code is not filled yet. <label className="text-red-400 font-semibold">* Required</label>{" "}
+                  </div>
+                )}
+                {!selectedLibrary && (
+                  <div>
+                    Library is not selected yet. <label className="text-red-400 font-semibold">* Required</label>{" "}
+                  </div>
+                )}
+                {selectedTags.length === 0 && (
+                  <div>
+                    Tags are not selected.{" "}
+                    <label className="text-slate-900 font-semibold">* Optional (Recommended)</label>{" "}
+                  </div>
+                )}
+                {!(titleValue && sourceImage.length > 0 && sourceCodeValue && selectedLibrary) && (
+                  <div className="font-semibold text-red-400">You must fill required fields to Submit </div>
+                )}
+              </ModalBody>
+              <ModalFooter>
+                <Button className="bg-white font-bold text-base text-red-500" onPress={onClose}>
+                  Close
+                </Button>
+                <Button className="font-semibold text-base text-white bg-teal-600" isDisabled={!canSubmit} onClick={() => handleSubmit()}>
+                  Submit
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

@@ -97,7 +97,7 @@ export async function GetMyInformation(getSessionFunc: CallbackFunction,) {
 export async function PostVisualization(getSessionFunc: CallbackFunction,formData: FormData) {
   const session = await getSessionFunc();
   try {
-    const response = await fetch(baseURL + "/api/visualizations", {
+    const response = await fetch(baseProdURL + "/api/visualizations", {
       method: "POST",
       headers: {
         authorization: session?.user.accessToken,
