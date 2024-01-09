@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
           <div className="flex flex-row gap-x-2">
             <p className="font-bold">Tags</p>
-            <div className="flex flex-row gap-x-1">
+            <div className="flex flex-row gap-x-1 items-center">
               {data.tags.length === 0 && <p className="text-slate-600 font-semibold">None</p>}
               {data.tags.map((tag: { name: string }, i) => (
                 <DisplayTagWithLink key={i} label={tag.name} />
