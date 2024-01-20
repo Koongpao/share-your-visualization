@@ -431,14 +431,14 @@ export default function Page() {
         <div className="pb-4 pt-2">
           <div className="text-gray-600 font-medium">
             Can&apos;t find tag or library you&apos;re searching for?
-            <Link href="/tag-list/add" target="_blank" className="text-gray-900 font-bold underline">
+            <Link href="/tag-list/request" target="_blank" className="text-gray-900 font-bold underline">
               {" "}
-              Help by creating one!
+              Request for a new tag
             </Link>
           </div>
         </div>
 
-        <div className="py-4 mt-12 flex flex-row gap-4 items-center">
+        <div className="py-4 mt-6 flex flex-row gap-4 items-center">
           <Button className="font-semibold text-md text-white bg-teal-600" onClick={onOpen}>
             Proceed
           </Button>

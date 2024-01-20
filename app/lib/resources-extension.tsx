@@ -8,7 +8,7 @@ export const NavbarMenuLinkList = [
     { hrefValue: "/search", labelValue: "Search", icon: <IoSearch /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
     { hrefValue: "/tag-list", labelValue: "Tag List", icon: <IoIosPricetags /> },
-    { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
+    { hrefValue: "/tag-list/request", labelValue: "Request New Tag", icon: <IoIosPricetag /> },
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
   ];
@@ -20,5 +20,5 @@ export const NavbarSecondaryLinkList = [
     { hrefValue: "/user/favorites", labelValue: "Favorites", icon: <FaStar /> },
     { hrefValue: "/user/my-visualizations", labelValue: "My Visualizations", icon: <FaRegFolderOpen /> },
     { hrefValue: "/post", labelValue: "Post Visualization", icon: <BsPencilSquare /> },
-    { hrefValue: "/tag-list/add", labelValue: "Create New Tag", icon: <IoIosPricetag /> },
+    { hrefValue: "/tag-list/request", labelValue: "Request New Tag", icon: <IoIosPricetag /> },
   ];

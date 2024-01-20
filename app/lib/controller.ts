@@ -277,3 +277,22 @@ export async function GetMyFavoriteVisualizations(getSessionFunc: CallbackFuncti
     console.error(error);
   }
 }
+
+//RequestNewTag - POST /api/tags
+export async function RequestNewTag(getSessionFunc: CallbackFunction, name: string, is_library: boolean) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/tags", {
+      method: "POST",
+      headers: {
+        authorization: session?.user.accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: name, is_library: is_library}),
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}

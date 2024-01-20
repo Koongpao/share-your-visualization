@@ -4,8 +4,8 @@ import { TlibraryAndTags } from "@/app/lib/definitions";
 
 export default async function Page() {
   const { data, message, success }: { data: TlibraryAndTags; message: string; success: boolean } = await GetAllTags();
-  const libraryTags = data.library.filter(tags => tags.status === "approved")
-  const nonLibraryTags = data.tags.filter(tags => tags.status === "approved")
+  const libraryTags = data.library.filter((tags) => tags.status === "approved");
+  const nonLibraryTags = data.tags.filter((tags) => tags.status === "approved");
 
   return (
     <div className="py-6 px-8 md:px-24 lg:px-36 xl:container xl:px-80 pb-12 flex flex-col gap-2">
