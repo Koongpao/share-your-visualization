@@ -16,6 +16,13 @@ export default withAuth(
       //redirect unauthorized user to unauthenticated page
       return NextResponse.rewrite(new URL("/unauthenticated", request.url));
     }
+    if (
+      (request.nextUrl.pathname.startsWith("/admin/pending-visualizations") ||
+      request.nextUrl.pathname.startsWith("/admin/requested-tags")) &&
+      (request.nextauth.token?.role !== "admin" || !request.nextauth.token)
+    ){
+      return NextResponse.rewrite(new URL("/unauthorized", request.url));
+    }
   },
   {
     callbacks: {
@@ -33,6 +40,6 @@ export default withAuth(
 // // };
 
 export const config = {
-  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post"],
+  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post", "/admin/pending-visualizations", "/admin/requested-tags"],
 };
 

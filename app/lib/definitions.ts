@@ -2,15 +2,24 @@ export type CallbackFunction = () => Promise<any>;
 
 export type TlibraryAndTags = {
   library: {
-    name: string;
-    is_library: boolean;
-    status: string; // deaw koi pliean
-  }[];
-  tags: {
+    _id: string;
     name: string;
     is_library: boolean;
     status: string;
   }[];
+  tags: {
+    _id: string;
+    name: string;
+    is_library: boolean;
+    status: string;
+  }[];
+};
+
+export type TTags = {
+  _id: string;
+  name: string;
+  is_library: boolean;
+  status: string;
 };
 
 export type TSpecificVisualization = {

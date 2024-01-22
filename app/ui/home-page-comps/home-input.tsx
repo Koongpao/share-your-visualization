@@ -25,8 +25,7 @@ export default function HomeInput() {
       <Input
         // label="Visualization Title"
         // labelPlacement="outside"
-        autoComplete="off"
-        type="text"
+        autoComplete="new-password"
         id="search"
         variant="faded"
         size={"lg"}

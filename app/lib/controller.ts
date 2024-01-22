@@ -76,7 +76,7 @@ export async function Login(body: { usernameOrEmail: string; password: string })
 }
 
 //GetMyInformation - GET /api/users/me
-export async function GetMyInformation(getSessionFunc: CallbackFunction,) {
+export async function GetMyInformation(getSessionFunc: CallbackFunction) {
   const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/users/me", {
@@ -93,8 +93,7 @@ export async function GetMyInformation(getSessionFunc: CallbackFunction,) {
 }
 
 //PostVisualization - POST /api/visualizations
-//Currently disabled
-export async function PostVisualization(getSessionFunc: CallbackFunction,formData: FormData) {
+export async function PostVisualization(getSessionFunc: CallbackFunction, formData: FormData) {
   const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations", {
@@ -114,7 +113,7 @@ export async function PostVisualization(getSessionFunc: CallbackFunction,formDat
 //GetSpecificVisualization - GET /api/visualizations/:id
 export async function GetSpecificVisualization(id: string) {
   try {
-    const response = await fetch(baseProdURL + "/api/visualizations/" + id, { method: "GET" });
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id, { method: "GET", cache: "no-cache" });
     const jsonResponse = await response.json();
     return jsonResponse;
   } catch (error) {
@@ -160,7 +159,7 @@ export async function GetMyVisualizations(getSessionFunc: CallbackFunction) {
 }
 
 //FavoriteVisualizations - PUT /api/visualizations/:id/favorite
-export async function FavoriteVisualizations(getSessionFunc: CallbackFunction,id: string) {
+export async function FavoriteVisualizations(getSessionFunc: CallbackFunction, id: string) {
   const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/favorite", {
@@ -177,7 +176,7 @@ export async function FavoriteVisualizations(getSessionFunc: CallbackFunction,id
 }
 
 //UnfavoriteVisualizations - PUT /api/visualizations/:id/unfavorite
-export async function UnfavoriteVisualizations(getSessionFunc: CallbackFunction,id: string) {
+export async function UnfavoriteVisualizations(getSessionFunc: CallbackFunction, id: string) {
   const session = await getSessionFunc();
   try {
     const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/unfavorite", {
@@ -288,9 +287,114 @@ export async function RequestNewTag(getSessionFunc: CallbackFunction, name: stri
         authorization: session?.user.accessToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name: name, is_library: is_library}),
+      body: JSON.stringify({ name: name, is_library: is_library }),
     });
     const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//GetPendingVisualizations - GET /api/visualizations/pending
+export async function GetPendingVisualizations(getSessionFunc: CallbackFunction) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/pending", {
+      method: "GET",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//ApproveVisualization - PUT /api/visualizations/:id/approve
+export async function ApproveVisualization(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/approve", {
+      method: "PUT",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//DisapproveVisualization - PUT /api/visualizations/:id/disapprove
+export async function DisapproveVisualization(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id + "/disapprove", {
+      method: "PUT",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//GetRequestedTags - GET /api/tags/requested
+export async function GetRequestedTags(getSessionFunc: CallbackFunction) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/tags/requested", {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//ApproveTag - PUT /api/tags/:id/approve
+export async function ApproveTag(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/tags/" + id + "/approve", {
+      method: "PUT",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//DisapproveTag - PUT /api/tags/:id/disapprove
+export async function DisapproveTag(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/tags/" + id + "/disapprove", {
+      method: "PUT",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
     return jsonResponse;
   } catch (error) {
     console.error(error);

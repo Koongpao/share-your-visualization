@@ -20,14 +20,13 @@ import { FaSearch, FaHome } from "react-icons/fa";
 import { IoExitOutline } from "react-icons/io5";
 import { VscSettings } from "react-icons/vsc";
 import { MdLogin } from "react-icons/md";
-import { FaPowerOff, FaUserPlus } from "react-icons/fa6";
+import { FaPowerOff, FaShield, FaUserPlus } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 
 import { atomSidebarActive, atomLoginDependency, atomSearchQuery, atomSearchDependency } from "../atoms";
 import { useAtom } from "jotai";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
 
 import { NavbarMenuLinkList, NavbarSecondaryLinkList } from "../lib/resources-extension";
 
@@ -61,7 +60,7 @@ export default function VisNavbar() {
 
   useEffect(() => {
     if (currentPath !== "/search") {
-      setSearchQuery("")
+      setSearchQuery("");
     }
   }, [currentPath]);
   //Reset Search Query when not in search page
@@ -244,6 +243,7 @@ export default function VisNavbar() {
                 icon={links.icon}
               />
             ))}
+            {session?.user.role === "admin" && <NavbarSecondaryLink hrefValue="/admin" labelValue="Admin" icon={<FaShield/>}/>}
           </div>
         </NavbarContent>
       </Navbar>

@@ -11,19 +11,58 @@ import { format } from "date-fns";
 
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { IoIosWarning } from "react-icons/io";
 import { FaArrowTurnDown } from "react-icons/fa6";
 
 import { TSpecificVisualization } from "@/app/lib/definitions";
 import CopyIcon from "./copy-icon";
 import LikesFavorite from "./likes-favorite";
+import { getServerAuthSession } from "@/app/lib/auth";
+
+import Unauthorized from "@/app/(auth)/unauthorized/page";
+import Review from "./review";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { data, message, success }: { data: TSpecificVisualization; message: string; success: boolean } =
     await GetSpecificVisualization(params.id);
 
+  const session = await getServerAuthSession();
+
+  const isAllowedViewing = session?.user?.role !== "admin" || session?.user?.name !== data.creator.username;
+
+  if (data.status === "pending" || data.status === "disapproved") {
+    if(!session){
+      return <Unauthorized />;
+    }
+    if (!isAllowedViewing) {
+      return <Unauthorized />;
+    }
+  }
+
   return (
     <div className="container py-6 px-8 md:px-24 lg:px-48 pb-12">
+      {data.status === "pending" && (
+        <div className="flex flex-col justify-center bg-yellow-50 border-1 border-yellow-600 py-5 mx-24 items-center">
+          <div className="font-medium text-yellow-700 text-xl flex flex-row gap-1 items-center">
+            <IoIosWarning className="text-3xl" /> This visualization is pending for approval
+          </div>
+          <div className="font-medium text-yellow-700">Please wait for us to review your visualization.</div>
+          <div className="font-medium text-yellow-700">Only you can view this page.</div>
+        </div>
+      )}
+      {data.status === "pending" && session?.user?.role === "admin" && (
+          <Review visId={params.id}/>
+        )}
+      {data.status === "disapproved" && (
+        <div className="flex flex-col justify-center bg-red-50 border-1 border-red-600 py-5 mx-24 items-center">
+          <div className="font-medium text-red-700 text-xl flex flex-row gap-1 items-center">
+            <IoIosWarning className="text-3xl" /> This visualization has been disapproved.
+          </div>
+          <div className="font-medium text-red-700">Sorry for inconvenience.</div>
+          <div className="font-medium text-red-700">Only you can view this page.</div>
+        </div>
+      )}
+
       <div className="flex flex-col">
         <div className="text-4xl font-semibold py-2">{data.title}</div>
         <div className="flex flex-col sm:flex-row gap-x-4 gap-y-2 pt-2">
@@ -71,7 +110,9 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
         <div className="py-4">
-          <div className="text-xl flex flex-row gap-2 items-center justify-center font-semibold">Preview Demo <FaArrowTurnDown /> </div>
+          <div className="text-xl flex flex-row gap-2 items-center justify-center font-semibold">
+            Preview Demo <FaArrowTurnDown />{" "}
+          </div>
           <div className="flex justify-center py-4">
             <Button
               className="bg-teal-600 text-white font-semibold shadow-xl"
