@@ -18,6 +18,9 @@ export default function PostSuccess() {
       <Link href="/user/my-visualizations">
         <Button className="bg-teal-600 text-white font-medium text-lg">View My Visualizations</Button>
       </Link>
+      <Link href="/post">
+        <Button className="bg-teal-600 text-white font-medium text-lg">Post More Visualizations</Button>
+      </Link>
     </div>
   );
 }

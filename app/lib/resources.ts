@@ -59,6 +59,12 @@ export const sidebarChartTypeList = [
   "boxplot",
   "heatmap",
   "tree_chart",
+  "area_chart",
+  "bubble_chart",
+  "donut_chart",
+  "circular_chart",
+  "doughnut_chart",
+  "radar_chart",
 ];
 export const sidebarPresentationList = ["static", "interactive", "animated"];
 export const sidebarMiscList = ["case_study"];

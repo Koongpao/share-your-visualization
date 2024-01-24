@@ -28,7 +28,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const session = await getServerAuthSession();
 
-  const isAllowedViewing = session?.user?.role !== "admin" || session?.user?.name !== data.creator.username;
+  const isAllowedViewing = session?.user?.role === "admin" || session?.user?.name === data.creator.username;
 
   if (data.status === "pending" || data.status === "disapproved") {
     if(!session){

@@ -7,7 +7,6 @@ export default async function Page() {
   const { data, message, success }: { data: TVisualizationsArray; message: string; success: boolean } =
     await GetPendingVisualizations(() => getServerAuthSession());
 
-  console.log(data);
   return (
     <div className="px-6 lg:px-32">
       <div className="bg-white w-100 h-auto min-h-screen px-6 py-6">

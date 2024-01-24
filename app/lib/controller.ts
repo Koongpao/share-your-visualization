@@ -5,27 +5,6 @@ const baseURL = "http://localhost:3001";
 
 const baseProdURL = "https://share-your-visualization-backend.vercel.app";
 
-export async function fetchData() {
-  unstable_noStore();
-
-  try {
-    // Artificially delay a reponse for demo purposes.
-    // Don't do this in real life :)
-
-    console.log("Fetching revenue data...");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const jsonResponse = "test";
-
-    console.log("Data fetch complete after 2 seconds.");
-
-    return jsonResponse;
-  } catch (error) {
-    console.error("Error:", error);
-    throw new Error("Failed to fetch data.");
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////
 //API FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////
@@ -376,7 +355,6 @@ export async function ApproveTag(getSessionFunc: CallbackFunction, id: string) {
       },
     });
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
     return jsonResponse;
   } catch (error) {
     console.error(error);
@@ -394,9 +372,10 @@ export async function DisapproveTag(getSessionFunc: CallbackFunction, id: string
       },
     });
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
     return jsonResponse;
   } catch (error) {
     console.error(error);
   }
 }
+
+
