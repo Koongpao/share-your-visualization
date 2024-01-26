@@ -9,7 +9,7 @@ export default withAuth(
     if (
       (request.nextUrl.pathname.startsWith("/user/favorites") ||
         request.nextUrl.pathname.startsWith("/user/my-visualizations") ||
-        request.nextUrl.pathname.startsWith("/tag-list/add") ||
+        request.nextUrl.pathname.startsWith("/tag-list/request") ||
         request.nextUrl.pathname.startsWith("/post")) &&
       !request.nextauth.token
     ) {
@@ -40,6 +40,6 @@ export default withAuth(
 // // };
 
 export const config = {
-  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/add", "/post", "/admin/pending-visualizations", "/admin/requested-tags"],
+  matcher: ["/user/favorites", "/user/my-visualizations", "/tag-list/request", "/post", "/admin/pending-visualizations", "/admin/requested-tags"],
 };
 
