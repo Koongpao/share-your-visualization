@@ -69,3 +69,4 @@ export type TPagination = {
   startIndex: number;
   endIndex: number;
 }
+

@@ -7,9 +7,9 @@ import { atomSearchQuery, atomTagList, atomSearchDependency } from "@/app/atoms"
 import Loading from "./loading";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { GetAllTags } from "@/app/lib/controller";
-import { Pagination } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button, Pagination } from "@nextui-org/react";
 import { TPagination, TVisualization, TVisualizationsArray, TlibraryAndTags } from "@/app/lib/definitions";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import Link from "next/link";
 
 export default function Page({}: {}) {
@@ -20,13 +20,23 @@ export default function Page({}: {}) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tagList, setTagList] = useAtom(atomTagList);
   const [searchQuery, setSearchQuery] = useAtom(atomSearchQuery);
+  // const [sortQuery, setSortQuery] = useState<TSortQuery>({
+  //   sortby: "",
+  //   order: ""
+  // });
+
+  const [sortQuery, setSortQuery] = useState<React.Key>("");
+  const [sortOrder, setSortOrder] = useState<string>("");
 
   const [data, setData] = useState<TVisualizationsArray>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [startIndex, setStartIndex] = useState<number>(0);
-  const [endIndex, setEndIndex] = useState<number>(0);
-  const [totalDocuments, setTotalDocuments] = useState<number>(0);
+
+  const [pagination, setPagination] = useState<TPagination>({
+    currentPage: 1,
+    totalPages: 1,
+    startIndex: 0,
+    endIndex: 0,
+    totalDocuments: 0,
+  });
 
   const [cardData, setCardData] = useState<TVisualizationsArray>();
 
@@ -48,6 +58,13 @@ export default function Page({}: {}) {
     searchParamPage = "1";
   } else {
     searchParamPage = searchParams?.get("page") || "1";
+  }
+
+  let searchParamSortBy = searchParams?.get("sortby") || "";
+
+  let searchParamOrder = searchParams?.get("order") || "";
+  if (searchParamSortBy !== "") {
+    searchParamOrder = "desc";
   }
 
   const InitializePage = async () => {
@@ -77,7 +94,18 @@ export default function Page({}: {}) {
 
     setSearchQuery(searchParamSearchQuery);
     //SetSearchQuery with Search Query from Search Params
-    getVisualizationsData(searchParamSearchQuery, searchParamTags, searchParamPage);
+    setSortQuery(searchParamSortBy);
+    if (searchParamSortBy !== "") {
+      setSortOrder("desc");
+    }
+
+    getVisualizationsData(
+      searchParamSearchQuery,
+      searchParamTags,
+      searchParamPage,
+      searchParamSortBy,
+      searchParamOrder
+    );
     // getVisualizationsData() but without states because useEffect does not set states on first render;
     if (Number(searchParams?.get("page")) < 1) {
       Params.set("page", "1");
@@ -89,23 +117,25 @@ export default function Page({}: {}) {
     InitializePage();
   }, []);
 
-  const getVisualizationsData = async (searchQuery: string, tagQuery: string[], page: string) => {
+  const getVisualizationsData = async (
+    searchQuery: string,
+    tagQuery: string[],
+    page: string,
+    sortby: string,
+    order: string
+  ) => {
     setIsLoading(true);
     const {
       data,
       message,
       success,
-      pagination
+      pagination,
     }: { data: TVisualizationsArray; message: string; success: boolean; pagination: TPagination } =
-      await SearchVisualization(searchQuery, tagQuery.join(","), page);
+      await SearchVisualization(searchQuery, tagQuery.join(","), page, sortby, order);
     setCardData(data);
     setSearchQuerySnapshot(searchQuery);
     setData(data);
-    setTotalPages(pagination.totalPages);
-    setCurrentPage(parseInt(page));
-    setStartIndex(pagination.startIndex);
-    setEndIndex(pagination.endIndex);
-    setTotalDocuments(pagination.totalDocuments);
+    setPagination(pagination);
     setIsLoading(false);
   };
 
@@ -120,6 +150,15 @@ export default function Page({}: {}) {
     } else {
       Params.delete("search_query");
     }
+    if (sortQuery.toString() !== "") {
+      Params.set("sortby", sortQuery.toString());
+    }
+    if (sortQuery.toString() !== "" && sortOrder === "") {
+      Params.set("order", "desc");
+    } else if (sortOrder !== "") {
+      Params.set("order", sortOrder);
+    }
+    
     Params.set("page", "1");
     router.push(`/search?${Params.toString()}`);
   };
@@ -136,20 +175,26 @@ export default function Page({}: {}) {
 
     //useEffect with dependencies must be used because router.push() does not trigger a page refresh when on the same page
     //called everytime tagList is changed from VisSidebar or searchDependency is called by search button in VisNavbar
+
     updateURLOnParamsChange();
-    getVisualizationsData(searchQuery, tagList, "1");
+
+    if(sortQuery.toString() !== "" && sortOrder === ""){
+      setSortOrder("desc");
+    }
+
+    getVisualizationsData(searchQuery, tagList, "1", sortQuery.toString(), sortOrder);
     //Resets current page to 1
-  }, [tagList, searchDependency]);
+  }, [tagList, searchDependency, sortQuery, sortOrder]);
 
   const handleNavigatePrevious = () => {
-    Params.set("page", (currentPage - 1).toString());
-    setCurrentPage(currentPage - 1);
+    Params.set("page", (pagination?.currentPage - 1).toString());
+    setPagination({ ...pagination, currentPage: pagination?.currentPage - 1 });
     router.push(`/search?${Params.toString()}`);
   };
 
   const handleNavigateNext = () => {
-    Params.set("page", (currentPage + 1).toString());
-    setCurrentPage(currentPage + 1);
+    Params.set("page", (pagination?.currentPage + 1).toString());
+    setPagination({ ...pagination, currentPage: pagination?.currentPage + 1 });
     router.push(`/search?${Params.toString()}`);
   };
 
@@ -159,8 +204,13 @@ export default function Page({}: {}) {
       firstRender.current = false;
       return;
     }
-    getVisualizationsData(searchQuery, tagList, currentPage.toString());
-  }, [currentPage]);
+    getVisualizationsData(searchQuery, tagList, pagination.currentPage.toString(), sortQuery.toString(), sortOrder);
+  }, [pagination.currentPage]);
+
+  const sortByOptions = [
+    { value: "date", label: "Date" },
+    { value: "likes", label: "Likes" },
+  ];
 
   if (isLoading) return <Loading />;
 
@@ -174,10 +224,45 @@ export default function Page({}: {}) {
             </div>
           )}
           <div className="text-lg font-medium text-slate-600">
-              {/* Showing Results {(currentPage - 1) * 12 + 1} - {(currentPage) * 12 - (12 - data.length)}  */}
-              Showing Results {startIndex} - {endIndex} of {totalDocuments} Results
+            {/* Showing Results {(currentPage - 1) * 12 + 1} - {(currentPage) * 12 - (12 - data.length)}  */}
+            Showing Results {pagination.startIndex} - {pagination.endIndex} of {pagination.totalDocuments} Results
           </div>
         </div>
+        {data.length !== 0 && (
+          <div className="flex justify-end items-center pt-2 gap-1">
+            <Autocomplete
+              label="Sort by"
+              className="max-w-[7.5rem]"
+              size="sm"
+              variant={"bordered"}
+              isClearable={false}
+              //@ts-ignore
+              selectedKey={sortQuery}
+              onSelectionChange={setSortQuery}
+            >
+              {sortByOptions.map((option) => (
+                <AutocompleteItem key={option.value} value={option.value}>
+                  {option.label}
+                </AutocompleteItem>
+              ))}
+            </Autocomplete>
+            {sortQuery.toString() !== "" && (
+              <Button className="bg-transparent cursor-pointer min-w-3 max-w-[5rem] h-[48px] p-1.5 bg-white border-solid border-2 rounded-lg border-neutral-200">
+                {sortOrder.toString() === "desc" ? (
+                  <div className="flex flex-row items-center justify-center gap-1" onClick={() => setSortOrder("asc")}>
+                    <FaSortAmountDown className="text-lg text-neutral-600" />
+                    <div className="hidden md:flex text-neutral-500"> Desc.</div>
+                  </div>
+                ) : (
+                  <div className="flex flex-row items-center justify-center gap-1" onClick={() => setSortOrder("desc")}>
+                    <FaSortAmountUp className="text-lg text-neutral-600" />
+                    <div className="hidden md:flex text-neutral-500"> Asc.</div>
+                  </div>
+                )}
+              </Button>
+            )}
+          </div>
+        )}
         <div className="py-5 flex flex-row flex-wrap gap-x-6 gap-y-6 justify-start">
           {cardData?.map((eachCard: TVisualization, i: number) => (
             <VisMinicard key={i} cardInfo={eachCard} />
@@ -190,7 +275,7 @@ export default function Page({}: {}) {
           )}
         </div>
         <div className="flex flex-row gap-1 items-center justify-center text-xl">
-          {currentPage !== 1 ? (
+          {pagination.currentPage !== 1 ? (
             <div
               onClick={() => handleNavigatePrevious()}
               className="cursor-pointer bg-slate-100 rounded-full p-2 hover:bg-slate-200 duration-200"
@@ -202,9 +287,9 @@ export default function Page({}: {}) {
               <FaChevronLeft />
             </div>
           )}
-          <div className="bg-slate-100 rounded-full p-2 hover:bg-slate-200 duration-200">{currentPage}</div>
+          <div className="bg-slate-100 rounded-full p-2 hover:bg-slate-200 duration-200">{pagination.currentPage}</div>
 
-          {currentPage < totalPages ? (
+          {pagination.currentPage < pagination.totalPages ? (
             <div
               onClick={() => handleNavigateNext()}
               className="cursor-pointer bg-slate-100 rounded-full p-2 hover:bg-slate-200 duration-200"

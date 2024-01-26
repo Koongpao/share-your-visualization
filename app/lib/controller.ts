@@ -1,4 +1,3 @@
-
 import { CallbackFunction } from "./definitions";
 
 const baseURL = "http://localhost:3001";
@@ -101,7 +100,7 @@ export async function GetSpecificVisualization(id: string) {
 }
 
 //SearchVisualization - GET /api/visualizations?search_query=...&tags=...
-export async function SearchVisualization(search_query?: string, tags?: string, page?: string) {
+export async function SearchVisualization(search_query?: string, tags?: string, page?: string, sortby?: string, order?: string) {
   try {
     let url = "/api/visualizations?";
 
@@ -114,7 +113,13 @@ export async function SearchVisualization(search_query?: string, tags?: string, 
     if (page) {
       url += "&page=" + page;
     }
-    console.log(url)
+    if (sortby) {
+      url += "&sortby=" + sortby;
+    }
+    if (order) {
+      url += "&order=" + order;
+    }
+    console.log(url);
     const response = await fetch(baseProdURL + url, { method: "GET" });
     const jsonResponse = await response.json();
     return jsonResponse;
@@ -127,7 +132,7 @@ export async function SearchVisualization(search_query?: string, tags?: string, 
 export async function GetMyVisualizations(getSessionFunc: CallbackFunction) {
   const session = await getSessionFunc();
   try {
-    const response = await fetch(baseURL + "/api/visualizations/my-visualizations", {
+    const response = await fetch(baseProdURL + "/api/visualizations/my-visualizations", {
       // cache: "no-cache",
       method: "GET",
       headers: {
@@ -398,5 +403,3 @@ export async function DeleteVisualization(getSessionFunc: CallbackFunction, id: 
     console.error(error);
   }
 }
-
-
