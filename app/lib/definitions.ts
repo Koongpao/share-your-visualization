@@ -61,3 +61,11 @@ export type TVisualization = {
 };
 
 export type TVisualizationsArray = TVisualization[];
+
+export type TPagination = {
+  currentPage: number;
+  totalDocuments: number;
+  totalPages: number;
+  startIndex: number;
+  endIndex: number;
+}

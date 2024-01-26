@@ -11,7 +11,7 @@ import { format } from "date-fns";
 
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
-import { IoIosWarning } from "react-icons/io";
+import { IoIosWarning, IoMdSettings } from "react-icons/io";
 import { FaArrowTurnDown } from "react-icons/fa6";
 
 import { TSpecificVisualization } from "@/app/lib/definitions";
@@ -21,6 +21,7 @@ import { getServerAuthSession } from "@/app/lib/auth";
 
 import Unauthorized from "@/app/(auth)/unauthorized/page";
 import Review from "./review";
+import Delete from "./delete";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { data, message, success }: { data: TSpecificVisualization; message: string; success: boolean } =
@@ -31,7 +32,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const isAllowedViewing = session?.user?.role === "admin" || session?.user?.name === data.creator.username;
 
   if (data.status === "pending" || data.status === "disapproved") {
-    if(!session){
+    if (!session) {
       return <Unauthorized />;
     }
     if (!isAllowedViewing) {
@@ -39,20 +40,34 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
   }
 
+  if (data.status === "deleted") {
+    return (
+      <>
+        {data.status === "deleted" && (
+          <div className="flex flex-col justify-center bg-red-50 border-1 border-red-600 py-5 mx-24 items-center mt-20">
+            <div className="font-medium text-red-700 text-xl flex flex-row gap-1 items-center">
+              <IoIosWarning className="text-3xl" /> This visualization has been deleted.
+            </div>
+            <div className="font-medium text-red-700">This visualization is not accessible to public.</div>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="container py-6 px-8 md:px-24 lg:px-48 pb-12">
       {data.status === "pending" && (
         <div className="flex flex-col justify-center bg-yellow-50 border-1 border-yellow-600 py-5 mx-24 items-center">
           <div className="font-medium text-yellow-700 text-xl flex flex-row gap-1 items-center">
-            <IoIosWarning className="text-3xl" /> This visualization is pending for approval
+            <IoIosWarning className="text-3xl" /> This visualization is pending for approval.
           </div>
           <div className="font-medium text-yellow-700">Please wait for us to review your visualization.</div>
           <div className="font-medium text-yellow-700">Only you can view this page.</div>
         </div>
       )}
-      {data.status === "pending" && session?.user?.role === "admin" && (
-          <Review visId={params.id}/>
-        )}
+
+      {data.status === "pending" && session?.user?.role === "admin" && <Review visId={params.id} />}
       {data.status === "disapproved" && (
         <div className="flex flex-col justify-center bg-red-50 border-1 border-red-600 py-5 mx-24 items-center">
           <div className="font-medium text-red-700 text-xl flex flex-row gap-1 items-center">
@@ -64,7 +79,12 @@ export default async function Page({ params }: { params: { id: string } }) {
       )}
 
       <div className="flex flex-col">
-        <div className="text-4xl font-semibold py-2">{data.title}</div>
+        <div className="flex flex-row justify-between items-center">
+          <div className="text-4xl font-semibold py-2">{data.title}</div>
+          {(session?.user?.role === "admin" || session?.user?.name === data.creator.username) && (
+            <Delete visId={params.id} />
+          )}
+        </div>
         <div className="flex flex-col sm:flex-row gap-x-4 gap-y-2 pt-2">
           <div className="flex flex-row gap-x-2 items-center">
             <p className="font-bold">Library</p>
@@ -109,21 +129,24 @@ export default async function Page({ params }: { params: { id: string } }) {
             <Image src={data.image} alt="" width={600} height={600} quality={100} />
           </div>
         </div>
-        <div className="py-4">
-          <div className="text-xl flex flex-row gap-2 items-center justify-center font-semibold">
-            Preview Demo <FaArrowTurnDown />{" "}
+        {data.externalLink && (
+          <div className="py-4">
+            <div className="text-xl flex flex-row gap-2 items-center justify-center font-semibold">
+              Preview Demo <FaArrowTurnDown />
+            </div>
+
+            <div className="flex justify-center py-4">
+              <Button
+                className="bg-teal-600 text-white font-semibold shadow-xl"
+                as={Link}
+                href={data.externalLink}
+                target="_blank"
+              >
+                {data.externalLink}
+              </Button>
+            </div>
           </div>
-          <div className="flex justify-center py-4">
-            <Button
-              className="bg-teal-600 text-white font-semibold shadow-xl"
-              as={Link}
-              href={data.externalLink}
-              target="_blank"
-            >
-              {data.externalLink}
-            </Button>
-          </div>
-        </div>
+        )}
         <div>
           <div className="flex flex-row justify-between py-2">
             <div className="text-2xl font-semibold">Source Code</div>

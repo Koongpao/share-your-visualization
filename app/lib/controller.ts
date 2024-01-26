@@ -1,4 +1,4 @@
-import { unstable_noStore } from "next/cache";
+
 import { CallbackFunction } from "./definitions";
 
 const baseURL = "http://localhost:3001";
@@ -101,7 +101,7 @@ export async function GetSpecificVisualization(id: string) {
 }
 
 //SearchVisualization - GET /api/visualizations?search_query=...&tags=...
-export async function SearchVisualization(search_query?: string, tags?: string) {
+export async function SearchVisualization(search_query?: string, tags?: string, page?: string) {
   try {
     let url = "/api/visualizations?";
 
@@ -111,6 +111,10 @@ export async function SearchVisualization(search_query?: string, tags?: string) 
     if (tags && tags.length > 0) {
       url += "&tags=" + tags;
     }
+    if (page) {
+      url += "&page=" + page;
+    }
+    console.log(url)
     const response = await fetch(baseProdURL + url, { method: "GET" });
     const jsonResponse = await response.json();
     return jsonResponse;
@@ -123,7 +127,7 @@ export async function SearchVisualization(search_query?: string, tags?: string) 
 export async function GetMyVisualizations(getSessionFunc: CallbackFunction) {
   const session = await getSessionFunc();
   try {
-    const response = await fetch(baseProdURL + "/api/visualizations/my-visualizations", {
+    const response = await fetch(baseURL + "/api/visualizations/my-visualizations", {
       // cache: "no-cache",
       method: "GET",
       headers: {
@@ -367,6 +371,23 @@ export async function DisapproveTag(getSessionFunc: CallbackFunction, id: string
   try {
     const response = await fetch(baseProdURL + "/api/tags/" + id + "/disapprove", {
       method: "PUT",
+      headers: {
+        authorization: session?.user.accessToken,
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//DeleteVisualization - DELETE /api/visualizations/:id
+export async function DeleteVisualization(getSessionFunc: CallbackFunction, id: string) {
+  const session = await getSessionFunc();
+  try {
+    const response = await fetch(baseProdURL + "/api/visualizations/" + id, {
+      method: "DELETE",
       headers: {
         authorization: session?.user.accessToken,
       },
