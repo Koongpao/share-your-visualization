@@ -51,11 +51,11 @@ export default function TableContent({ data }: { data: TlibraryAndTags }) {
             {eachTag.is_library && <FaCheck className="text-green-600" />}
             {!eachTag.is_library && <ImCross className="text-red-600" />}
           </div>
-          <div className="col-span-4 flex justify-center items-center">
-            <Button className="bg-green-600 text-white" onClick={() => handleApprove(eachTag._id)}>
+          <div className="col-span-4 flex justify-center items-center gap-1">
+            <Button className="bg-green-600 text-white h-[2rem]" onClick={() => handleApprove(eachTag._id)}>
               Approve
             </Button>
-            <Button className="bg-red-600 text-white" onClick={() => handleDisapprove(eachTag._id)}>
+            <Button className="bg-red-600 text-white h-[2rem]" onClick={() => handleDisapprove(eachTag._id)}>
               Disapprove
             </Button>
           </div>
