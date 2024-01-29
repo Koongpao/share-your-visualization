@@ -60,8 +60,6 @@ export const sidebarChartTypeList = [
   "heatmap",
   "tree_chart",
   "area_chart",
-  "bubble_chart",
-  "donut_chart",
   "circular_chart",
   "doughnut_chart",
   "radar_chart",
