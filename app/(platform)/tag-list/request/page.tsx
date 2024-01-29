@@ -156,9 +156,9 @@ export default function Page() {
         >
           Submit
         </Button>
-        <Button className="font-semibold text-md text-gray-500 bg-transparent" onClick={() => router.refresh()}>
+        {/* <Button className="font-semibold text-md text-gray-500 bg-transparent" onClick={() => router.refresh()}>
           Clear
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

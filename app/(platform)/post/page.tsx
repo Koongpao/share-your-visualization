@@ -56,6 +56,7 @@ const roboto = Roboto({ subsets: ["latin"], weight: ["400"] });
 export default function Page() {
 
   const router = useRouter();
+
   const [titleValue, setTitleValue] = useState<string>("");
   const [descriptionValue, setDescriptionValue] = useState<string>("");
   const [sourceCodeValue, setSourceCodeValue] = useState<string>("");
@@ -446,7 +447,7 @@ export default function Page() {
           <Button className="font-semibold text-md text-white bg-teal-600" onClick={onOpen}>
             Proceed
           </Button>
-          <Button className="font-semibold text-md text-gray-500 bg-transparent" onClick={() => router.refresh()}>Clear</Button>
+          {/* <Button className="font-semibold text-md text-gray-500 bg-transparent" onClick={() => router.refresh()}>Clear</Button> */}
         </div>
       </form>
 
